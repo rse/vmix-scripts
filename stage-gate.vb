@@ -27,7 +27,7 @@ dim checkingCount     as integer = 0
 do while true
     '-- fetch current vMix API status
     dim xml as string = API.XML()
-    dim x as new system.xml.xmldocument
+    dim x as new System.Xml.XmlDocument
     x.loadxml(xml)
 
     '-- determine metering of all inputs on Bus-B (Stage-OUT)

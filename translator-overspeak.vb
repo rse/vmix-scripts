@@ -37,7 +37,7 @@ dim timeAwaitOverCount    as integer = 0         'counter for time below the thr
 do while true
     '-- fetch current vMix API status
     dim xml as string = API.XML()
-    dim x as new system.xml.xmldocument
+    dim x as new System.Xml.XmlDocument
     x.loadxml(xml)
 
     '-- determine whether we should operate at all (indicated by muted/unmuted input bus)
