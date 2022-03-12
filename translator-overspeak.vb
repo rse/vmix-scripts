@@ -42,16 +42,16 @@ do while true
 
     '-- determine whether we should operate at all (indicated by muted/unmuted input bus)
     dim muted as boolean = (x.SelectSingleNode("//audio/bus" + busTranslators + "/@muted").Value)
-    if muted
+    if muted then
         '-- ensure we reset current volume knowledge once we become unmuted again
-        if not volumeCurrent = -1
+        if not volumeCurrent = -1 then
             volumeCurrent = -1
         end if
         continue do
     end if
 
     '-- initialize output volume
-    if volumeCurrent = -1
+    if volumeCurrent = -1 then
         volumeCurrent = volumeFull
         API.Function("SetBus" + busProgram + "Volume", Value := volumeCurrent.tostring)
     end if
@@ -59,13 +59,13 @@ do while true
     '-- determine input volume (in linear volume scale)
     dim meter1 as double = (x.SelectSingleNode("//audio/bus" + busTranslators + "/@meterF1").Value)
     dim meter2 as double = (x.SelectSingleNode("//audio/bus" + busTranslators + "/@meterF2").Value)
-    if meter1 < meter2
+    if meter1 < meter2 then
         meter1 = meter2
     end if
     meter1 = cint((meter1 ^ 0.25) * 100)
 
     '-- track whether input volume is continuously over or below volume threshold
-    if meter1 > volumeThreshold
+    if meter1 > volumeThreshold then
         timeAwaitOverCount  += 1
         timeAwaitBelowCount  = 0
     else
@@ -74,23 +74,23 @@ do while true
     end if
 
     '-- decide current operation mode
-    if timeAwaitBelowCount >= cint(timeAwaitBelow / timeSlice) and volumeCurrent < volumeFull
+    if timeAwaitBelowCount >= cint(timeAwaitBelow / timeSlice) and volumeCurrent < volumeFull then
         mode = "fade-up"
-    elseif timeAwaitOverCount >= cint(timeAwaitOver / timeSlice) and volumeCurrent > volumeReduced
+    elseif timeAwaitOverCount >= cint(timeAwaitOver / timeSlice) and volumeCurrent > volumeReduced then
         mode = "fade-down"
     else
         mode = "wait"
     end if
 
     '-- fade output volume down/up
-    if mode = "fade-down" or mode = "fade-up"
+    if mode = "fade-down" or mode = "fade-up" then
         dim k as integer = cint(((volumeFull - volumeReduced) / timeFadeDown) * timeSlice)
-        if k = 0
+        if k = 0 then
             k = 1
         end if
-        if mode = "fade-down"
+        if mode = "fade-down" then
             volumeCurrent -= k
-        elseif mode = "fade-up"
+        elseif mode = "fade-up" then
             volumeCurrent += k
         end if
         API.Function("SetBus" + busProgram + "Volume", Value := volumeCurrent.tostring)

@@ -30,17 +30,17 @@ do while true
 
     '-- only react if a new input was placed into the preview
     dim nowInPreview as String = x.SelectSingleNode("//preview").InnerText
-    if nowInPreview <> lastInPreview
+    if nowInPreview <> lastInPreview then
         lastInPreview = nowInPreview
 
         '-- only react if input title contains "[rsc:N]"
         dim title as string = (x.SelectSingleNode("//inputs/input[@number = '" & nowInPreview & "']/@title").Value)
         dim titleMatches as Boolean = (title like "*[rsc:#]*") orElse (title like "*[rsc:##]*")
-        if titleMatches
+        if titleMatches then
             '-- only react if slide number has to change
             dim t as String = title.substring(title.indexOf("[rsc:") + 5)
             dim nowSlideSelect as String = t.substring(0, t.indexOf("]"))
-            if nowSlideSelect <> lastSlideSelect
+            if nowSlideSelect <> lastSlideSelect then
                 lastSlideSelect = nowSlideSelect
 
                 '-- connect to RemoteShowControl and select particular slide number

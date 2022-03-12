@@ -34,35 +34,35 @@ do while true
     dim muted  as boolean = (x.SelectSingleNode("//audio/busB/@muted").Value)
     dim meter1 as double  = (x.SelectSingleNode("//audio/busB/@meterF1").Value)
     dim meter2 as double  = (x.SelectSingleNode("//audio/busB/@meterF2").Value)
-    if meter1 < meter2
+    if meter1 < meter2 then
         meter1 = meter2
     end if
 
     '-- xx
-    if meter1 > threshold and not muted
-        if checkingCount >= checkingIter
+    if meter1 > threshold and not muted then
+        if checkingCount >= checkingIter then
             checkingCount = 0
             '-- ducking of all inputs marked with Bus-A (Stage-IN)
             dim busInputs as XmlNodeList = x.SelectNodes("//inputs/input[@audiobusses = 'M,A']")
             for each busInput as XmlNode in busInputs
                 dim num as integer = Convert.ToInt32(busInput.Attributes("number").InnerText)
                 dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").InnerText)
-                if not isMuted
+                if not isMuted then
                     Input.Find(num).Function("SetVolumeFade", reduced.tostring + "," + fadeDown.tostring)
                 end if
             next busInput
         end if
     else
-        if checkingCount < checkingIter
+        if checkingCount < checkingIter then
             checkingCount += 1
         end if
-        if checkingCount = checkingIter
+        if checkingCount = checkingIter then
             '-- unducking of all inputs marked with Bus-A (Stage-IN)
             dim busInputs as XmlNodeList = x.SelectNodes("//inputs/input[@audiobusses = 'M,A']")
             for each busInput as XmlNode in busInputs
                 dim num as integer = Convert.ToInt32(busInput.Attributes("number").InnerText)
                 dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").InnerText)
-                if not isMuted
+                if not isMuted then
                     Input.Find(num).Function("SetVolumeFade", "100" + "," + fadeUp.tostring)
                 end if
             next busInput
