@@ -58,6 +58,11 @@ The individual scripts are:
   (received via NDI and mixed on the Master audio bus after being
   "dimming" on Bus-B)
 
+- [ndi-studio-monitor.vb](ndi-studio-monitor.vb):<br/>
+  This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
+  allowing vMix to re-configure the NDI source displayed in an NDI
+  Studio Monitor instance.
+
 Installation
 ------------
 
