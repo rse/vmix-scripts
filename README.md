@@ -51,7 +51,7 @@ The individual scripts are:
   is somewhat similar to a sidechain-based noise-gate audio filter.
   This way one can prevent nasty echos or even full loops on stage.
 
-- [translator-overspeak.vb](translater-overspeak.vb):<br/>
+- [translator-overspeak.vb](translator-overspeak.vb):<br/>
   This is a VB.NET script for the vMix 4K/Pro scripting facility,
   allowing translators (sitting on vMix Call sources and mixed on the
   Master audio bus and monitored on Bus-C) to over-speak the program
