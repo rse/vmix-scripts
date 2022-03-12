@@ -23,9 +23,9 @@ dim clientPort as String = "61001"
 
 '-- load the current API state
 dim xml as string = API.XML()
-dim x as new System.Xml.XmlDocument
-x.loadxml(xml)
-dim cmd as string = (x.SelectSingleNode("//dynamic/value1").InnerText)
+dim cfg as new System.Xml.XmlDocument
+cfg.loadxml(xml)
+dim cmd as string = (cfg.SelectSingleNode("//dynamic/value1").InnerText)
 console.writeline(cmd)
 
 '-- connect to RemoteShowControl and send command

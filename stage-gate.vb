@@ -27,13 +27,13 @@ dim checkingCount     as integer = 0
 do while true
     '-- fetch current vMix API status
     dim xml as string = API.XML()
-    dim x as new System.Xml.XmlDocument
-    x.loadxml(xml)
+    dim cfg as new System.Xml.XmlDocument
+    cfg.loadxml(xml)
 
     '-- determine metering of all inputs on Bus-B (Stage-OUT)
-    dim muted  as boolean = (x.SelectSingleNode("//audio/busB/@muted").Value)
-    dim meter1 as double  = (x.SelectSingleNode("//audio/busB/@meterF1").Value)
-    dim meter2 as double  = (x.SelectSingleNode("//audio/busB/@meterF2").Value)
+    dim muted  as boolean = (cfg.SelectSingleNode("//audio/busB/@muted").Value)
+    dim meter1 as double  = (cfg.SelectSingleNode("//audio/busB/@meterF1").Value)
+    dim meter2 as double  = (cfg.SelectSingleNode("//audio/busB/@meterF2").Value)
     if meter1 < meter2 then
         meter1 = meter2
     end if
@@ -43,7 +43,7 @@ do while true
         if checkingCount >= checkingIter then
             checkingCount = 0
             '-- ducking of all inputs marked with Bus-A (Stage-IN)
-            dim busInputs as XmlNodeList = x.SelectNodes("//inputs/input[@audiobusses = 'M,A']")
+            dim busInputs as XmlNodeList = cfg.SelectNodes("//inputs/input[@audiobusses = 'M,A']")
             for each busInput as XmlNode in busInputs
                 dim num as integer = Convert.ToInt32(busInput.Attributes("number").InnerText)
                 dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").InnerText)
@@ -58,7 +58,7 @@ do while true
         end if
         if checkingCount = checkingIter then
             '-- unducking of all inputs marked with Bus-A (Stage-IN)
-            dim busInputs as XmlNodeList = x.SelectNodes("//inputs/input[@audiobusses = 'M,A']")
+            dim busInputs as XmlNodeList = cfg.SelectNodes("//inputs/input[@audiobusses = 'M,A']")
             for each busInput as XmlNode in busInputs
                 dim num as integer = Convert.ToInt32(busInput.Attributes("number").InnerText)
                 dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").InnerText)

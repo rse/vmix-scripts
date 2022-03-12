@@ -25,16 +25,16 @@ dim lastSlideSelect as String = ""
 do while true
     '-- load the current API state
     dim xml as string = API.XML()
-    dim x as new System.Xml.XmlDocument
-    x.loadxml(xml)
+    dim cfg as new System.Xml.XmlDocument
+    cfg.loadxml(xml)
 
     '-- only react if a new input was placed into the preview
-    dim nowInPreview as String = x.SelectSingleNode("//preview").InnerText
+    dim nowInPreview as String = cfg.SelectSingleNode("//preview").InnerText
     if nowInPreview <> lastInPreview then
         lastInPreview = nowInPreview
 
         '-- only react if input title contains "[rsc:N]"
-        dim title as string = (x.SelectSingleNode("//inputs/input[@number = '" & nowInPreview & "']/@title").Value)
+        dim title as string = (cfg.SelectSingleNode("//inputs/input[@number = '" & nowInPreview & "']/@title").Value)
         dim titleMatches as Boolean = (title like "*[rsc:#]*") orElse (title like "*[rsc:##]*")
         if titleMatches then
             '-- only react if slide number has to change

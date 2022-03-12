@@ -37,11 +37,11 @@ dim timeAwaitOverCount    as integer = 0         'counter for time below the thr
 do while true
     '-- fetch current vMix API status
     dim xml as string = API.XML()
-    dim x as new System.Xml.XmlDocument
-    x.loadxml(xml)
+    dim cfg as new System.Xml.XmlDocument
+    cfg.loadxml(xml)
 
     '-- determine whether we should operate at all (indicated by muted/unmuted input bus)
-    dim muted as boolean = (x.SelectSingleNode("//audio/bus" + busTranslators + "/@muted").Value)
+    dim muted as boolean = (cfg.SelectSingleNode("//audio/bus" + busTranslators + "/@muted").Value)
     if muted then
         '-- ensure we reset current volume knowledge once we become unmuted again
         if not volumeCurrent = -1 then
@@ -57,8 +57,8 @@ do while true
     end if
 
     '-- determine input volume (in linear volume scale)
-    dim meter1 as double = (x.SelectSingleNode("//audio/bus" + busTranslators + "/@meterF1").Value)
-    dim meter2 as double = (x.SelectSingleNode("//audio/bus" + busTranslators + "/@meterF2").Value)
+    dim meter1 as double = (cfg.SelectSingleNode("//audio/bus" + busTranslators + "/@meterF1").Value)
+    dim meter2 as double = (cfg.SelectSingleNode("//audio/bus" + busTranslators + "/@meterF2").Value)
     if meter1 < meter2 then
         meter1 = meter2
     end if
