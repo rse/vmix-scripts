@@ -8,22 +8,40 @@
 '-- This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
 '-- allowing one to step forward/backward through an event configuration
 '-- by re-configuring four NDI input sources (for shared content, one
-'-- moderator P1 and two presenters P2 and P3).
+'-- moderator P1 and two presenters P2 and P3). The crux is the use
+'-- of a full-screen GT title input which holds the four cells of the
+'-- underlying Excel data source.
 
 '-- USAGE:
 '-- configure four vMix Shortcuts with:
-'-- <key1> DataSourcePreviousRow <datasource>.<worksheet>
-'-- <key1> ScriptStart RemoteShowControlOnce
-'-- <key1> DataSourceNextRow <datasource>.<worksheet>
-'-- <key2> ScriptStart RemoteShowControlOnce
+'-- <key1> SetDynamicValue1 PREV
+'-- <key1> ScriptStart event-reconfiguration
+'-- <key2> SetDynamicValue1 NEXT
+'-- <key2> ScriptStart event-reconfiguration
 
 '-- CONFIGURATION
+dim dataSource  = "Exchange.Mapping"
 dim titleSource = "DATASOURCE"
 dim fieldInputMapping as new Dictionary(of String, String)
 fieldInputMapping.Add("C-NDI",  "CONTENT")
 fieldInputMapping.Add("P1-NDI", "PRESENTER-1")
 fieldInputMapping.Add("P2-NDI", "PRESENTER-2")
 fieldInputMapping.Add("P3-NDI", "PRESENTER-3")
+
+'-- load the current API state
+dim xml as string = API.XML()
+dim cfg as new System.Xml.XmlDocument
+cfg.loadxml(xml)
+
+'-- determine operation parameter
+dim op as string = cfg.SelectSingleNode("//dynamic/value1").InnerText
+
+'-- change row in data source
+if op = "PREV" then
+    API.Function("DataSourcePreviousRow", Value := dataSource)
+elseif op = "NEXT" then
+    API.Function("DataSourceNextRow", Value := dataSource)
+end if
 
 '-- update the NDI inputs
 for each titleField as String in fieldInputMapping.Keys

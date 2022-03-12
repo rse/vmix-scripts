@@ -25,8 +25,9 @@ dim clientPort as String = "61001"
 dim xml as string = API.XML()
 dim cfg as new System.Xml.XmlDocument
 cfg.loadxml(xml)
-dim cmd as string = (cfg.SelectSingleNode("//dynamic/value1").InnerText)
-console.writeline(cmd)
+
+'-- determine command parameter
+dim cmd as string = cfg.SelectSingleNode("//dynamic/value1").InnerText
 
 '-- connect to RemoteShowControl and send command
 dim client as new System.Net.Sockets.TcpClient(clientIP, clientPort)
