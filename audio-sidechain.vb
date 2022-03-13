@@ -80,8 +80,9 @@
 '--         Volume:  71, Amplitude: 0.2512, Decibel: -12
 '--         Volume:  63, Amplitude: 0.1585, Decibel: -16 (broadcast standard)
 '--         Volume:  50, Amplitude: 0.0631, Decibel: -23 (film standard)
-'--         Volume:  40, Amplitude: 0.0224, Decibel: -32
+'--         Volume:  40, Amplitude: 0.0224, Decibel: -32 (voice gate border)
 '--         Volume:  27, Amplitude: 0.0056, Decibel: -45
+'--         Volume:  21, Amplitude: 0.0020, Decibel: -54 (very much dimmed)
 '--         Volume:  15, Amplitude: 0.0006, Decibel: -65 (silence border)
 '--         Volume:  10, Amplitude: 0.0001, Decibel: -80
 '--         Volume:   0, Amplitude: 0.0000, Decibel: -Infinity
