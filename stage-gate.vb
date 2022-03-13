@@ -14,12 +14,12 @@
 '-- CONFIGURATION (can be adjusted)
 
 dim reduced           as integer = 20        'The reduced volume of Stage microphones, from 0 to 100 (linear scale)
-dim threshold         as double  = 0.05      'The threshold of volume of the Cloud speakers, from 0 to 1 (log scale)
-                                             '0.5=50%~=-6dB, 0.1=10%~=-20dB...
-dim fadeDown          as integer = 60        'The time for fading down
-dim fadeUp            as integer = 400       'The time for fading up
+dim threshold         as double  = 0.05      'The threshold of volume of the Stage speakers, from 0 to 1 (log scale)
+                                             '0.5 = ~50% = -6dB, 0.1 = ~10% = -20dB, ...
+dim fadeDown          as integer = 60        'The time for fading down Stage microphones
+dim fadeUp            as integer = 400       'The time for fading up   Stage microphones
 
-dim checkingIter      as integer = 10        'The number of iterations of checking the interpreter silence before triggering
+dim checkingIter      as integer = 10        'The number of iterations of checking the silence before triggering
 dim checkingIterTime  as integer = 20        'The interval (milliseconds) between the checking iterations
 dim checkingCount     as integer = 0
 
