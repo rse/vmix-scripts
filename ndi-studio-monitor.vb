@@ -17,7 +17,7 @@
 '-- fetch current vMix API status
 dim xml as string = API.XML()
 dim cfg as new System.Xml.XmlDocument
-cfg.loadxml(xml)
+cfg.LoadXml(xml)
 
 '-- determine parameters
 dim monitorIP     as String = cfg.selectSingleNode("//dynamic/value1").InnerText

@@ -20,7 +20,7 @@
 '-- load the current API state
 dim xml as string = API.XML()
 dim cfg as new System.Xml.XmlDocument
-cfg.loadxml(xml)
+cfg.LoadXml(xml)
 
 '-- determine input currently in preview
 dim inputNum as String = cfg.SelectSingleNode("/vmix/preview").InnerText
@@ -38,7 +38,7 @@ dim utf8WithoutBOM as new System.Text.UTF8Encoding(false)
 xml = System.IO.File.ReadAllText(presetFile, utf8WithoutBOM)
 dim preset as new System.Xml.XmlDocument
 preset.PreserveWhitespace = true
-preset.loadxml(xml)
+preset.LoadXml(xml)
 
 '-- find input
 dim inputNode as System.Xml.XmlNode = preset.SelectSingleNode("/XML/Input[@Key = '" & inputKey & "']")

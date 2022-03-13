@@ -21,12 +21,14 @@ dim clientPort as String = "61001"
 dim lastInPreview   as String = ""
 dim lastSlideSelect as String = ""
 
+'-- prepare XML DOM tree
+dim cfg as new System.Xml.XmlDocument
+
 '-- endless loop
 do while true
     '-- load the current API state
     dim xml as string = API.XML()
-    dim cfg as new System.Xml.XmlDocument
-    cfg.loadxml(xml)
+    cfg.LoadXml(xml)
 
     '-- only react if a new input was placed into the preview
     dim nowInPreview as String = cfg.SelectSingleNode("//preview").InnerText

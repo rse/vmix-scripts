@@ -24,7 +24,7 @@ dim clientPort as String = "61001"
 '-- load the current API state
 dim xml as string = API.XML()
 dim cfg as new System.Xml.XmlDocument
-cfg.loadxml(xml)
+cfg.LoadXml(xml)
 
 '-- determine command parameter
 dim cmd as string = cfg.SelectSingleNode("//dynamic/value1").InnerText

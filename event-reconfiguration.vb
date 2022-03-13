@@ -31,7 +31,7 @@ fieldInputMapping.Add("P3-NDI", "PRESENTER-3")
 '-- load the current API state
 dim xml as string = API.XML()
 dim cfg as new System.Xml.XmlDocument
-cfg.loadxml(xml)
+cfg.LoadXml(xml)
 
 '-- determine operation parameter
 dim op as string = cfg.SelectSingleNode("//dynamic/value1").InnerText

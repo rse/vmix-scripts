@@ -33,12 +33,14 @@ dim volumeCurrent         as integer = -1        'current volume of output (from
 dim timeAwaitBelowCount   as integer = 0         'counter for time over  the threshold
 dim timeAwaitOverCount    as integer = 0         'counter for time below the threshold
 
+'-- prepare XML DOM tree
+dim cfg as new System.Xml.XmlDocument
+
 '-- enter endless iteration loop
 do while true
     '-- fetch current vMix API status
     dim xml as string = API.XML()
-    dim cfg as new System.Xml.XmlDocument
-    cfg.loadxml(xml)
+    cfg.LoadXml(xml)
 
     '-- determine whether we should operate at all (indicated by muted/unmuted input bus)
     dim muted as boolean = (cfg.SelectSingleNode("//audio/bus" + busTranslators + "/@muted").Value)

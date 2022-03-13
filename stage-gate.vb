@@ -23,12 +23,14 @@ dim checkingIter      as integer = 10        'The number of iterations of checki
 dim checkingIterTime  as integer = 20        'The interval (milliseconds) between the checking iterations
 dim checkingCount     as integer = 0
 
+'-- prepare XML DOM tree
+dim cfg as new System.Xml.XmlDocument
+
 '-- enter endless iteration loop
 do while true
     '-- fetch current vMix API status
     dim xml as string = API.XML()
-    dim cfg as new System.Xml.XmlDocument
-    cfg.loadxml(xml)
+    cfg.LoadXml(xml)
 
     '-- determine metering of all inputs on Bus-B (Stage-OUT)
     dim muted  as boolean = (cfg.SelectSingleNode("//audio/busB/@muted").Value)
