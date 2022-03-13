@@ -25,7 +25,7 @@ cfg.LoadXml(xml)
 '-- determine input currently in preview
 dim inputNum as String = cfg.SelectSingleNode("/vmix/preview").InnerText
 dim inputKey as String = cfg.SelectSingleNode("/vmix/inputs/input[@number = '" & inputNum & "']/@key").InnerText
-console.writeline("cloning input #" & inputNum & " (" & inputKey & ")")
+Console.WriteLine("cloning input #" & inputNum & " (" & inputKey & ")")
 
 '-- determine current preset
 dim presetFile as String = cfg.SelectSingleNode("/vmix/preset").InnerText
@@ -54,7 +54,7 @@ if cloneNode.Attributes("Title") is Nothing then
 else
     cloneNode.Attributes("Title").Value = cloneNode.Attributes("Title").Value & " (CLONED)"
 end if
-console.writeline("cloned input under new GUID " & GUID)
+Console.WriteLine("cloned input under new GUID " & GUID)
 
 '-- insert cloned input
 inputNode.ParentNode.insertAfter(cloneNode, inputNode)

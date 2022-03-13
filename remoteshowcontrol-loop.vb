@@ -46,7 +46,7 @@ do while true
                 lastSlideSelect = nowSlideSelect
 
                 '-- connect to RemoteShowControl and select particular slide number
-                console.writeline("select slide #" & nowSlideSelect & " for input #" + nowInPreview)
+                Console.WriteLine("select slide #" & nowSlideSelect & " for input #" + nowInPreview)
                 dim client as new System.Net.Sockets.TcpClient(clientIP, clientPort)
                 client.SendTimeout    = 1000
                 client.ReceiveTimeout = 1000
