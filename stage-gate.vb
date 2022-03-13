@@ -57,7 +57,7 @@ do while true
                 dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").InnerText)
                 if not isMuted then
                     '-- fade to reduced volume
-                    Input.Find(num).Function("SetVolumeFade", reducedVol.tostring + "," + fadeDown.tostring)
+                    Input.Find(num).Function("SetVolumeFade", reducedVol.tostring & "," & fadeDown.tostring)
                 end if
             next busInput
             checkingCount = 0
@@ -74,7 +74,7 @@ do while true
                 dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").InnerText)
                 if not isMuted then
                     '-- fade back to original volume
-                    Input.Find(num).Function("SetVolumeFade", "100" + "," + fadeUp.tostring)
+                    Input.Find(num).Function("SetVolumeFade", "100" & "," & fadeUp.tostring)
                 end if
             next busInput
             checkingCount += 1
