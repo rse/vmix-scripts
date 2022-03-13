@@ -61,7 +61,7 @@
 '--         Volume:      0 to 100    (used for UI volume bars, SetVolumeFade)
 '--         Amplitude:   0 to 1      (used for API audio bus meter, @meterF1)
 '--         Amplitude2:  0 to 100    (used for API input volume input, @volume)
-'--         Decibels:    -oo to 0dB  (used in audio science)
+'--         Decibels:    -oo to 0    (used in audio science)
 '--
 '--     Formulas:
 '--         Amplitude    = Amplitude2 / 100
