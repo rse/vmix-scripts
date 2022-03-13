@@ -24,7 +24,7 @@ dim monitorIP     as String = cfg.selectSingleNode("//dynamic/value1").InnerText
 dim monitorSource as String = cfg.selectSingleNode("//dynamic/value2").InnerText
 
 '-- prepare re-configuration URL
-Dim monitorURL as String = "http://" + monitorIP + "/v1/configuration"
+dim monitorURL as String = "http://" + monitorIP + "/v1/configuration"
 
 '-- prepare re-configuration JSON payload
 dim payloadJSON as String = "{""version"":1,""NDI_source"":""" + monitorSource + """}"
