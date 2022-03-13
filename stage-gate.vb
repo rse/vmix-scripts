@@ -13,15 +13,18 @@
 
 '-- CONFIGURATION (can be adjusted)
 
-dim reduced           as integer = 20    'The reduced volume of Stage microphones, from 0 to 100 (linear scale)
-dim threshold         as double  = 0.05  'The threshold of volume of the Stage speakers, from 0 to 1 (log scale)
-                                         '0.5 = ~50% = -6dB, 0.1 = ~10% = -20dB, ...
-dim fadeDown          as integer = 60    'The time for fading down Stage microphones
-dim fadeUp            as integer = 400   'The time for fading up   Stage microphones
+dim thresholdDB       as integer = -30   'The volume (dB) Stage speakers must be above to trigger
+dim reducedDB         as integer = -54   'The volume (dB) Stage microphones are temporarily reduced to
+dim fadeDown          as integer = 60    'The time (ms) for fading down Stage microphones (when above threshold)
+dim fadeUp            as integer = 400   'The time (ms) for fading up   Stage microphones (when below threshold)
 
 dim checkingIter      as integer = 10    'The number of iterations of checking the silence before triggering
 dim checkingIterTime  as integer = 20    'The interval (milliseconds) between the checking iterations
 dim checkingCount     as integer = 0
+
+'-- pre-convert decibel to audio fader volume
+dim reducedAmp as double  = 10 ^ (reducedDB / 20)
+dim reducedVol as integer = cint((reducedAmp ^ 0.25) * 100)
 
 '-- prepare XML DOM tree
 dim cfg as new System.Xml.XmlDocument
@@ -36,35 +39,41 @@ do while true
     dim muted  as boolean = (cfg.SelectSingleNode("//audio/busB/@muted").Value)
     dim meter1 as double  = (cfg.SelectSingleNode("//audio/busB/@meterF1").Value)
     dim meter2 as double  = (cfg.SelectSingleNode("//audio/busB/@meterF2").Value)
+
+    '-- convert meter from amplitude to decibel
     if meter1 < meter2 then
         meter1 = meter2
     end if
+    dim meterDB as integer = cint(20 * Math.log10(meter1))
 
-    '-- xx
-    if meter1 > threshold and not muted then
+    '-- dispatch according to current meter level and mute state
+    if meterDB > thresholdDB and not muted then
+        '-- Stage speakers are above threshold
         if checkingCount >= checkingIter then
-            checkingCount = 0
             '-- ducking of all inputs marked with Bus-A (Stage-IN)
             dim busInputs as XmlNodeList = cfg.SelectNodes("//inputs/input[@audiobusses = 'M,A']")
             for each busInput as XmlNode in busInputs
-                dim num as integer = Convert.ToInt32(busInput.Attributes("number").InnerText)
+                dim num     as integer = Convert.ToInt32(busInput.Attributes("number").InnerText)
                 dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").InnerText)
                 if not isMuted then
-                    Input.Find(num).Function("SetVolumeFade", reduced.tostring + "," + fadeDown.tostring)
+                    '-- fade to reduced volume
+                    Input.Find(num).Function("SetVolumeFade", reducedVol.tostring + "," + fadeDown.tostring)
                 end if
             next busInput
+            checkingCount = 0
         end if
     else
+        '-- Stage speakers are below threshold
         if checkingCount < checkingIter then
             checkingCount += 1
-        end if
-        if checkingCount = checkingIter then
+        elseif checkingCount = checkingIter then
             '-- unducking of all inputs marked with Bus-A (Stage-IN)
             dim busInputs as XmlNodeList = cfg.SelectNodes("//inputs/input[@audiobusses = 'M,A']")
             for each busInput as XmlNode in busInputs
-                dim num as integer = Convert.ToInt32(busInput.Attributes("number").InnerText)
+                dim num     as integer = Convert.ToInt32(busInput.Attributes("number").InnerText)
                 dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").InnerText)
                 if not isMuted then
+                    '-- fade back to original volume
                     Input.Find(num).Function("SetVolumeFade", "100" + "," + fadeUp.tostring)
                 end if
             next busInput
