@@ -12,6 +12,14 @@ video/audio stream mixing software [vMix](https://www.vmix.com/).
 
 The individual scripts are:
 
+- [audio-sidechain.vb](audio-sidechain.vb):<br/>
+  This is a VB.NET script for the vMix 4K/Pro scripting facility,
+  allowing audio output volumes to be automatically and temporarily
+  reduced, based on audio input volumes (when temporarily above a
+  threshold) -- similar to an audio side-chain compression. There are
+  two main use-cases for this functionality: stage gate and translator
+  over-speaking.
+
 - [clone-input.vb](clone-input.vb):<br/>
   This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
   allowing an arbitrary input (which has to be in the preview) to
@@ -43,28 +51,6 @@ The individual scripts are:
   "[rsc:N]" this script instructs PowerPoint, through the [Irisdown
   Remote Show Control](https://www.irisdown.co.uk/rsc.html) plugin, to
   go to the particular slide N.
-
-- [stage-gate.vb](stage-gate.vb):<br/>
-  This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
-  allowing the stage inputs (monitored on Bus-A) to be temporarily
-  "dimmed" as long as stage outputs (monitored on Bus-B) happen. This
-  is somewhat similar to a sidechain-based noise-gate audio filter.
-  This way one can prevent nasty echos or even full loops on stage.
-
-- [translator-overspeak.vb](translator-overspeak.vb):<br/>
-  This is a VB.NET script for the vMix 4K/Pro scripting facility,
-  allowing translators (sitting on vMix Call sources and mixed on the
-  Master audio bus and monitored on Bus-C) to over-speak the program
-  (received via NDI and mixed on the Master audio bus after being
-  "dimming" on Bus-B)
-
-- [audio-sidechain.vb](audio-sidechain.vb):<br/>
-  This is a VB.NET script for the vMix 4K/Pro scripting facility,
-  allowing audio output volumes to be automatically and temporarily
-  reduced, based on audio input volumes (when temporarily above a
-  threshold) -- similar to an audio side-chain compression. There are
-  two main use-cases for this functionality: stage gate and translator
-  over-speaking.
 
 - [ndi-studio-monitor.vb](ndi-studio-monitor.vb):<br/>
   This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
