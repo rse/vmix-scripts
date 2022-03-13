@@ -106,6 +106,9 @@ dim timeAwaitBelow        as integer = 200       'time below the threshold befor
 dim timeFadeDown          as integer = 60        'time for fading down (ms)
 dim timeFadeUp            as integer = 200       'time for fading up   (ms)
 
+'--  debug configuration
+dim debug                 as boolean = false     'whether to output debug information to the console
+
 '-- ==== INTERNAL STATE ====
 
 '-- internal state
@@ -120,7 +123,7 @@ dim volumeFull            as double  = (volumeFullAmp ^ 0.25) * 100
 dim volumeReducedAmp      as double  = 10 ^ (volumeReducedDB / 20)
 dim volumeReduced         as double  = (volumeReducedAmp ^ 0.25) * 100
 dim volumeThresholdAmp    as double  = 10 ^ (volumeThresholdDB / 20)
-dim volumeThreshold       as integer = (volumeThresholdAmp ^ 0.25) * 100
+dim volumeThreshold       as double  = (volumeThresholdAmp ^ 0.25) * 100
 
 '-- prepare XML DOM tree
 dim cfg as new System.Xml.XmlDocument
@@ -183,12 +186,19 @@ do while true
     end if
 
     '-- decide current operation mode
+    dim modeNew as String = ""
     if timeAwaitBelowCount >= cint(timeAwaitBelow / timeSlice) and volumeCurrent < volumeFull then
-        mode = "fade-up"
+        modeNew = "fade-up"
     elseif timeAwaitOverCount >= cint(timeAwaitOver / timeSlice) and volumeCurrent > volumeReduced then
-        mode = "fade-down"
+        modeNew = "fade-down"
     else
-        mode = "wait"
+        modeNew = "wait"
+    end if
+    if mode <> modeNew then
+        if debug then
+            console.writeline("switching to mode: " & modeNew)
+        end if
+        mode = modeNew
     end if
 
     '-- fade output volume down/up
