@@ -23,13 +23,13 @@
 '--            busAdjust         = "A"   (Notice: microphones)
 '--            busAdjustInputs   = true  (Notice: adjust the inputs)
 '--            volumeFullDB      = 0
-'--            volumeReducedDB   = -54   (Notice: pull down very much)
+'--            volumeReducedDB   = -55   (Notice: pull down volume to about 20%)
 '--            volumeThresholdDB = -32
 '--            timeSlice         = 10
 '--            timeAwaitOver     = 20
 '--            timeAwaitBelow    = 200
 '--            timeFadeDown      = 60
-'--            timeFadeUp        = 200
+'--            timeFadeUp        = 120
 '--
 '--     2. TRANSLATOR OVER-SPEAKING:
 '--        Allow one or more translators (usually sitting on vMix Call
@@ -42,13 +42,13 @@
 '--            busAdjust         = "B"   (Notice: program)
 '--            busAdjustInputs   = false (Notice: adjust the bus)
 '--            volumeFullDB      = 0
-'--            volumeReducedDB   = -32   (Notice: pull down not too much)
+'--            volumeReducedDB   = -24   (Notice: pull down volume to about 50%)
 '--            volumeThresholdDB = -32
 '--            timeSlice         = 10
 '--            timeAwaitOver     = 20
-'--            timeAwaitBelow    = 2000  (Notice: allow translators to breathe and have gaps)
+'--            timeAwaitBelow    = 1500  (Notice: allow translators to breathe)
 '--            timeFadeDown      = 60
-'--            timeFadeUp        = 400   (Notice: fade in program slowly)
+'--            timeFadeUp        = 500   (Notice: fade in program slowly)
 '--
 '-- BACKROUND:
 '-- The audio volume science is a little bit hard to understand and vMix
