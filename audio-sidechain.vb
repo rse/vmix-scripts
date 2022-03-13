@@ -162,7 +162,7 @@ do while true
                     dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").InnerText)
                     if not isMuted then
                         dim num as integer = Convert.ToInt32(busInput.Attributes("number").InnerText)
-                        Input.Find(num).Function("SetVolumeFade", cint(volumeCurrent).ToString() & "," & cint(timeSlice * 0.90).ToString())
+                        Input.Find(num).Function("SetVolume", Value := cint(volumeCurrent).ToString())
                     end if
                 end if
             next busInput
@@ -223,7 +223,7 @@ do while true
                     dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").InnerText)
                     if not isMuted then
                         dim num as integer = Convert.ToInt32(busInput.Attributes("number").InnerText)
-                        Input.Find(num).Function("SetVolumeFade", cint(volumeCurrent).ToString() & "," & cint(timeSlice * 0.90).ToString())
+                        Input.Find(num).Function("SetVolume", Value := cint(volumeCurrent).ToString())
                     end if
                 end if
             next busInput
