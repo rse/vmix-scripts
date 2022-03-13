@@ -19,17 +19,17 @@
 '--        on Bus-B) are active. This prevents nasty echos or even full
 '--        loops on a stage. The recommended configuration is:
 '--
-'--            busMonitor      = "B"   (Notice: callers and media)
-'--            busAdjust       = "A"   (Notice: microphones)
-'--            busAdjustInputs = true  (Notice: adjust the inputs)
-'--            volumeFull      = 0
-'--            volumeReduced   = -54   (Notice: pull down very much)
-'--            volumeThreshold = -32
-'--            timeSlice       = 10
-'--            timeAwaitOver   = 20
-'--            timeAwaitBelow  = 200
-'--            timeFadeDown    = 60
-'--            timeFadeUp      = 200
+'--            busMonitor        = "B"   (Notice: callers and media)
+'--            busAdjust         = "A"   (Notice: microphones)
+'--            busAdjustInputs   = true  (Notice: adjust the inputs)
+'--            volumeFullDB      = 0
+'--            volumeReducedDB   = -54   (Notice: pull down very much)
+'--            volumeThresholdDB = -32
+'--            timeSlice         = 10
+'--            timeAwaitOver     = 20
+'--            timeAwaitBelow    = 200
+'--            timeFadeDown      = 60
+'--            timeFadeUp        = 200
 '--
 '--     2. TRANSLATOR OVER-SPEAKING:
 '--        Allow one or more translators (usually sitting on vMix Call
@@ -38,17 +38,17 @@
 '--        received via NDI and mixed on the Master audio bus after
 '--        being "dimmed" on Bus-B). The recommended configuration is:
 '--
-'--            busMonitor      = "C"   (Notice: translators)
-'--            busAdjust       = "B"   (Notice: program)
-'--            busAdjustInputs = false (Notice: adjust the bus)
-'--            volumeFull      = 0
-'--            volumeReduced   = -32   (Notice: pull down not too much)
-'--            volumeThreshold = -32
-'--            timeSlice       = 10
-'--            timeAwaitOver   = 20
-'--            timeAwaitBelow  = 2000  (Notice: allow translators to breathe and have gaps)
-'--            timeFadeDown    = 60
-'--            timeFadeUp      = 400   (Notice: fade in program slowly)
+'--            busMonitor        = "C"   (Notice: translators)
+'--            busAdjust         = "B"   (Notice: program)
+'--            busAdjustInputs   = false (Notice: adjust the bus)
+'--            volumeFullDB      = 0
+'--            volumeReducedDB   = -32   (Notice: pull down not too much)
+'--            volumeThresholdDB = -32
+'--            timeSlice         = 10
+'--            timeAwaitOver     = 20
+'--            timeAwaitBelow    = 2000  (Notice: allow translators to breathe and have gaps)
+'--            timeFadeDown      = 60
+'--            timeFadeUp        = 400   (Notice: fade in program slowly)
 '--
 '-- BACKROUND:
 '-- The audio volume science is a little bit hard to understand and vMix
@@ -95,9 +95,9 @@ dim busAdjust             as string  = "A"       'id of audio bus to output/adju
 dim busAdjustInputs       as boolean = true      'whether inputs attached to bus are adjusted instead of just bus itself
 
 '--  volume configuration
-dim volumeFull            as integer = 0         'full      volume of output (dB)
-dim volumeReduced         as integer = -54       'reduced   volume of output (dB)
-dim volumeThreshold       as integer = -32       'threshold volume of input  (dB)
+dim volumeFullDB          as integer = 0         'full      volume of output (dB)
+dim volumeReducedDB       as integer = -54       'reduced   volume of output (dB)
+dim volumeThresholdDB     as integer = -32       'threshold volume of input  (dB)
 
 '--  time configuration
 dim timeSlice             as integer = 10        'time interval between the script iterations          (ms)
@@ -159,7 +159,7 @@ do while true
                     dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").InnerText)
                     if not isMuted then
                         dim num as integer = Convert.ToInt32(busInput.Attributes("number").InnerText)
-                        Input.Find(num).Function("SetVolumeFade",
+                        Input.Find(num).Function("SetVolumeFade", _
                             volumeCurrent.ToString() & "," & (cint(timeSlice * 0.90)).ToString())
                     end if
                 end if
@@ -218,7 +218,7 @@ do while true
                     dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").InnerText)
                     if not isMuted then
                         dim num as integer = Convert.ToInt32(busInput.Attributes("number").InnerText)
-                        Input.Find(num).Function("SetVolumeFade",
+                        Input.Find(num).Function("SetVolumeFade", _
                             volumeCurrent.ToString() & "," & (cint(timeSlice * 0.90)).ToString())
                     end if
                 end if
