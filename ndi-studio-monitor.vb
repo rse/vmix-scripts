@@ -20,16 +20,16 @@ dim cfg as new System.Xml.XmlDocument
 cfg.LoadXml(xml)
 
 '-- determine parameters
-dim monitorIP     as String = cfg.selectSingleNode("//dynamic/value1").InnerText
-dim monitorSource as String = cfg.selectSingleNode("//dynamic/value2").InnerText
+dim monitorIP      as String = cfg.selectSingleNode("//dynamic/value1").InnerText
+dim monitorSource  as String = cfg.selectSingleNode("//dynamic/value2").InnerText
 
 '-- prepare re-configuration URL
-dim monitorURL as String = "http://" + monitorIP + "/v1/configuration"
+dim monitorURL     as String = "http://" + monitorIP + "/v1/configuration"
 
 '-- prepare re-configuration JSON payload
-dim payloadJSON as String = "{""version"":1,""NDI_source"":""" + monitorSource + """}"
 dim utf8WithoutBOM as new System.Text.UTF8Encoding(false)
-dim payloadBytes as Byte() = utf8WithoutBOM.GetBytes(payloadJSON)
+dim payloadJSON    as String = "{""version"":1,""NDI_source"":""" + monitorSource + """}"
+dim payloadBytes   as Byte() = utf8WithoutBOM.GetBytes(payloadJSON)
 
 '-- initiate the HTTP POST request to NDI Studio Monitor
 dim request as HttpWebRequest = HttpWebRequest.Create(monitorURL)
