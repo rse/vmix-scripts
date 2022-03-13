@@ -58,6 +58,14 @@ The individual scripts are:
   (received via NDI and mixed on the Master audio bus after being
   "dimming" on Bus-B)
 
+- [audio-sidechain.vb](audio-sidechain.vb):<br/>
+  This is a VB.NET script for the vMix 4K/Pro scripting facility,
+  allowing audio output volumes to be automatically and temporarily
+  reduced, based on audio input volumes (when temporarily above a
+  threshold) -- similar to an audio side-chain compression. There are
+  two main use-cases for this functionality: stage gate and translator
+  over-speaking.
+
 - [ndi-studio-monitor.vb](ndi-studio-monitor.vb):<br/>
   This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
   allowing vMix to re-configure the NDI source displayed in an NDI
