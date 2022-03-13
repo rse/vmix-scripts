@@ -28,8 +28,8 @@
 '--            timeSlice         = 10
 '--            timeAwaitOver     = 20
 '--            timeAwaitBelow    = 200
-'--            timeFadeDown      = 60
-'--            timeFadeUp        = 120
+'--            timeFadeDown      = 50
+'--            timeFadeUp        = 150
 '--
 '--     2. TRANSLATOR OVER-SPEAKING:
 '--        Allow one or more translators (usually sitting on vMix Call
@@ -47,7 +47,7 @@
 '--            timeSlice         = 10
 '--            timeAwaitOver     = 20
 '--            timeAwaitBelow    = 1500  (Notice: allow translators to breathe)
-'--            timeFadeDown      = 60
+'--            timeFadeDown      = 50
 '--            timeFadeUp        = 500   (Notice: fade in program slowly)
 '--
 '-- BACKROUND:
@@ -96,15 +96,15 @@ dim busAdjustInputs       as boolean = true      'whether inputs attached to bus
 
 '--  volume configuration
 dim volumeFullDB          as integer = 0         'full      volume of output (dB)
-dim volumeReducedDB       as integer = -54       'reduced   volume of output (dB)
+dim volumeReducedDB       as integer = -55       'reduced   volume of output (dB)
 dim volumeThresholdDB     as integer = -32       'threshold volume of input  (dB)
 
 '--  time configuration
 dim timeSlice             as integer = 10        'time interval between the script iterations          (ms)
 dim timeAwaitOver         as integer = 20        'time over  the threshold before triggering fade down (ms)
 dim timeAwaitBelow        as integer = 200       'time below the threshold before triggering fade up   (ms)
-dim timeFadeDown          as integer = 60        'time for fading down (ms)
-dim timeFadeUp            as integer = 200       'time for fading up   (ms)
+dim timeFadeDown          as integer = 50        'time for fading down (ms)
+dim timeFadeUp            as integer = 150       'time for fading up   (ms)
 
 '--  debug configuration
 dim debug                 as boolean = false     'whether to output debug information to the console
