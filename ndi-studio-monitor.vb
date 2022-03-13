@@ -9,6 +9,9 @@
 '-- allowing vMix to re-configure the NDI source displayed in an NDI
 '-- Studio Monitor instance.
 
+'-- SEE ALSO:
+'-- https://github.com/bitfocus/companion-module-newtek-ndistudiomonitor/blob/master/HELP.md
+
 '-- USAGE: configure a vMix Shortcut with:
 '-- <key> SetDynamicValue1 <ip-address>:<port>
 '-- <key> SetDynamicValue1 <ndi-source-name>
