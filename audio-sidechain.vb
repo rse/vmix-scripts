@@ -11,10 +11,10 @@
 '-- threshold) -- similar to an audio side-chain compression. There are
 '-- two main use-cases for this functionality:
 '--
-'--     1. STAGE GATE:
+'--     1. STAGE MICROPHONE DUCKING:
 '--        Allow stage input devices (microphones, attached to the
 '--        Master bus plus the "marker" bus Bus-A, but individually
-'--        controlled) to be temporarily "dimmed" (volume reduced) as
+'--        controlled) to be temporarily "ducked" (volume reduced) as
 '--        long as stage output devices (callers and media, monitored
 '--        on Bus-B) are active. This prevents nasty echos or even full
 '--        loops on a stage. The recommended configuration is:
