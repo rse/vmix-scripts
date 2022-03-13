@@ -11,13 +11,13 @@
 '-- threshold) -- similar to an audio side-chain compression. There are
 '-- two main use-cases for this functionality:
 '--
-'--     1. STAGE MICROPHONE DUCKING:
-'--        Allow stage input devices (microphones, attached to the
-'--        Master bus plus the "marker" bus Bus-A, but individually
-'--        controlled) to be temporarily "ducked" (volume reduced) as
-'--        long as stage output devices (callers and media, monitored
-'--        on Bus-B) are active. This prevents nasty echos or even full
-'--        loops on a stage. The recommended configuration is:
+'--     1. MICROPHONE DUCKING:
+'--        Allow input devices (microphones, attached to the Master bus
+'--        plus the "marker" bus Bus-A, but individually controlled) to
+'--        be temporarily "ducked" (volume reduced) as long as output
+'--        devices (callers and media, monitored on Bus-B) are active.
+'--        This prevents nasty echos or even full loops. The recommended
+'--        configuration is:
 '--
 '--            busMonitor        = "B"   (Notice: callers and media)
 '--            busAdjust         = "A"   (Notice: microphones)
@@ -31,12 +31,13 @@
 '--            timeFadeDown      = 50
 '--            timeFadeUp        = 250
 '--
-'--     2. TRANSLATOR OVER-SPEAKING:
-'--        Allow one or more translators (usually sitting on vMix Call
-'--        inputs and mixed on the Master audio bus and additionally
-'--        monitored on Bus-C) to "over-speak" the program (usually
-'--        received via NDI and mixed on the Master audio bus after
-'--        being "dimmed" on Bus-B). The recommended configuration is:
+'--     2. TRANSLATER OVER-SPEAKING:
+'--        Allow one or more people (usually remote translators, sitting
+'--        on vMix Call inputs and mixed on the Master audio bus and
+'--        additionally monitored on Bus-C) to "over-speak" the program
+'--        (usually received via NDI and mixed on the Master audio bus
+'--        after being "dimmed" on Bus-B). The recommended configuration
+'--        is:
 '--
 '--            busMonitor        = "C"   (Notice: translators)
 '--            busAdjust         = "B"   (Notice: program)
