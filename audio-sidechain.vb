@@ -145,7 +145,7 @@ do while true
     end if
 
     '-- initialize output volume
-    if volumeCurrent = -1 then
+    if volumeCurrent < 0 then
         volumeCurrent = volumeFull
         if not busAdjustInputs then
             '-- adjust the audio bus directly
