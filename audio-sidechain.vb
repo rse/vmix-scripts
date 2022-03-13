@@ -49,6 +49,42 @@
 '--            timeAwaitBelow  = 2000  (Notice: allow translators to breathe and have gaps)
 '--            timeFadeDown    = 60
 '--            timeFadeUp      = 400   (Notice: fade in program slowly)
+'--
+'-- BACKROUND:
+'-- The audio volume science is a little bit hard to understand and vMix
+'-- in addition also makes it even more complicated by using difference
+'-- scales. Here is some background on the above Decibel (dB) based
+'-- scales, the formulars how the scales can be converted and some
+'-- examples:
+'--
+'--     Scales:
+'--         Volume:      0 to 100    (used for UI volume bars, SetVolumeFade)
+'--         Amplitude:   0 to 1      (used for API audio bus meter, @meterF1)
+'--         Amplitude2:  0 to 100    (used for API input volume input, @volume)
+'--         Decibels:    -oo to 0dB  (used in audio science)
+'--
+'--     Formulas:
+'--         Amplitude    = Amplitude2 / 100
+'--         Amplitude2   = Amplitude * 100
+'--         Volume       = (Amplitude ^ 0.25) * 100
+'--         Amplitude    = (Volume / 100) ^ 4
+'--         Decibels     = 20 * Math.Log10(Amplitude)
+'--         Amplitude    = 10 ^ (Decibels / 20)
+'--
+'--     Examples:
+'--         Volume: 100, Amplitude: 1.0000, Decibel:  0
+'--         Volume:  97, Amplitude: 0.8913, Decibel: -1  (clipping border)
+'--         Volume:  92, Amplitude: 0.7079, Decibel: -3
+'--         Volume:  84, Amplitude: 0.5012, Decibel: -6
+'--         Volume:  77, Amplitude: 0.3548, Decibel: -9
+'--         Volume:  71, Amplitude: 0.2512, Decibel: -12
+'--         Volume:  63, Amplitude: 0.1585, Decibel: -16 (broadcast standard)
+'--         Volume:  50, Amplitude: 0.0631, Decibel: -23 (film standard)
+'--         Volume:  40, Amplitude: 0.0224, Decibel: -32
+'--         Volume:  27, Amplitude: 0.0056, Decibel: -45
+'--         Volume:  15, Amplitude: 0.0006, Decibel: -65 (silence border)
+'--         Volume:  10, Amplitude: 0.0001, Decibel: -80
+'--         Volume:   0, Amplitude: 0.0000, Decibel: -Infinity
 
 '-- ==== CONFIGURATION (please adjust) ====
 
