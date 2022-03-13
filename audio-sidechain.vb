@@ -110,17 +110,17 @@ dim timeFadeUp            as integer = 200       'time for fading up   (ms)
 
 '-- internal state
 dim mode                  as string  = "wait"    'current iteration mode
-dim volumeCurrent         as integer = -1        'current volume of output (from 0 to 100, linear scale)
+dim volumeCurrent         as double  = -1        'current volume of output (from 0 to 100, linear scale)
 dim timeAwaitBelowCount   as integer = 0         'counter for time over  the threshold
 dim timeAwaitOverCount    as integer = 0         'counter for time below the threshold
 
 '-- pre-convert volumes from decibel to audio fader level
 dim volumeFullAmp         as double  = 10 ^ (volumeFullDB / 20)
-dim volumeFull            as integer = cint((volumeFullAmp ^ 0.25) * 100)
+dim volumeFull            as double  = (volumeFullAmp ^ 0.25) * 100
 dim volumeReducedAmp      as double  = 10 ^ (volumeReducedDB / 20)
-dim volumeReduced         as integer = cint((volumeReducedAmp ^ 0.25) * 100)
+dim volumeReduced         as double  = (volumeReducedAmp ^ 0.25) * 100
 dim volumeThresholdAmp    as double  = 10 ^ (volumeThresholdDB / 20)
-dim volumeThreshold       as integer = cint((volumeThresholdAmp ^ 0.25) * 100)
+dim volumeThreshold       as integer = (volumeThresholdAmp ^ 0.25) * 100
 
 '-- prepare XML DOM tree
 dim cfg as new System.Xml.XmlDocument
@@ -135,7 +135,7 @@ do while true
     dim muted as boolean = cfg.SelectSingleNode("//audio/bus" & busMonitor & "/@muted").Value
     if muted then
         '-- ensure we reset current volume knowledge once we become unmuted again
-        if not volumeCurrent = -1 then
+        if volumeCurrent >= 0 then
             volumeCurrent = -1
         end if
         continue do
@@ -148,7 +148,7 @@ do while true
             '-- adjust the audio bus directly
             dim isMuted as boolean = cfg.SelectSingleNode("//audio/bus" & busAdjust & "/@muted").Value
             if not isMuted then
-                API.Function("SetBus" & busAdjust & "Volume", Value := volumeCurrent.ToString())
+                API.Function("SetBus" & busAdjust & "Volume", Value := cint(volumeCurrent).ToString())
             end if
         else
             '-- adjust the inputs attached to the audio bus
@@ -159,7 +159,7 @@ do while true
                     dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").InnerText)
                     if not isMuted then
                         dim num as integer = Convert.ToInt32(busInput.Attributes("number").InnerText)
-                        Input.Find(num).Function("SetVolumeFade", volumeCurrent.ToString() & "," & cint(timeSlice * 0.90).ToString())
+                        Input.Find(num).Function("SetVolumeFade", cint(volumeCurrent).ToString() & "," & cint(timeSlice * 0.90).ToString())
                     end if
                 end if
             next busInput
@@ -193,20 +193,16 @@ do while true
 
     '-- fade output volume down/up
     if mode = "fade-down" or mode = "fade-up" then
-        dim k as integer = cint(((volumeFull - volumeReduced) / timeFadeDown) * timeSlice)
-        if k = 0 then
-            k = 1
-        end if
         if mode = "fade-down" then
-            volumeCurrent -= k
+            volumeCurrent -= ((volumeFull - volumeReduced) / timeFadeDown) * timeSlice
         elseif mode = "fade-up" then
-            volumeCurrent += k
+            volumeCurrent += ((volumeFull - volumeReduced) / timeFadeUp  ) * timeSlice
         end if
         if not busAdjustInputs then
             '-- adjust the audio bus directly
             dim isMuted as boolean = cfg.SelectSingleNode("//audio/bus" & busAdjust & "/@muted").Value
             if not isMuted then
-                API.Function("SetBus" & busAdjust & "Volume", Value := volumeCurrent.ToString())
+                API.Function("SetBus" & busAdjust & "Volume", Value := cint(volumeCurrent).ToString())
             end if
         else
             '-- adjust the inputs attached to the audio bus
@@ -217,7 +213,7 @@ do while true
                     dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").InnerText)
                     if not isMuted then
                         dim num as integer = Convert.ToInt32(busInput.Attributes("number").InnerText)
-                        Input.Find(num).Function("SetVolumeFade", volumeCurrent.ToString() & "," & cint(timeSlice * 0.90).ToString())
+                        Input.Find(num).Function("SetVolumeFade", cint(volumeCurrent).ToString() & "," & cint(timeSlice * 0.90).ToString())
                     end if
                 end if
             next busInput
