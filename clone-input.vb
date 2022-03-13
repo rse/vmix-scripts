@@ -14,6 +14,9 @@
 '-- original). Instead, this script performs a real clone of an input by
 '-- directly operating on the underlying vMix preset XML file.
 
+'-- USAGE: configure a vMix Shortcut with:
+'-- <key> ScriptStart clone-input
+
 '-- load the current API state
 dim xml as string = API.XML()
 dim cfg as new System.Xml.XmlDocument

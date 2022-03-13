@@ -13,9 +13,9 @@
 
 '-- USAGE: configure four vMix Shortcuts with:
 '-- <key1> SetDynamicValue1 PREV
-'-- <key1> ScriptStart RemoteShowControlOnce
+'-- <key1> ScriptStart remoteshowcontrol-once
 '-- <key2> SetDynamicValue1 NEXT
-'-- <key2> ScriptStart RemoteShowControlOnce
+'-- <key2> ScriptStart remoteshowcontrol-once
 
 '-- CONFIGURATION
 dim clientIP   as String = "10.1.0.15"

@@ -13,7 +13,7 @@
 '-- underlying Excel data source.
 
 '-- USAGE:
-'-- configure four vMix Shortcuts with:
+'-- configure two vMix Shortcuts with:
 '-- <key1> SetDynamicValue1 PREV
 '-- <key1> ScriptStart event-reconfiguration
 '-- <key2> SetDynamicValue1 NEXT
