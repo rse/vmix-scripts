@@ -53,6 +53,11 @@ preset.LoadXml(xml)
 
 '-- find input
 dim inputNode as System.Xml.XmlNode = preset.SelectSingleNode("/XML/Input[@Key = '" & inputKey & "']")
+if inputNode is Nothing then
+    Console.WriteLine("ERROR: Unexpected inconsistency problem detected: Failed to locate vMix")
+    Console.WriteLine("ERROR: input #" & inputNum & " (" & inputKey & ") in the underlying vMix preset file!")
+    return
+end if
 
 '-- clone input
 dim cloneNode as System.Xml.XmlNode = inputNode.Clone()
