@@ -1,0 +1,8 @@
+<event>
+    <data-source name="Exchange,Mapping"/>
+    <title-source name="DATASOURCE"/>
+    <ndi-mapping field-name="C-NDI"  input-name="CONTENT"/>
+    <ndi-mapping field-name="P1-NDI" input-name="PRESENTER-1"/>
+    <ndi-mapping field-name="P2-NDI" input-name="PRESENTER-2"/>
+    <ndi-mapping field-name="P3-NDI" input-name="PRESENTER-3"/>
+</event>

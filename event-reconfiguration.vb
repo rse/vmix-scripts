@@ -15,38 +15,47 @@
 '-- USAGE:
 '-- configure two vMix Shortcuts with:
 '-- <key1> SetDynamicValue1 PREV
+'-- <key1> SetDynamicValue2 <path-to-xml-file>
 '-- <key1> ScriptStart event-reconfiguration
 '-- <key2> SetDynamicValue1 NEXT
+'-- <key2> SetDynamicValue2 <path-to-xml-file>
 '-- <key2> ScriptStart event-reconfiguration
-
-'-- CONFIGURATION
-dim dataSource  = "Exchange.Mapping"
-dim titleSource = "DATASOURCE"
-dim fieldInputMapping as new Dictionary(of String, String)
-fieldInputMapping.Add("C-NDI",  "CONTENT")
-fieldInputMapping.Add("P1-NDI", "PRESENTER-1")
-fieldInputMapping.Add("P2-NDI", "PRESENTER-2")
-fieldInputMapping.Add("P3-NDI", "PRESENTER-3")
 
 '-- load the current API state
 dim xml as string = API.XML()
 dim cfg as new System.Xml.XmlDocument
 cfg.LoadXml(xml)
 
-'-- determine operation parameter
-dim op as string = cfg.SelectSingleNode("//dynamic/value1").InnerText
+'-- determine parameter
+dim opName      as string = cfg.SelectSingleNode("//dynamic/value1").InnerText
+dim settingFile as string = cfg.SelectSingleNode("//dynamic/value2").InnerText
+
+'-- read configuration file
+dim utf8WithoutBOM as new System.Text.UTF8Encoding(false)
+xml = System.IO.File.ReadAllText(settingFile, utf8WithoutBOM)
+dim setting as new System.Xml.XmlDocument
+setting.LoadXml(xml)
+
+'-- parse configuration information
+dim dataSource  as String      = setting.SelectSingleNode("/event/data-source/@name").Value
+dim titleSource as String      = setting.SelectSingleNode("/event/title-source/@name").Value
+dim ndiMappings as XmlNodeList = setting.SelectNodes("/event/ndi-mapping")
 
 '-- change row in data source
-if op = "PREV" then
+if opName = "PREV" then
     API.Function("DataSourcePreviousRow", Value := dataSource)
-elseif op = "NEXT" then
+elseif opName = "NEXT" then
     API.Function("DataSourceNextRow", Value := dataSource)
 end if
 
+'-- give vMix some time to update the title input
+sleep(100)
+
 '-- update the NDI inputs
-for each titleField as String in fieldInputMapping.Keys
-    dim vmixInput as String = fieldInputMapping(titleField)
-    dim ndiStream as string = Input.Find(titleSource).Text(titleField & ".Text")
-    API.Function("NDISelectSourceByName", Input := vmixInput, Value := ndiStream)
+for each ndiMapping as XmlNode in ndiMappings
+    dim fieldName as String = ndiMapping.Attributes("field-name").Value
+    dim inputName as String = ndiMapping.Attributes("input-name").Value
+    dim ndiStream as string = Input.Find(titleSource).Text(fieldName & ".Text")
+    API.Function("NDISelectSourceByName", Input := inputName, Value := ndiStream)
 next
 
