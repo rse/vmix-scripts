@@ -14,6 +14,11 @@
 '-- original). Instead, this script performs a real clone of an input by
 '-- directly operating on the underlying vMix preset XML file.
 
+'-- NOTICE: For this to work correctly, ensure that you are running on
+'-- an already saved vMix preset (which is usually always the case in
+'-- production, except when you are trying out this script on a freshly
+'-- started vMix).
+
 '-- USAGE: configure a vMix Shortcut with:
 '-- <key> ScriptStart clone-input
 
