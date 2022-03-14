@@ -31,7 +31,7 @@
 '--            timeFadeDown      = 50
 '--            timeFadeUp        = 250
 '--
-'--     2. TRANSLATER OVER-SPEAKING:
+'--     2. TRANSLATOR OVER-SPEAKING:
 '--        Allow one or more people (usually remote translators, sitting
 '--        on vMix Call inputs and mixed on the Master audio bus and
 '--        additionally monitored on Bus-C) to "over-speak" the program
