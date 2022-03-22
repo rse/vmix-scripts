@@ -166,7 +166,7 @@ do while true
                         Input.Find(num).Function("SetVolume", Value := cint(volumeCurrent).ToString())
                     end if
                 end if
-            next busInput
+            next
         end if
     end if
 
@@ -227,7 +227,7 @@ do while true
                         Input.Find(num).Function("SetVolume", Value := cint(volumeCurrent).ToString())
                     end if
                 end if
-            next busInput
+            next
         end if
     end if
 
