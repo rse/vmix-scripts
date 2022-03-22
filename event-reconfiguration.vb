@@ -48,6 +48,13 @@ elseif opName = "NEXT" then
     API.Function("DataSourceNextRow", Value := dataSource)
 end if
 
+'-- reset the title control states
+dim titleNodes as XmlNodeList = cfg.SelectNodes("//inputs/input[@key and @type = 'GT' and text[@name = 'LastTransition.Text']]")
+for each titleNode as XmlNode in titleNodes
+    dim title as String = titleNode.Attributes("title").Value
+    Input.Find(title).Function("SetText", SelectedName := "LastTransition.Text", Value := "0")
+next
+
 '-- give vMix some time to update the title input
 sleep(100)
 
