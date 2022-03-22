@@ -36,6 +36,17 @@ The individual scripts are:
   by re-configuring four NDI input sources (for shared content, one
   moderator P1 and two presenters P1 and P3).
 
+- [event-title-control.vb](event-title-control.vb):<br/>
+  This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
+  allowing one to control the in/out transitioning of titles which
+  are embedded layers of on scene inputs (where vMix only performs
+  TransitionIn and never a TransitionOut). Instead, the title has to
+  make all elements Hidden on TransitionIn and TransitionOut and do
+  the in/out transitioning on Page1/Page2 instead. Additionally, this
+  script ensures that independent of arbitrary scene input changes, the
+  titles are shown just for durationVisible seconds and at maximum every
+  durationLocked seconds.
+
 - [remoteshowcontrol-once.vb](remoteshowcontrol-once.vb):<br/>
   This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
   allowing one to send commands to the [Irisdown Remote Show
