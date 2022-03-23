@@ -7,7 +7,7 @@
 '-- DESCRIPTION:
 '-- This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
 '-- allowing one to control the in/out transitioning of titles which
-'-- are embedded layers of on scene inputs (where vMix only performs
+'-- are embedded layers of scene inputs (where vMix only performs
 '-- TransitionIn and never a TransitionOut). Instead, the title has to
 '-- make all elements Hidden on TransitionIn and TransitionOut and do
 '-- the in/out transitioning on Page1/Page2 instead. Additionally, this
