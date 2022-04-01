@@ -32,9 +32,9 @@ The individual scripts are:
 
 - [event-reconfiguration.vb](event-reconfiguration.vb):<br/>
   This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
-  allowing one to step forward/backward through an event configuration
-  by re-configuring four NDI input sources (for shared content, one
-  moderator P1 and two presenters P1 and P3).
+  allowing one to step forward/backward through (or to a particular row
+  of) an event configuration by re-configuring four NDI input sources
+  (for shared content, one moderator P1 and two presenters P1 and P3).
 
 - [event-title-control.vb](event-title-control.vb):<br/>
   This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
