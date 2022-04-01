@@ -6,11 +6,11 @@
 
 '-- DESCRIPTION:
 '-- This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
-'-- allowing one to step forward/backward through an event configuration
-'-- by re-configuring four NDI input sources (for shared content, one
-'-- moderator P1 and two presenters P2 and P3). The crux is the use
-'-- of a full-screen GT title input which holds the four cells of the
-'-- underlying Excel data source.
+'-- allowing one to step forward/backward through (or to a particular
+'-- row of) an event configuration by re-configuring four NDI input
+'-- sources (for shared content, one moderator P1 and two presenters P2
+'-- and P3). The crux is the use of a full-screen GT title input which
+'-- holds the four cells of the underlying Excel data source.
 
 '-- USAGE:
 '-- configure two vMix Shortcuts with:
@@ -20,6 +20,9 @@
 '-- <key2> SetDynamicValue1 NEXT
 '-- <key2> SetDynamicValue2 <path-to-xml-file>
 '-- <key2> ScriptStart event-reconfiguration
+'-- <key3> SetDynamicValue1 42
+'-- <key3> SetDynamicValue2 <path-to-xml-file>
+'-- <key3> ScriptStart event-reconfiguration
 
 '-- load the current API state
 dim xml as string = API.XML()
@@ -46,6 +49,8 @@ if opName = "PREV" then
     API.Function("DataSourcePreviousRow", Value := dataSource)
 elseif opName = "NEXT" then
     API.Function("DataSourceNextRow", Value := dataSource)
+else
+    API.Function("DataSourceSelectRow", Value := dataSource & "," & opName)
 end if
 
 '-- reset the title control states
