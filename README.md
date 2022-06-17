@@ -68,6 +68,12 @@ The individual scripts are:
   allowing vMix to re-configure the NDI source displayed in an NDI
   Studio Monitor instance.
 
+- [smooth-pan-zoom.vb](smooth-pan-zoom.vb):<br/>
+  This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
+  which allows one to smoothly adjust the pan/zoom of an input. This is
+  usually used for a rough emulation of the Virtual PTZ feature, which
+  cannot be used on layered inputs like Virtual Sets.
+
 Installation
 ------------
 
