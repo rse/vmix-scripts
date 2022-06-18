@@ -95,17 +95,19 @@ else if opName = "zoom" then
 end if
 
 '-- determine operation value(s)
-dim timeSteps  as integer = (duration / timeSlice)
+dim timeSteps  as integer = duration / timeSlice
 dim valueSlice as double  = delta / timeSteps
 if value1 <> "" then
     value1 = value1 & valueSlice
 else
     value1 = "0"
 end if
-if value2 <> "" then
-    value2 = value2 & valueSlice
-else
-    value2 = "0"
+if func2 <> "" then
+    if value2 <> "" then
+        value2 = value2 & valueSlice
+    else
+        value2 = "0"
+    end if
 end if
 
 '-- smooth operation apply loop...
