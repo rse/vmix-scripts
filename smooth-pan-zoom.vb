@@ -11,9 +11,9 @@
 '-- which cannot be used on layered inputs like Virtual Sets.
 
 '-- USAGE: configure a vMix Shortcut with:
-'-- <key> SetDynamicInput4  <input-name>
-'-- <key> SetDynamicValue4  {pan:{up-left|up|up-right|left|reset|right|down-left|down|down-right}|zoom:{increase|reset|decrease}}
-'-- <key> ScriptStart       smooth-pan-zoom
+'-- <keyX> SetDynamicInput4 <input-name>
+'-- <keyX> SetDynamicValue4 {pan:{up-left|up|up-right|left|reset|right|down-left|down|down-right}|zoom:{increase|reset|decrease}}
+'-- <keyX> ScriptStart      smooth-pan-zoom
 
 '-- USAGE: alternatively, for splitting between input selection and operation, configure vMix Shortcuts with:
 '-- <keyA> SetDynamicInput4 <input-name>
