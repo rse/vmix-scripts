@@ -15,6 +15,11 @@
 '-- <key> SetDynamicValue4 {pan:{up-left|up|up-right|left|reset|right|down-left|down|down-right}|zoom:{increase|reset|decrease}}
 '-- <key> ScriptStart      smooth-pan-zoom
 
+'-- USAGE: alternatively, for splitting between input selection and operation, configure vMix Shortcuts with:
+'-- <keyX> SetDynamicInput4 <input-name>
+'-- <keyY> SetDynamicValue4 {pan:{up-left|up|up-right|left|reset|right|down-left|down|down-right}|zoom:{increase|reset|decrease}}
+'-- <keyY> ScriptStart      smooth-pan-zoom
+
 '-- script configuration
 dim timeSlice  as integer = 33    '-- (= 1000ms/30fps)
 dim duration   as integer = 660   '-- (= multiple of timeSlice)
