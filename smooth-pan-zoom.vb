@@ -83,13 +83,10 @@ if opName = "pan" then
     end if
 else if opName = "zoom" then
     delta = deltaZoom
+    func1 = "SetZoom"
     if dirName = "decrease" then
-        func1  = "SetZoom"
         value1 = "-="
-    else if dirName = "reset" then
-        func1  = "SetZoom"
     else if dirName = "increase" then
-        func1  = "SetZoom"
         value1 = "+="
     end if
 end if
