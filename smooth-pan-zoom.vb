@@ -93,7 +93,7 @@ end if
 
 '-- determine operation value(s)
 dim timeSteps  as integer = duration / timeSlice
-dim valueSlice as double  = delta / timeSteps
+dim valueSlice as double  = delta    / timeSteps
 if value1 <> "" then
     value1 = value1 & valueSlice
 else
@@ -107,11 +107,11 @@ if func2 <> "" then
     end if
 end if
 
-'-- smooth operation apply loop...
+'-- apply operation in a smooth way
 do while timeSteps > 0
     timeSteps = timeSteps - 1
 
-    '-- perform operation(s)
+    '-- perform single operation step
     API.Function(func1, Input := inputName, Value := value1)
     if func2 <> "" then
         API.Function(func2, Input := inputName, Value := value2)
