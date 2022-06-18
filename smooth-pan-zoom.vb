@@ -11,14 +11,15 @@
 '-- which cannot be used on layered inputs like Virtual Sets.
 
 '-- USAGE: configure a vMix Shortcut with:
-'-- <key> SetDynamicValue1 <input-name>,pan|zoom,up-left|up|up-right|left|reset|right|down-left|down|down-right|increase|decrease
-'-- <key> ScriptStart smooth-vset-ptz
+'-- <key> SetDynamicInput4 <input-name>
+'-- <key> SetDynamicValue4 {pan:{up-left|up|up-right|left|reset|right|down-left|down|down-right}|zoom:{increase|reset|decrease}}
+'-- <key> ScriptStart      smooth-pan-zoom
 
-'-- configuration
+'-- script configuration
 dim timeSlice  as integer = 33    '-- (= 1000ms/30fps)
 dim duration   as integer = 660   '-- (= multiple of timeSlice)
-dim deltaPan   as double  = 0.10
-dim deltaZoom  as double  = 0.10
+dim deltaPan   as double  = 0.10  '-- (= 10%)
+dim deltaZoom  as double  = 0.10  '-- (= 10%)
 
 '-- load the current API state
 dim xml as string = API.XML()
@@ -26,10 +27,10 @@ dim cfg as new System.Xml.XmlDocument
 cfg.LoadXml(xml)
 
 '-- determine parameters
-dim params()  as string = cfg.SelectSingleNode("//dynamic/value1").InnerText.Split(":")
-dim inputName as string = params(0)
-dim opName    as string = params(1)
-dim dirName   as string = params(2)
+dim inputName as string = cfg.SelectSingleNode("//dynamic/input4").InnerText
+dim params()  as string = cfg.SelectSingleNode("//dynamic/value4").InnerText.Split(":")
+dim opName    as string = params(0)
+dim dirName   as string = params(1)
 
 '-- determine operation function(s)
 dim func1  as string = ""
@@ -109,7 +110,7 @@ do while timeSteps > 0
     '-- perform operation(s)
     API.Function(func1, Input := inputName, Value := value1)
     if func2 <> "" then
-       API.Function(func2, Input := inputName, Value := value2)
+        API.Function(func2, Input := inputName, Value := value2)
     end if
 
     '-- wait until next iteration
