@@ -20,6 +20,17 @@ The individual scripts are:
   two main use-cases for this functionality: stage gate and translator
   over-speaking.
 
+- [auto-pre-mix.vb](auto-pre-mix.vb):<br/>
+  This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
+  allowing one to auto-pre-mix (aka pre-render or flattening) source
+  inputs with the help of two intermediate Mix-type input(s) in order
+  to further embed the result onto a layer of a target input. This
+  is usually required if the source input is already based on custom
+  Position (e.g. a virtual PTZ view) and the target input requires
+  another Position (e.g. the PiP of the virtual PTZ view). The target
+  input has to have a layer N with one of the Mix inputs and layer N+1
+  has to have the source input.
+
 - [clone-input.vb](clone-input.vb):<br/>
   This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
   allowing an arbitrary input (which has to be in the preview) to
