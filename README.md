@@ -19,52 +19,52 @@ The individual scripts are:
   threshold) -- similar to an audio side-chain compression.
 
 - [auto-pre-mix.vb](auto-pre-mix.vb):<br/>
-  **Automatically Pre-Mixing Inputs**<br/>
+  [**Automatically Pre-Mixing Inputs**](auto-pre-mix.md)<br/>
   Allow one to auto-pre-mix (aka pre-render or flattening) source
   inputs with the help of two intermediate Mix-type input(s) in order to
   further embed the result onto a layer of a target input.
 
-- [clone-input.vb](clone-input.vb):<br/>
-  **Really Cloning an Arbitrary Input**<br/>
-  Allow an arbitrary input (which has to be in the preview) to be
-  really cloned/duplicated.
+- [smooth-pan-zoom.vb](smooth-pan-zoom.vb):<br/>
+  [**Smooth Virtual Pan/Zoom in Virtual Sets**](smooth-pan-zoom.md)<br/>
+  Smoothly adjust the pan/zoom of an input, for a rough emulation of the
+  vMix Virtual PTZ feature, which cannot be used on layered inputs like
+  Virtual Sets.
 
 - [event-reconfiguration.vb](event-reconfiguration.vb):<br/>
-  **Reconfiguration of Event NDI Inputs (and Lower-Third Titles)**<br/>
+  [**Reconfiguration of Event NDI Inputs (and Lower-Third Titles)**](revent-reconfiguration.md)<br/>
   Allow one to step forward/backward through (or to a particular row of)
   an Excel-based conference event configuration by re-configuring four
   reusable NDI input sources (for shared content, one moderator P1 and
   two presenters P2 and P3).
 
 - [event-title-control.vb](event-title-control.vb):<br/>
-  **Control Layer-Embedded Titles**<br/>
+  [**Control Layer-Embedded Titles**](event-title-control.md)<br/>
   Control the in/out transitioning of lower-third titles which are
   embedded layers of scene inputs (where vMix only performs `TransitionIn`
   and never a `TransitionOut`).
 
+- [clone-input.vb](clone-input.vb):<br/>
+  [**Really Cloning an Arbitrary Input**](clone-input.md)<br/>
+  Allow an arbitrary input (which has to be in the preview) to be
+  really cloned/duplicated.
+
 - [remoteshowcontrol-loop.vb](remoteshowcontrol-loop.vb):<br/>
-  **Continuously Control Irisdown RemoteShowControl**<br/>
+  [**Continuously Control Irisdown RemoteShowControl**](remoteshowcontrol-loop.md)<br/>
   Automatically and continuously control a remote
   PowerPoint slide-deck with the help of its
   [Irisdown RemoteShowControl](https://www.irisdown.co.uk/rsc.html) plugin,
   based on vMix input name information.
 
 - [remoteshowcontrol-once.vb](remoteshowcontrol-once.vb):<br/>
-  **Once Control Irisdown RemoteShowControl**<br/>
+  [**Once Control Irisdown RemoteShowControl**](remoteshowcontrol-once.md)<br/>
   Once control a remote PowerPoint slide-deck with the help of its
   [Irisdown RemoteShowControl](https://www.irisdown.co.uk/rsc.html)
   plugin, based on vMix triggers or shortcuts.
 
 - [ndi-studio-monitor.vb](ndi-studio-monitor.vb):<br/>
-  **Reconfigure NewTek NDI Studio Monitor**<br/>
+  [**Reconfigure NewTek NDI Studio Monitor**](ndi-studio-monitor.md)<br/>
   Allow vMix to reconfigure the NDI source displayed in a (remote) NewTek
   NDI Studio Monitor instance.
-
-- [smooth-pan-zoom.vb](smooth-pan-zoom.vb):<br/>
-  **Smooth Virtual Pan/Zoom in Virtual Sets**<br/>
-  Smoothly adjust the pan/zoom of an input, for a rough emulation of the
-  vMix Virtual PTZ feature, which cannot be used on layered inputs like
-  Virtual Sets.
 
 Installation
 ------------
