@@ -8,17 +8,15 @@ About
 This is a small collection of
 [VB.NET](https://en.wikipedia.org/wiki/Visual_Basic_.NET) 2.0 scripts
 for automating certain tasks and extending the functionality in the
-video/audio stream mixing software [vMix](https://www.vmix.com/).
+video/audio stream mixing software [vMix](https://www.vmix.com/) (4K and Pro editions only).
 
 The individual scripts are:
 
 - [audio-sidechain.vb](audio-sidechain.vb):<br/>
-  This is a VB.NET script for the vMix 4K/Pro scripting facility,
-  allowing audio output volumes to be automatically and temporarily
+  **Audio Sidechain Compression**<br/>
+  Allow audio output volumes to be automatically and temporarily
   reduced, based on audio input volumes (when temporarily above a
-  threshold) -- similar to an audio side-chain compression. There are
-  two main use-cases for this functionality: stage gate and translator
-  over-speaking.
+  threshold) -- similar to an audio side-chain compression.
 
 - [auto-pre-mix.vb](auto-pre-mix.vb):<br/>
   This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
