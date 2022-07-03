@@ -31,7 +31,7 @@ The individual scripts are:
   Virtual Sets.
 
 - [event-reconfiguration.vb](event-reconfiguration.vb):<br/>
-  [**Reconfiguration of Event NDI Inputs (and Lower-Third Titles)**](revent-reconfiguration.md)<br/>
+  [**Reconfiguration of Event NDI Inputs (and Lower-Third Titles)**](event-reconfiguration.md)<br/>
   Allow one to step forward/backward through (or to a particular row of)
   an Excel-based conference event configuration by re-configuring four
   reusable NDI input sources (for shared content, one moderator P1 and
