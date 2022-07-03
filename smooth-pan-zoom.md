@@ -1,6 +1,6 @@
 
-Smooth-Pan-Zoom
-===============
+[Smooth-Pan-Zoom](smooth-pan-zoom.vb)
+=====================================
 
 **Smooth Virtual Pan/Zoom in Virtual Sets**
 

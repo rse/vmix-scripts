@@ -1,6 +1,6 @@
 
-Event-Reconfiguration
-=====================
+[Event-Reconfiguration](event-reconfiguration.vb)
+=================================================
 
 **Reconfiguration of Event NDI Inputs (and Lower-Third Titles)**
 

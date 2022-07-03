@@ -1,6 +1,6 @@
 
-NDI-Studio-Monitor
-==================
+[NDI-Studio-Monitor](ndi-studio-monitor.vb)
+===========================================
 
 **Reconfigure NewTek NDI Studio Monitor**
 

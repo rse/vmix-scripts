@@ -1,6 +1,6 @@
 
-Event-Title-Control
-===================
+[Event-Title-Control](event-title-control.vb)
+=============================================
 
 **Control Layer-Embedded Titles**
 

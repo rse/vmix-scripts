@@ -1,6 +1,6 @@
 
-Auto-Pre-Mix
-============
+[Auto-Pre-Mix](auto-pre-mix.vb)
+===============================
 
 **Automatically Pre-Mixing Inputs**
 
