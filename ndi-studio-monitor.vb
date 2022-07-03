@@ -3,19 +3,9 @@
 '-- Copyright (c) 2022 Dr. Ralf S. Engelschall <rse@engelschall.com>
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
-
-'-- DESCRIPTION:
-'-- This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
-'-- allowing vMix to re-configure the NDI source displayed in an NDI
-'-- Studio Monitor instance.
-
-'-- SEE ALSO:
-'-- https://github.com/bitfocus/companion-module-newtek-ndistudiomonitor/blob/master/HELP.md
-
-'-- USAGE: configure a vMix Shortcut with:
-'-- <key> SetDynamicValue1 <ip-address>:<port>
-'-- <key> SetDynamicValue1 <ndi-source-name>
-'-- <key> ScriptStart ndi-studio-monitor
+'-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
+'-- Version:  0.9.0 (2022-03-14)
+'--
 
 '-- fetch current vMix API status
 dim xml as string = API.XML()

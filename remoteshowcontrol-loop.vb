@@ -3,15 +3,9 @@
 '-- Copyright (c) 2022 Dr. Ralf S. Engelschall <rse@engelschall.com>
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
-
-'-- DESCRIPTION:
-'-- This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
-'-- allowing one to attach particular slides an ingested (screen or
-'-- HDMI capturing) PowerPoint presentation to a vMix input. This works
-'-- by observing which input is in preview and if its title contains
-'-- "[rsc:N]" this script instructs PowerPoint, through the Irisdown
-'-- Remote Show Control (https://www.irisdown.co.uk/rsc.html) plugin, to
-'-- go to the particular slide N.
+'-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
+'-- Version:  1.0.0 (2022-03-13)
+'--
 
 '-- CONFIGURATION
 dim clientIP   as String = "127.0.0.1"

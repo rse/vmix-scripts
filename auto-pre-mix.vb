@@ -1,19 +1,11 @@
 '--
-'-- auto-pre-mix.vb -- vMix script for Auto-Pre-Mixing Inputs
+'-- auto-pre-mix.vb -- vMix script for Automatically Pre-Mixing Inputs
 '-- Copyright (c) 2022 Dr. Ralf S. Engelschall <rse@engelschall.com>
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
-
-'-- DESCRIPTION:
-'-- This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
-'-- allowing one to auto-pre-mix (aka pre-render or flattening) source
-'-- inputs with the help of two intermediate Mix-type input(s) in order
-'-- to further embed the result onto a layer of a target input. This
-'-- is usually required if the source input is already based on custom
-'-- Position (e.g. a virtual PTZ view) and the target input requires
-'-- another Position (e.g. the PiP of the virtual PTZ view). The target
-'-- input has to have a layer N with one of the Mix inputs and layer N+1
-'-- has to have the source input.
+'-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
+'-- Version:  0.9.0 (2022-07-03)
+'--
 
 '-- CONFIGURATION
 dim mix1MixNumber  as String  = "1"

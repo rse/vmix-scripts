@@ -3,22 +3,9 @@
 '-- Copyright (c) 2022 Dr. Ralf S. Engelschall <rse@engelschall.com>
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
-
-'-- DESCRIPTION:
-'-- This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
-'-- allowing one to control the in/out transitioning of titles which
-'-- are embedded layers of scene inputs (where vMix only performs
-'-- TransitionIn and never a TransitionOut). Instead, the title has to
-'-- make all elements Hidden on TransitionIn and TransitionOut and do
-'-- the in/out transitioning on Page1/Page2 instead. Additionally, this
-'-- script ensures that independent of arbitrary scene input changes,
-'-- the titles are shown just for durationVisible seconds and at maximum
-'-- every durationLocked seconds.
-
-'-- USAGE:
-'-- configure vMix scene input trigger:
-'-- OnTransitionIn SetDynamicValue1 <title-input-name>,...
-'-- OnTransitionIn ScriptStart event-title-control
+'-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
+'-- Version:  1.0.0 (2022-03-23)
+'--
 
 '-- CONFIGURATION
 dim durationVisible as Integer = 10  '-- seconds to wait between title in and out

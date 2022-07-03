@@ -3,24 +3,11 @@
 '-- Copyright (c) 2022 Dr. Ralf S. Engelschall <rse@engelschall.com>
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
+'-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
+'-- Version:  0.9.0 (2022-06-18)
+'--
 
-'-- DESCRIPTION:
-'-- This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
-'-- which allows one to smoothly adjust the pan/zoom of an input. This
-'-- is usually used for a rough emulation of the Virtual PTZ feature,
-'-- which cannot be used on layered inputs like Virtual Sets.
-
-'-- USAGE: configure a vMix Shortcut with:
-'-- <keyX> SetDynamicInput4 <input-name>
-'-- <keyX> SetDynamicValue4 {pan:{up-left|up|up-right|left|reset|right|down-left|down|down-right}|zoom:{increase|reset|decrease}}
-'-- <keyX> ScriptStart      smooth-pan-zoom
-
-'-- USAGE: alternatively, for splitting between input selection and operation, configure vMix Shortcuts with:
-'-- <keyA> SetDynamicInput4 <input-name>
-'-- <keyX> SetDynamicValue4 {pan:{up-left|up|up-right|left|reset|right|down-left|down|down-right}|zoom:{increase|reset|decrease}}
-'-- <keyX> ScriptStart      smooth-pan-zoom
-
-'-- script configuration
+'-- CONFIGURATION
 dim timeSlice  as integer = 33    '-- (= 1000ms/30fps)
 dim duration   as integer = 660   '-- (= multiple of timeSlice)
 dim deltaPan   as double  = 0.10  '-- (= 10%)

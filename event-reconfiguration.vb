@@ -3,26 +3,9 @@
 '-- Copyright (c) 2022 Dr. Ralf S. Engelschall <rse@engelschall.com>
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
-
-'-- DESCRIPTION:
-'-- This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
-'-- allowing one to step forward/backward through (or to a particular
-'-- row of) an event configuration by re-configuring four NDI input
-'-- sources (for shared content, one moderator P1 and two presenters P2
-'-- and P3). The crux is the use of a full-screen GT title input which
-'-- holds the four cells of the underlying Excel data source.
-
-'-- USAGE:
-'-- configure two vMix Shortcuts with:
-'-- <key1> SetDynamicValue1 PREV
-'-- <key1> SetDynamicValue2 <path-to-xml-file>
-'-- <key1> ScriptStart event-reconfiguration
-'-- <key2> SetDynamicValue1 NEXT
-'-- <key2> SetDynamicValue2 <path-to-xml-file>
-'-- <key2> ScriptStart event-reconfiguration
-'-- <key3> SetDynamicValue1 42
-'-- <key3> SetDynamicValue2 <path-to-xml-file>
-'-- <key3> ScriptStart event-reconfiguration
+'-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
+'-- Version:  1.0.1 (2022-04-01)
+'--
 
 '-- load the current API state
 dim xml as string = API.XML()

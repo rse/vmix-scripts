@@ -3,24 +3,9 @@
 '-- Copyright (c) 2022 Dr. Ralf S. Engelschall <rse@engelschall.com>
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
-
-'-- DESCRIPTION:
-'-- This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
-'-- allowing an arbitrary input (which has to be in the preview) to
-'-- be cloned/duplicated. This is somewhat similar to the "Settings"
-'-- / "Copy from..." functionality of an input (but which copies
-'-- not everything) or the "Settings" / "General" / "Create Virtual
-'-- Input" functionality of an input (but which still attaches to the
-'-- original). Instead, this script performs a real clone of an input by
-'-- directly operating on the underlying vMix preset XML file.
-
-'-- NOTICE: For this to work correctly, ensure that you are running on
-'-- an already saved vMix preset (which is usually always the case in
-'-- production, except when you are trying out this script on a freshly
-'-- started vMix).
-
-'-- USAGE: configure a vMix Shortcut with:
-'-- <key> ScriptStart clone-input
+'-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
+'-- Version:  0.9.0 (2022-03-04)
+'--
 
 '-- load the current API state
 dim xml as string = API.XML()

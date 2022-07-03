@@ -3,19 +3,9 @@
 '-- Copyright (c) 2022 Dr. Ralf S. Engelschall <rse@engelschall.com>
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
-
-'-- DESCRIPTION:
-'-- This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
-'-- allowing one to send commands to the Irisdown Remote Show
-'-- Control (https://www.irisdown.co.uk/rsc.html) plugin of PowerPoint.
-'-- This allows a vMix operator to step forward/backward through an
-'-- ingested (screen or HDMI capturing) PowerPoint presentation.
-
-'-- USAGE: configure four vMix Shortcuts with:
-'-- <key1> SetDynamicValue1 PREV
-'-- <key1> ScriptStart remoteshowcontrol-once
-'-- <key2> SetDynamicValue1 NEXT
-'-- <key2> ScriptStart remoteshowcontrol-once
+'-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
+'-- Version:  1.0.0 (2022-03-13)
+'--
 
 '-- CONFIGURATION
 dim clientIP   as String = "10.1.0.15"
@@ -28,6 +18,9 @@ cfg.LoadXml(xml)
 
 '-- determine command parameter
 dim cmd as string = cfg.SelectSingleNode("//dynamic/value1").InnerText
+if not (cmd = "PREV" or cmd = "NEXT") then
+    cmd = "GO " & cmd
+end if
 
 '-- connect to RemoteShowControl and send command
 dim client as new System.Net.Sockets.TcpClient(clientIP, clientPort)
