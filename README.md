@@ -36,8 +36,8 @@ The individual scripts are:
   [**Reconfiguration of Event NDI Inputs (and Lower-Third Titles)**](event-reconfiguration.md)<br/>
   Allow one to step forward/backward through (or to a particular row of)
   an Excel-based conference event configuration by re-configuring four
-  reusable NDI input sources (for shared content, one moderator P1 and
-  two presenters P2 and P3).
+  reusable NDI input sources (for shared content, one moderator and
+  two presenters).
 
 - [event-title-control.vb](event-title-control.vb):<br/>
   [**Control Layer-Embedded Titles**](event-title-control.md)<br/>

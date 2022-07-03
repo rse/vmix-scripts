@@ -6,8 +6,8 @@ Event-Reconfiguration
 
 Allow one to step forward/backward through (or to a particular row of)
 an Excel-based conference event configuration by re-configuring four
-reusable NDI input sources (for shared content, one moderator P1 and two
-presenters P2 and P3).
+reusable NDI input sources (for shared content, one moderator and two
+presenters).
 
 See also the [Event-Title-Control](event-title-control.md) for the
 companion script to control the Lower-Third Titles of the people.
