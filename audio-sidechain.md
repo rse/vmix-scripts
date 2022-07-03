@@ -1,6 +1,6 @@
 
-Audio-Sidechain
-===============
+[Audio-Sidechain](audio-sidechain.vb)
+=====================================
 
 **Audio Sidechain Compression**
 
