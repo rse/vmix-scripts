@@ -1,5 +1,5 @@
 
-<img src="https://rawgit.com/rse/vmix-scripts/master/vmix-scripts.png" width="300" align="right" alt=""/>
+<img src="https://raw.githubusercontent.com/rse/vmix-scripts/master/vmix-scripts.png" width="300" align="right" alt=""/>
 
 vMix Scripts
 ============
