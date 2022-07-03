@@ -6,7 +6,7 @@ RemoteShowControl-Loop
 
 Automatically and continuously control a remote
 PowerPoint slide-deck with the help of its [Irisdown
-RemoteShowControl][https://www.irisdown.co.uk/rsc.html] plugin,
+RemoteShowControl](https://www.irisdown.co.uk/rsc.html) plugin,
 based on vMix input name information.
 
 Problem
@@ -21,7 +21,7 @@ Solution
 --------
 
 The PowerPoint plugin [Irisdown
-RemoteShowControl][https://www.irisdown.co.uk/rsc.html] is installed
+RemoteShowControl](https://www.irisdown.co.uk/rsc.html) is installed
 into PowerPoint and listens on a TCP port for control commands.
 
 This script continuously observes which vMix input is in PREVIEW and if

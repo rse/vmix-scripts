@@ -46,13 +46,13 @@ The individual scripts are:
   **Continuously Control Irisdown RemoteShowControl**<br/>
   Automatically and continuously control a remote
   PowerPoint slide-deck with the help of its
-  [Irisdown RemoteShowControl][https://www.irisdown.co.uk/rsc.html] plugin,
+  [Irisdown RemoteShowControl](https://www.irisdown.co.uk/rsc.html) plugin,
   based on vMix input name information.
 
 - [remoteshowcontrol-once.vb](remoteshowcontrol-once.vb):<br/>
   **Once Control Irisdown RemoteShowControl**<br/>
   Once control a remote PowerPoint slide-deck with the help of its
-  [Irisdown RemoteShowControl][https://www.irisdown.co.uk/rsc.html]
+  [Irisdown RemoteShowControl](https://www.irisdown.co.uk/rsc.html)
   plugin, based on vMix triggers or shortcuts.
 
 - [ndi-studio-monitor.vb](ndi-studio-monitor.vb):<br/>

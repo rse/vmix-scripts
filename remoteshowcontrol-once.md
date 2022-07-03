@@ -5,7 +5,7 @@ RemoteShowControl-Once
 **Once Control Irisdown RemoteShowControl**
 
 Once control a remote PowerPoint slide-deck with the help of its
-[Irisdown RemoteShowControl][https://www.irisdown.co.uk/rsc.html]
+[Irisdown RemoteShowControl](https://www.irisdown.co.uk/rsc.html)
 plugin, based on vMix triggers or shortcuts.
 
 Problem
@@ -20,7 +20,7 @@ Solution
 --------
 
 The PowerPoint plugin [Irisdown
-RemoteShowControl][https://www.irisdown.co.uk/rsc.html] is installed
+RemoteShowControl](https://www.irisdown.co.uk/rsc.html) is installed
 into PowerPoint and listens on a TCP port for control commands. This
 script can be run to instruct PowerPoint, through its installed Irisdown
 Remote Show Control plugin, to go to the previous, next or a particular
