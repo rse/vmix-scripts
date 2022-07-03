@@ -69,7 +69,7 @@ The individual scripts are:
 Installation
 ------------
 
-1. Clone this repository:<br/>
+1. Clone this [repository](https://github.com/rse/vmix-scripts):<br/>
    `git clone https://github.com/rse/vmix-scripts`
 
 2. Add the individual scripts to vMix with<br/>
