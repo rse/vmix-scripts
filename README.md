@@ -31,9 +31,8 @@ The individual scripts are:
 
 - [event-reconfiguration.vb](event-reconfiguration.vb):<br/>
   **Reconfiguration of Event NDI Inputs (and Lower-Third Titles)**<br/>
-  Allow one to step forward/backward through (or to a
-  particular row of) an [Excel-based conference event
-  configuration](event-reconfiguration.xlsx) by re-configuring four
+  Allow one to step forward/backward through (or to a particular row of)
+  an Excel-based conference event configuration by re-configuring four
   reusable NDI input sources (for shared content, one moderator P1 and
   two presenters P2 and P3).
 
@@ -46,8 +45,8 @@ The individual scripts are:
 - [remoteshowcontrol-loop.vb](remoteshowcontrol-loop.vb):<br/>
   **Continuously Control Irisdown RemoteShowControl**<br/>
   Automatically and continuously control a remote
-  PowerPoint slide-deck with the help of its [Irisdown
-  RemoteShowControl][https://www.irisdown.co.uk/rsc.html] plugin,
+  PowerPoint slide-deck with the help of its
+  [Irisdown RemoteShowControl][https://www.irisdown.co.uk/rsc.html] plugin,
   based on vMix input name information.
 
 - [remoteshowcontrol-once.vb](remoteshowcontrol-once.vb):<br/>

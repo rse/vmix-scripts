@@ -4,9 +4,8 @@ Event-Reconfiguration
 
 **Reconfiguration of Event NDI Inputs (and Lower-Third Titles)**
 
-Allow one to step forward/backward through (or
-to a particular row of) an [Excel-based conference event
-configuration](event-reconfiguration.xlsx) by re-configuring four
+Allow one to step forward/backward through (or to a particular row of)
+an Excel-based conference event configuration by re-configuring four
 reusable NDI input sources (for shared content, one moderator P1 and two
 presenters P2 and P3).
 
