@@ -4,8 +4,7 @@ Event-Reconfiguration
 
 **Reconfiguration of Event NDI Inputs (and Lower-Third Titles)**
 
-This is a VB.NET 2.0 script for the vMix 4K/Pro scripting
-facility, allowing one to step forward/backward through (or
+Allow one to step forward/backward through (or
 to a particular row of) an [Excel-based conference event
 configuration](event-reconfiguration.xlsx) by re-configuring four
 reusable NDI input sources (for shared content, one moderator P1 and two

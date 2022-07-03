@@ -4,9 +4,8 @@ Clone-Input
 
 **Really Cloning an Arbitrary Input**
 
-This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
-allowing an arbitrary input (which has to be in the preview) to be
-cloned/duplicated.
+Allow an arbitrary input (which has to be in the preview) to be
+really cloned/duplicated.
 
 Problem
 -------

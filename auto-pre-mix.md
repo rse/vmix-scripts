@@ -4,8 +4,7 @@ Auto-Pre-Mix
 
 **Automatically Pre-Mixing Inputs**
 
-This is a VB.NET 2.0 script for the vMix 4K/Pro scripting facility,
-allowing one to auto-pre-mix (aka pre-render or flattening) source
+Allow one to auto-pre-mix (aka pre-render or flattening) source
 inputs with the help of two intermediate Mix-type input(s) in order to
 further embed the result onto a layer of a target input.
 
