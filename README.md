@@ -13,7 +13,7 @@ video/audio stream mixing software [vMix](https://www.vmix.com/) (4K and Pro edi
 The individual scripts are:
 
 - [audio-sidechain.vb](audio-sidechain.vb):<br/>
-  **Audio Sidechain Compression**<br/>
+  [**Audio Sidechain Compression**](audio-sidechain.md)<br/>
   Allow audio output volumes to be automatically and temporarily
   reduced, based on audio input volumes (when temporarily above a
   threshold) -- similar to an audio side-chain compression.
