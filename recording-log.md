@@ -48,7 +48,7 @@ once again, and finally also stopping Recording:
 Usage
 -----
 
-Configure vMix Shortcuts with:
+Configure vMix Shortcut for marking with:
 
     <key> SetDynamicValue3 trigger-marker
 
