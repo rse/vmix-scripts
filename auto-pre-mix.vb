@@ -45,7 +45,7 @@ do while true
         dim inputName as String = ""
         if debug then
             inputName = cfg.SelectSingleNode("/vmix/inputs/input[@number = '" & nowInPreview & "']/@title").Value
-            Console.WriteLine("auto-pre-mix: PREVIEW change detected: input=" & inputName)
+            Console.WriteLine("auto-pre-mix: INFO: PREVIEW change detected: input=" & inputName)
         end if
 
         '-- determine what is currently in program
@@ -62,7 +62,7 @@ do while true
             inputKey = stack.Pop()
             if debug then
                 inputName = cfg.SelectSingleNode("/vmix/inputs/input[@key = '" & inputKey & "']/@title").Value
-                Console.WriteLine("auto-pre-mix: crawl PROGRAM input tree: input=" & inputName)
+                Console.WriteLine("auto-pre-mix: DEBUG: crawl PROGRAM input tree: input=" & inputName)
             end if
             if inputKey = mix1InputKey then
                 mix1Found = true
@@ -80,10 +80,10 @@ do while true
         loop
         if debug then
             if mix1Found then
-                Console.WriteLine("auto-pre-mix: found mix " & mix1InputName & " usage in PROGRAM input tree: input=" & mix1InputName)
+                Console.WriteLine("auto-pre-mix: INFO: found mix " & mix1InputName & " usage in PROGRAM input tree: input=" & mix1InputName)
             end if
             if mix2Found then
-                Console.WriteLine("auto-pre-mix: found mix " & mix2InputName & " usage in PROGRAM input tree: input=" & mix2InputName)
+                Console.WriteLine("auto-pre-mix: INFO: found mix " & mix2InputName & " usage in PROGRAM input tree: input=" & mix2InputName)
             end if
         end if
 
@@ -97,7 +97,7 @@ do while true
             inputKey = stack.Pop()
             if debug then
                 inputName = cfg.SelectSingleNode("/vmix/inputs/input[@key = '" & inputKey & "']/@title").Value
-                Console.WriteLine("auto-pre-mix: crawl PREVIEW input tree: input=" & inputName)
+                Console.WriteLine("auto-pre-mix: DEBUG: crawl PREVIEW input tree: input=" & inputName)
             end if
 
             '-- determine input details
@@ -138,7 +138,7 @@ do while true
                 if debug then
                     dim overlay1Name as String = cfg.SelectSingleNode("/vmix/inputs/input[@key = '" & targetOverlays.Item(overlay1Number).Attributes("key").InnerText & "']/@title").Value
                     dim overlay2Name as String = cfg.SelectSingleNode("/vmix/inputs/input[@key = '" & targetOverlays.Item(overlay2Number).Attributes("key").InnerText & "']/@title").Value
-                    Console.WriteLine("auto-pre-mix: target input " & inputName & ": found setup: layer-" & (overlay1Number + 1) & "=" & overlay1Name & " layer-" & (overlay2Number + 1) & "=" & overlay2Name)
+                    Console.WriteLine("auto-pre-mix: INFO: target input " & inputName & ": found setup: layer-" & (overlay1Number + 1) & "=" & overlay1Name & " layer-" & (overlay2Number + 1) & "=" & overlay2Name)
                 end if
 
                 '-- reconfigure the pre-rendering Mix input
@@ -147,9 +147,9 @@ do while true
                 dim overlayNum  as String = cfg.SelectSingleNode("/vmix/inputs/input[@key = '" & targetOverlays.Item(overlay2Number).Attributes("key").InnerText & "']/@number").Value
                 if debug then
                     if mixNumber = mix1MixNumber then
-                        Console.WriteLine("auto-pre-mix: target input " & inputName & ": switch: mix=" & mix1InputName & " input=" & overlayName)
+                        Console.WriteLine("auto-pre-mix: INFO: target input " & inputName & ": switch: mix=" & mix1InputName & " input=" & overlayName)
                     else
-                        Console.WriteLine("auto-pre-mix: target input " & inputName & ": switch: mix=" & mix2InputName & " input=" & overlayName)
+                        Console.WriteLine("auto-pre-mix: INFO: target input " & inputName & ": switch: mix=" & mix2InputName & " input=" & overlayName)
                     end if
                 end if
                 API.Function("PreviewInput", Input := overlayNum, Mix := mixNumber)
@@ -159,12 +159,12 @@ do while true
                 if mixChange then
                     if mixNumber = mix1MixNumber then
                         if debug then
-                            Console.WriteLine("auto-pre-mix: target input " & inputName & ": reconfigure: layer-" & (overlay1Number + 1) & "=" & mix1InputName)
+                            Console.WriteLine("auto-pre-mix: INFO: target input " & inputName & ": reconfigure: layer-" & (overlay1Number + 1) & "=" & mix1InputName)
                         end if
                         API.Function("SetMultiViewOverlay", Input := targetNum, Value := (overlay1Number + 1).toString() & "," & mix1InputNum)
                     else
                         if debug then
-                            Console.WriteLine("auto-pre-mix: target input " & inputName & ": reconfigure: layer-" & (overlay1Number + 1) & "=" & mix2InputName)
+                            Console.WriteLine("auto-pre-mix: INFO: target input " & inputName & ": reconfigure: layer-" & (overlay1Number + 1) & "=" & mix2InputName)
                         end if
                         API.Function("SetMultiViewOverlay", Input := targetNum, Value := (overlay1Number + 1).toString() & "," & mix2InputNum)
                     end if
@@ -172,7 +172,7 @@ do while true
 
                 '-- disable the marker overlay of the source input on the target input
                 if debug then
-                    Console.WriteLine("auto-pre-mix: target input " & inputName & ": reconfigure: layer-" & (overlay2Number + 1) & "=" & overlayName & " (disabled)")
+                    Console.WriteLine("auto-pre-mix: INFO: target input " & inputName & ": reconfigure: layer-" & (overlay2Number + 1) & "=" & overlayName & " (disabled)")
                 end if
                 API.Function("MultiViewOverlayOff", Input := targetNum, Value := (overlay2Number + 1).toString())
              end if
