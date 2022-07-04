@@ -50,6 +50,12 @@ The individual scripts are:
   Allow an arbitrary input (which has to be in the preview) to be
   really cloned/duplicated.
 
+- [recording-log.vb](recording-log.vb):<br/>
+  [**Logging Recording States**](recording-log.md)<br/>
+  Logs the start and stop states of Recording and MultiCorder and can
+  add a special marking log entry for bookkeeping special points of
+  interest during a recording.
+
 - [remoteshowcontrol-loop.vb](remoteshowcontrol-loop.vb):<br/>
   [**Continuously Control Irisdown RemoteShowControl**](remoteshowcontrol-loop.md)<br/>
   Automatically and continuously control a remote
