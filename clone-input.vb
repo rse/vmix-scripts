@@ -15,13 +15,13 @@ cfg.LoadXml(xml)
 '-- determine input currently in preview
 dim inputNum as String = cfg.SelectSingleNode("/vmix/preview").InnerText
 dim inputKey as String = cfg.SelectSingleNode("/vmix/inputs/input[@number = '" & inputNum & "']/@key").InnerText
-Console.WriteLine("INFO: Cloning input #" & inputNum & " (" & inputKey & ")")
+Console.WriteLine("clone-input: INFO: Cloning input #" & inputNum & " (" & inputKey & ")")
 
 '-- determine current preset
 dim presetNode as System.Xml.XmlNode = cfg.SelectSingleNode("/vmix/preset")
 if presetNode is Nothing then
-    Console.WriteLine("ERROR: You are running on a still UNSAVED vMix preset!")
-    Console.WriteLine("ERROR: Please save your preset at least once, please.")
+    Console.WriteLine("clone-input: ERROR: You are running on a still UNSAVED vMix preset!")
+    Console.WriteLine("clone-input: ERROR: Save your preset at least once, please.")
     return
 end if
 dim presetFile as String = presetNode.InnerText
@@ -39,8 +39,8 @@ preset.LoadXml(xml)
 '-- find input
 dim inputNode as System.Xml.XmlNode = preset.SelectSingleNode("/XML/Input[@Key = '" & inputKey & "']")
 if inputNode is Nothing then
-    Console.WriteLine("ERROR: Unexpected inconsistency problem detected: Failed to locate vMix")
-    Console.WriteLine("ERROR: input #" & inputNum & " (" & inputKey & ") in the underlying vMix preset file!")
+    Console.WriteLine("clone-input: ERROR: Unexpected inconsistency problem detected: Failed to locate vMix")
+    Console.WriteLine("clone-input: ERROR: input #" & inputNum & " (" & inputKey & ") in the underlying vMix preset file!")
     return
 end if
 
@@ -55,7 +55,7 @@ if cloneNode.Attributes("Title") is Nothing then
 else
     cloneNode.Attributes("Title").Value = cloneNode.Attributes("Title").Value & " (CLONED)"
 end if
-Console.WriteLine("INFO: Cloned input under new GUID " & GUID)
+Console.WriteLine("clone-input: INFO: Cloned input under new GUID " & GUID)
 
 '-- insert cloned input
 inputNode.ParentNode.insertAfter(cloneNode, inputNode)
