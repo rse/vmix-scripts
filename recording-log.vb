@@ -38,7 +38,7 @@ do while true
     '-- start fresh log
     dim log as new System.Collections.Generic.List(of String)
 
-    '-- bookkeep recording state changes
+    '-- log recording state changes
     dim isRecording as Boolean = Boolean.parse(cfg.SelectSingleNode("/vmix/recording").InnerText)
     if recordingSince = nothing and isRecording then
         log.Add("RECORDING   started")
@@ -50,7 +50,7 @@ do while true
         recordingSince = nothing
     end if
 
-    '-- bookkeep multicorder state changes
+    '-- log multicorder state changes
     dim isMulticording as Boolean = Boolean.parse(cfg.SelectSingleNode("/vmix/multiCorder").InnerText)
     if multicordingSince = nothing and isMulticording then
         log.Add("MULTICORDER started")
@@ -62,7 +62,7 @@ do while true
         multicordingSince = nothing
     end if
 
-    '-- bookkeep marker trigger
+    '-- log marker trigger
     dim nowVariableState as String = cfg.selectSingleNode("/vmix/dynamic/value" & markerDynamicVariable).InnerText
     if nowVariableState = "trigger-marker" then
         API.Function("SetDynamicValue" & markerDynamicVariable, Value := "")
