@@ -9,7 +9,7 @@
 
 '-- CONFIGURATION
 dim markerDynamicVariable as String  = "3"
-dim markerDefaultText     as String  = "slip of the tongue"
+dim markerStandardText    as String  = "slip of the tongue"
 dim timeSlice             as Integer = 33  ' = 1000ms / 30fps
 
 '-- prepare XML DOM tree and load the current API state
@@ -65,10 +65,10 @@ do while true
 
     '-- log marker trigger
     dim nowVariableState as String = cfg.selectSingleNode("/vmix/dynamic/value" & markerDynamicVariable).InnerText
-    if nowVariableState = "trigger-marker" then
+    if nowVariableState = "recording-marker-simple" or nowVariableState = "recording-marker-custom" then
         API.Function("SetDynamicValue" & markerDynamicVariable, Value := "")
 
-        '-- determine duration(s) (in advance becasue of interactive dialog)
+        '-- determine duration(s) (in advance because of potentially interactive dialog)
         dim durationRecording    as String = ""
         dim durationMulticording as String = ""
         if recordingSince <> nothing and isRecording then
@@ -82,48 +82,53 @@ do while true
             durationMulticording = duration.ToString("HH:mm:ss.fff")
         end if
 
-        '-- create log entries
+        '-- create log entry(s)
         if durationRecording <> "" or durationMulticording <> "" then
-            '-- PHASE 1: interactively ask the user for the marker message
+            dim msg as String = markerStandardText
+
+            '-- if a custom marker message is requestd, interactively ask the user for it
             '-- (NOTICE: we have to use WSH, as we cannot open an input dialog directly from within vMix VB.Net)
+            if nowVariableState = "recording-marker-custom" then
 
-            '-- determine two temporary file paths
-            dim tempfile1 as String = System.IO.Path.GetTempFileName()
-            dim tempfile2 as String = System.IO.Path.GetTempFileName()
+                '-- determine two temporary file paths
+                dim tempfile1 as String = System.IO.Path.GetTempFileName()
+                dim tempfile2 as String = System.IO.Path.GetTempFileName()
 
-            '-- create companion WSH script
-            dim crlf as String = Environment.NewLine
-            dim script as String = ""
-            script = script & "file   = WScript.Arguments.Item(0)" & crlf
-            script = script & "text   = WScript.Arguments.Item(1)" & crlf
-            script = script & "text   = InputBox(""What is your textual annotation message to use for the recording marker?"", ""vMix: Recording-Log: Marker"", text)" & crlf
-            script = script & "if text <> """" then" & crlf
-            script = script & "    set fso = CreateObject(""Scripting.FileSystemObject"")" & crlf
-            script = script & "    set out = fso.OpenTextFile(file, 8, true, -1)" & crlf
-            script = script & "    out.Write(text)" & crlf
-            script = script & "    out.Close()" & crlf
-            script = script & "end if" & crlf
-            System.IO.File.WriteAllText(tempfile1, script)
+                '-- create companion WSH script
+                dim crlf as String = Environment.NewLine
+                dim script as String = ""
+                script = script & "file   = WScript.Arguments.Item(0)" & crlf
+                script = script & "text   = WScript.Arguments.Item(1)" & crlf
+                script = script & "text   = InputBox(""What is your textual annotation message to use for the recording marker?"", ""vMix: Recording-Log: Marker"", text)" & crlf
+                script = script & "if text <> """" then" & crlf
+                script = script & "    set fso = CreateObject(""Scripting.FileSystemObject"")" & crlf
+                script = script & "    set out = fso.OpenTextFile(file, 8, true, -1)" & crlf
+                script = script & "    out.Write(text)" & crlf
+                script = script & "    out.Close()" & crlf
+                script = script & "end if" & crlf
+                System.IO.File.WriteAllText(tempfile1, script)
 
-            '-- execute WSH in own process
-            dim app as new ProcessStartInfo()
-            app.FileName        = "wscript.exe"
-            app.Arguments       = "/e:vbscript """ & tempfile1 & """ """ & tempfile2 & """ """ & markerDefaultText & """"
-            app.UseShellExecute = true
-            app.CreateNoWindow  = true
-            app.WindowStyle     = ProcessWindowStyle.Normal
-            dim proc as Process = Process.Start(app)
-            proc.WaitForExit()
+                '-- execute WSH in own process
+                dim app as new ProcessStartInfo()
+                app.FileName        = "wscript.exe"
+                app.Arguments       = "/e:vbscript """ & tempfile1 & """ """ & tempfile2 & """ """ & msg & """"
+                app.UseShellExecute = true
+                app.CreateNoWindow  = true
+                app.WindowStyle     = ProcessWindowStyle.Normal
+                dim proc as Process = Process.Start(app)
+                proc.WaitForExit()
 
-            '-- read results
-            dim utf8 as System.Text.Encoding = new System.Text.UTF8Encoding(true)
-            dim msg as String = System.IO.File.ReadAllText(tempfile2, utf8)
+                '-- read results form process
+                '-- (NOTICE: we cannot use stdout here as WScript doesn't support stdout and CScript always opens a Terminal)
+                dim utf8 as System.Text.Encoding = new System.Text.UTF8Encoding(true)
+                msg = System.IO.File.ReadAllText(tempfile2, utf8)
 
-            '-- cleanup temporary files
-            System.IO.File.Delete(tempfile1)
-            System.IO.File.Delete(tempfile2)
+                '-- cleanup temporary files
+                System.IO.File.Delete(tempfile1)
+                System.IO.File.Delete(tempfile2)
+            end if
 
-            '-- PHASE 2: create log entries
+            '-- create log entries
             if durationRecording <> "" then
                 log.Add("RECORDING   marked  (position: " & durationRecording & "): " & msg)
             end if

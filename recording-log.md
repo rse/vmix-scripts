@@ -39,7 +39,7 @@ once again, and finally also stopping Recording:
 [2022-07-04 23:59:44.514] MULTICORDER started
 [2022-07-04 23:59:47.101] RECORDING   marked  (position: 00:00:07.916): slip of the tongue
 [2022-07-04 23:59:47.101] MULTICORDER marked  (position: 00:00:02.586): slip of the tongue
-[2022-07-04 23:59:48.558] RECORDING   marked  (position: 00:00:09.373): slip of the tongue
+[2022-07-04 23:59:48.558] RECORDING   marked  (position: 00:00:09.373): problem with slides
 [2022-07-04 23:59:48.558] MULTICORDER marked  (position: 00:00:04.043): slip of the tongue
 [2022-07-04 23:59:52.456] MULTICORDER ended   (duration: 00:00:07.942)
 [2022-07-04 23:59:53.518] RECORDING   marked  (position: 00:00:14.333): slip of the tongue
@@ -50,7 +50,8 @@ once again, and finally also stopping Recording:
 Usage
 -----
 
-Configure vMix Shortcut for marking with:
+Configure vMix Shortcuts for marking with:
 
-    <key> SetDynamicValue3 trigger-marker
+    <keyX> SetDynamicValue3 recording-marker-simple
+    <keyY> SetDynamicValue3 recording-marker-custom
 
