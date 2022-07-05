@@ -37,6 +37,7 @@ do while true
 
     '-- start fresh log
     dim log as new System.Collections.Generic.List(of String)
+    dim beep as Boolean = false
 
     '-- log recording state changes
     dim isRecording as Boolean = Boolean.parse(cfg.SelectSingleNode("/vmix/recording").InnerText)
@@ -70,11 +71,13 @@ do while true
             dim diff as System.TimeSpan = DateTime.Now.Subtract(recordingSince)
             dim duration as DateTime = (new DateTime(0)).Add(diff)
             log.Add("RECORDING   marked  (position: " & duration.ToString("HH:mm:ss.fff") & ")")
+            beep = true
         end if
         if multicordingSince <> nothing and isMulticording then
             dim diff as System.TimeSpan = DateTime.Now.Subtract(multicordingSince)
             dim duration as DateTime = (new DateTime(0)).Add(diff)
             log.Add("MULTICORDER marked  (position: " & duration.ToString("HH:mm:ss.fff") & ")")
+            beep = true
         end if
     end if
 
@@ -86,6 +89,12 @@ do while true
             dim msg as String = "[" & timestamp & "] " & entry & Environment.NewLine
             System.IO.File.AppendAllText(logFile, msg, utf8WithoutBOM)
         next
+    end if
+
+    '-- signal some log entries with a sound
+    if beep then
+        My.Computer.Audio.PlaySystemSound(Media.SystemSounds.Exclamation)
+        beep = false
     end if
 
     '-- wait a little bit before next iteration
