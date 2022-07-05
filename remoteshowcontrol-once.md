@@ -16,6 +16,14 @@ slide-deck into vMix scene inputs one has to ensure that the correct
 slide is selected within PowerPoint. Often, PowerPoint is running on a
 different computer than vMix, too.
 
+Additionally, when presenting slides with PowerPoint and teleprompter
+information with applications like QPrompt (which has to be
+interactively speed-adjusted by an operator to follow the speaker) in
+parallel, PowerPoint cannot be controlled with regular input devices
+like Logitech Presenter anymore, as this requires PowerPoint to
+have focus (in parallel to QPrompt) and under Windows only a single
+application can be focused.
+
 Solution
 --------
 
@@ -25,6 +33,9 @@ into PowerPoint and listens on a TCP port for control commands. This
 script can be run to instruct PowerPoint, through its installed Irisdown
 Remote Show Control plugin, to go to the previous, next or a particular
 slide.
+
+As IrisDown RemoteShowControl is a PowerPoint plugin which receives the
+commands via TCP, PowerPoint isn't required to be focused, too.
 
 Usage
 -----
