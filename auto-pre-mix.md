@@ -68,3 +68,10 @@ Create two *Mix*-type inputs `PRERENDER1` and `PRERENDER2` and on any
 target input, place any *Mix* input onto layer *N* and any source input
 on layer *N*+1.
 
+Alternative
+-----------
+
+An alternative for pre-mixing is to use a VirtualSet with a single
+layer based on a full-screen UV Map (1:1 mapping). See [vMix-VirtualSet-Flatten](https://github.com/rse/vmix-assets/tree/master/vMix-VirtualSet-Flatten)
+for a realization.
+
