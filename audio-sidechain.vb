@@ -4,7 +4,7 @@
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
 '-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
-'-- Version:  1.0.0 (2022-03-22)
+'-- Version:  1.1.0 (2022-07-16)
 '--
 
 '-- ==== CONFIGURATION (please adjust) ====
@@ -13,6 +13,7 @@
 dim busMonitor            as string  = "B"       'id of audio bus to input/monitor volume
 dim busAdjust             as string  = "A"       'id of audio bus to output/adjust volume
 dim busAdjustInputs       as boolean = true      'whether inputs attached to bus are adjusted instead of just bus itself
+dim busAdjustUnmutedOnly  as boolean = false     'whether only unmuted bus/inputs should be adjusted
 
 '--  volume configuration
 dim volumeFullDB          as integer = 0         'full      volume of output (dB)
@@ -70,7 +71,7 @@ do while true
         if not busAdjustInputs then
             '-- adjust the audio bus directly
             dim isMuted as boolean = cfg.SelectSingleNode("//audio/bus" & busAdjust & "/@muted").Value
-            if not isMuted then
+            if not isMuted and not busAdjustUnmutedOnly then
                 API.Function("SetBus" & busAdjust & "Volume", Value := cint(volumeCurrent).ToString())
             end if
         else
@@ -80,7 +81,7 @@ do while true
                 dim onBusses() as string = busInput.Attributes("audiobusses").InnerText.Split(",")
                 if Array.IndexOf(onBusses, busAdjust) >= 0 then
                     dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").InnerText)
-                    if not isMuted then
+                    if not isMuted and not busAdjustUnmutedOnly then
                         dim num as integer = Convert.ToInt32(busInput.Attributes("number").InnerText)
                         Input.Find(num).Function("SetVolume", Value := cint(volumeCurrent).ToString())
                     end if
@@ -131,7 +132,7 @@ do while true
         if not busAdjustInputs then
             '-- adjust the audio bus directly
             dim isMuted as boolean = cfg.SelectSingleNode("//audio/bus" & busAdjust & "/@muted").Value
-            if not isMuted then
+            if not isMuted and not busAdjustUnmutedOnly then
                 API.Function("SetBus" & busAdjust & "Volume", Value := cint(volumeCurrent).ToString())
             end if
         else
@@ -141,7 +142,7 @@ do while true
                 dim onBusses() as string = busInput.Attributes("audiobusses").InnerText.Split(",")
                 if Array.IndexOf(onBusses, busAdjust) >= 0 then
                     dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").InnerText)
-                    if not isMuted then
+                    if not isMuted and not busAdjustUnmutedOnly then
                         dim num as integer = Convert.ToInt32(busInput.Attributes("number").InnerText)
                         Input.Find(num).Function("SetVolume", Value := cint(volumeCurrent).ToString())
                     end if

@@ -42,31 +42,33 @@ The recommended configurations are:
 
 1. MICROPHONE DUCKING:
 
-       busMonitor        = "B"   (Notice: callers and media)
-       busAdjust         = "A"   (Notice: microphones)
-       busAdjustInputs   = true  (Notice: adjust the inputs)
-       volumeFullDB      = 0
-       volumeReducedDB   = -55   (Notice: pull down volume to about 20%)
-       volumeThresholdDB = -32
-       timeSlice         = 10
-       timeAwaitOver     = 20
-       timeAwaitBelow    = 250
-       timeFadeDown      = 50
-       timeFadeUp        = 250
+       busMonitor           = "B"   (Notice: callers and media)
+       busAdjust            = "A"   (Notice: microphones)
+       busAdjustInputs      = true  (Notice: adjust the inputs)
+       busAdjustUnmutedOnly = false
+       volumeFullDB         = 0
+       volumeReducedDB      = -55   (Notice: pull down volume to about 20%)
+       volumeThresholdDB    = -32
+       timeSlice            = 10
+       timeAwaitOver        = 20
+       timeAwaitBelow       = 250
+       timeFadeDown         = 50
+       timeFadeUp           = 250
 
 2. TRANSLATOR VOICE-OVER:
 
-       busMonitor        = "C"   (Notice: translators)
-       busAdjust         = "B"   (Notice: program)
-       busAdjustInputs   = false (Notice: adjust the bus)
-       volumeFullDB      = 0
-       volumeReducedDB   = -24   (Notice: pull down volume to about 50%)
-       volumeThresholdDB = -32
-       timeSlice         = 10
-       timeAwaitOver     = 20
-       timeAwaitBelow    = 1500  (Notice: allow translators to breathe)
-       timeFadeDown      = 50
-       timeFadeUp        = 500   (Notice: fade in program slowly)
+       busMonitor           = "C"   (Notice: translators)
+       busAdjust            = "B"   (Notice: program)
+       busAdjustInputs      = false (Notice: adjust the bus)
+       busAdjustUnmutedOnly = false
+       volumeFullDB         = 0
+       volumeReducedDB      = -24   (Notice: pull down volume to about 50%)
+       volumeThresholdDB    = -32
+       timeSlice            = 10
+       timeAwaitOver        = 20
+       timeAwaitBelow       = 1500  (Notice: allow translators to breathe)
+       timeFadeDown         = 50
+       timeFadeUp           = 500   (Notice: fade in program slowly)
 
 The audio volume science is a little bit hard to understand and vMix
 in addition also makes it even more complicated by using difference
