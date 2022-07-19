@@ -13,7 +13,7 @@
 dim busMonitor            as string  = "B"       'id of audio bus to input/monitor volume
 dim busAdjust             as string  = "A"       'id of audio bus to output/adjust volume
 dim busAdjustInputs       as boolean = true      'whether inputs attached to bus are adjusted instead of just bus itself
-dim busAdjustInputsExcl   as string  = "CALL1"   'comma-separated list of inputs to exclude from adjustment
+dim busAdjustInputsExcl   as string  = ""        'comma-separated list of inputs to exclude from adjustment
 dim busAdjustUnmutedOnly  as boolean = false     'whether only unmuted bus/inputs should be adjusted
 
 '--  volume configuration
@@ -83,7 +83,7 @@ do while true
             dim busInputs as XmlNodeList = cfg.SelectNodes("//inputs/input[@audiobusses]")
             for each busInput as XmlNode in busInputs
                 dim onBusses() as string = busInput.Attributes("audiobusses").InnerText.Split(",")
-                dim title      as string = busInput.Attributes("title")
+                dim title      as string = busInput.Attributes("title").InnerText
                 if Array.IndexOf(onBusses, busAdjust) >= 0 and Array.IndexOf(busAdjustInputsExclA, title) < 0 then
                     dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").InnerText)
                     if not isMuted and not busAdjustUnmutedOnly then
@@ -145,7 +145,7 @@ do while true
             dim busInputs as XmlNodeList = cfg.SelectNodes("//inputs/input[@audiobusses]")
             for each busInput as XmlNode in busInputs
                 dim onBusses() as string = busInput.Attributes("audiobusses").InnerText.Split(",")
-                dim title      as string = busInput.Attributes("title")
+                dim title      as string = busInput.Attributes("title").InnerText
                 if Array.IndexOf(onBusses, busAdjust) >= 0 and Array.IndexOf(busAdjustInputsExclA, title) < 0 then
                     dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").InnerText)
                     if not isMuted and not busAdjustUnmutedOnly then
