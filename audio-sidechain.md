@@ -52,9 +52,9 @@ The recommended configurations are:
        volumeThresholdDB    = -32
        timeSlice            = 10
        timeAwaitOver        = 20
-       timeAwaitBelow       = 250
+       timeAwaitBelow       = 150
        timeFadeDown         = 50
-       timeFadeUp           = 250
+       timeFadeUp           = 50
 
 2. TRANSLATOR VOICE-OVER:
 

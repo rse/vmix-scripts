@@ -24,9 +24,9 @@ dim volumeThresholdDB     as integer = -32       'threshold volume of input  (dB
 '--  time configuration
 dim timeSlice             as integer = 10        'time interval between the script iterations          (ms)
 dim timeAwaitOver         as integer = 20        'time over  the threshold before triggering fade down (ms)
-dim timeAwaitBelow        as integer = 250       'time below the threshold before triggering fade up   (ms)
+dim timeAwaitBelow        as integer = 150       'time below the threshold before triggering fade up   (ms)
 dim timeFadeDown          as integer = 50        'time for fading down (ms)
-dim timeFadeUp            as integer = 250       'time for fading up   (ms)
+dim timeFadeUp            as integer = 50        'time for fading up   (ms)
 
 '--  debug configuration
 dim debug                 as boolean = false     'whether to output debug information to the console
