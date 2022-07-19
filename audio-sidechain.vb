@@ -4,7 +4,7 @@
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
 '-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
-'-- Version:  1.1.0 (2022-07-16)
+'-- Version:  1.2.0 (2022-07-19)
 '--
 
 '-- ==== CONFIGURATION (please adjust) ====
@@ -13,6 +13,7 @@
 dim busMonitor            as string  = "B"       'id of audio bus to input/monitor volume
 dim busAdjust             as string  = "A"       'id of audio bus to output/adjust volume
 dim busAdjustInputs       as boolean = true      'whether inputs attached to bus are adjusted instead of just bus itself
+dim busAdjustInputsExcl   as string  = "CALL1"   'comma-separated list of inputs to exclude from adjustment
 dim busAdjustUnmutedOnly  as boolean = false     'whether only unmuted bus/inputs should be adjusted
 
 '--  volume configuration
@@ -49,6 +50,9 @@ dim volumeThreshold       as double  = (volumeThresholdAmp ^ 0.25) * 100
 '-- prepare XML DOM tree
 dim cfg as new System.Xml.XmlDocument
 
+'-- prepare list of excluded inputs
+dim busAdjustInputsExclA() as string = busAdjustInputsExcl.Split(",")
+
 '-- enter endless iteration loop
 do while true
     '-- fetch current vMix API status
@@ -79,7 +83,8 @@ do while true
             dim busInputs as XmlNodeList = cfg.SelectNodes("//inputs/input[@audiobusses]")
             for each busInput as XmlNode in busInputs
                 dim onBusses() as string = busInput.Attributes("audiobusses").InnerText.Split(",")
-                if Array.IndexOf(onBusses, busAdjust) >= 0 then
+                dim title      as string = busInput.Attributes("title")
+                if Array.IndexOf(onBusses, busAdjust) >= 0 and Array.IndexOf(busAdjustInputsExclA, title) < 0 then
                     dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").InnerText)
                     if not isMuted and not busAdjustUnmutedOnly then
                         dim num as integer = Convert.ToInt32(busInput.Attributes("number").InnerText)
@@ -140,7 +145,8 @@ do while true
             dim busInputs as XmlNodeList = cfg.SelectNodes("//inputs/input[@audiobusses]")
             for each busInput as XmlNode in busInputs
                 dim onBusses() as string = busInput.Attributes("audiobusses").InnerText.Split(",")
-                if Array.IndexOf(onBusses, busAdjust) >= 0 then
+                dim title      as string = busInput.Attributes("title")
+                if Array.IndexOf(onBusses, busAdjust) >= 0 and Array.IndexOf(busAdjustInputsExclA, title) < 0 then
                     dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").InnerText)
                     if not isMuted and not busAdjustUnmutedOnly then
                         dim num as integer = Convert.ToInt32(busInput.Attributes("number").InnerText)

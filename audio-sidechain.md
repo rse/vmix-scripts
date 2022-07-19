@@ -45,6 +45,7 @@ The recommended configurations are:
        busMonitor           = "B"   (Notice: callers and media)
        busAdjust            = "A"   (Notice: microphones)
        busAdjustInputs      = true  (Notice: adjust the inputs)
+       busAdjustInputsExcl  = ""
        busAdjustUnmutedOnly = false
        volumeFullDB         = 0
        volumeReducedDB      = -55   (Notice: pull down volume to about 20%)
@@ -60,6 +61,7 @@ The recommended configurations are:
        busMonitor           = "C"   (Notice: translators)
        busAdjust            = "B"   (Notice: program)
        busAdjustInputs      = false (Notice: adjust the bus)
+       busAdjustInputsExcl  = ""
        busAdjustUnmutedOnly = false
        volumeFullDB         = 0
        volumeReducedDB      = -24   (Notice: pull down volume to about 50%)
