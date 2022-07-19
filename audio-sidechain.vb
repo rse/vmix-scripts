@@ -122,7 +122,7 @@ do while true
     end if
     if mode <> modeNew then
         if debug then
-            console.writeline("switching to mode: " & modeNew)
+            Console.WriteLine("audio-sidechain: INFO: switching to mode: " & modeNew)
         end if
         mode = modeNew
     end if
