@@ -70,7 +70,7 @@ do while true
         if not busAdjustInputs then
             '-- adjust the audio bus directly
             dim isMuted as boolean = cfg.SelectSingleNode("//audio/bus" & busAdjust & "/@muted").Value
-            if not isMuted and not busAdjustUnmutedOnly then
+            if not isMuted or not busAdjustUnmutedOnly then
                 API.Function("SetBus" & busAdjust & "Volume", Value := cint(volumeCurrent).ToString())
             end if
         else
@@ -81,7 +81,7 @@ do while true
                 dim title      as string = busInput.Attributes("title").InnerText
                 if Array.IndexOf(onBusses, busAdjust) >= 0 and Array.IndexOf(busAdjustInputsExclA, title) < 0 then
                     dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").InnerText)
-                    if not isMuted and not busAdjustUnmutedOnly then
+                    if not isMuted or not busAdjustUnmutedOnly then
                         dim num as integer = Convert.ToInt32(busInput.Attributes("number").InnerText)
                         Input.Find(num).Function("SetVolume", Value := cint(volumeCurrent).ToString())
                     end if
@@ -132,7 +132,7 @@ do while true
         if not busAdjustInputs then
             '-- adjust the audio bus directly
             dim isMuted as boolean = cfg.SelectSingleNode("//audio/bus" & busAdjust & "/@muted").Value
-            if not isMuted and not busAdjustUnmutedOnly then
+            if not isMuted or not busAdjustUnmutedOnly then
                 API.Function("SetBus" & busAdjust & "Volume", Value := cint(volumeCurrent).ToString())
             end if
         else
@@ -143,7 +143,7 @@ do while true
                 dim title      as string = busInput.Attributes("title").InnerText
                 if Array.IndexOf(onBusses, busAdjust) >= 0 and Array.IndexOf(busAdjustInputsExclA, title) < 0 then
                     dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").InnerText)
-                    if not isMuted and not busAdjustUnmutedOnly then
+                    if not isMuted or not busAdjustUnmutedOnly then
                         dim num as integer = Convert.ToInt32(busInput.Attributes("number").InnerText)
                         Input.Find(num).Function("SetVolume", Value := cint(volumeCurrent).ToString())
                     end if
