@@ -4,7 +4,7 @@
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
 '-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
-'-- Version:  1.2.0 (2022-07-19)
+'-- Version:  1.3.0 (2022-07-24)
 '--
 
 '-- ==== CONFIGURATION (please adjust) ====
@@ -17,9 +17,9 @@ dim busAdjustInputsExcl   as string  = ""        'comma-separated list of inputs
 dim busAdjustUnmutedOnly  as boolean = false     'whether only unmuted bus/inputs should be adjusted
 
 '--  volume configuration
-dim volumeFullDB          as integer = 0         'full      volume of output (dB)
-dim volumeReducedDB       as integer = -55       'reduced   volume of output (dB)
-dim volumeThresholdDB     as integer = -32       'threshold volume of input  (dB)
+dim volumeThreshold       as integer = -36       'threshold of input  in dB FS   (-oo to   0)
+dim volumeFull            as integer = 100       'full         output in percent (0   to 100)
+dim volumeReduced         as integer = 20        'reduced      output in percent (0   to 100)
 
 '--  time configuration
 dim timeSlice             as integer = 10        'time interval between the script iterations          (ms)
@@ -35,17 +35,12 @@ dim debug                 as boolean = false     'whether to output debug inform
 
 '-- internal state
 dim mode                  as string  = "wait"    'current iteration mode
-dim volumeCurrent         as double  = -1        'current volume of output (from 0 to 100, linear scale)
+dim volumeCurrent         as double  = -1        'current volume of output in percent (from 0 to 100)
 dim timeAwaitBelowCount   as integer = 0         'counter for time over  the threshold
 dim timeAwaitOverCount    as integer = 0         'counter for time below the threshold
 
-'-- pre-convert volumes from decibel to audio fader level
-dim volumeFullAmp         as double  = 10 ^ (volumeFullDB / 20)
-dim volumeFull            as double  = (volumeFullAmp ^ 0.25) * 100
-dim volumeReducedAmp      as double  = 10 ^ (volumeReducedDB / 20)
-dim volumeReduced         as double  = (volumeReducedAmp ^ 0.25) * 100
-dim volumeThresholdAmp    as double  = 10 ^ (volumeThresholdDB / 20)
-dim volumeThreshold       as double  = (volumeThresholdAmp ^ 0.25) * 100
+'-- pre-convert values
+dim volumeThresholdAmp    as double  = 10 ^ (volumeThreshold / 20)
 
 '-- prepare XML DOM tree
 dim cfg as new System.Xml.XmlDocument

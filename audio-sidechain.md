@@ -47,9 +47,9 @@ The recommended configurations are:
        busAdjustInputs      = true  (Notice: adjust the inputs)
        busAdjustInputsExcl  = ""
        busAdjustUnmutedOnly = false
-       volumeFullDB         = 0
-       volumeReducedDB      = -55   (Notice: pull down volume to about 20%)
-       volumeThresholdDB    = -32
+       volumeThreshold      = -36   (Notice: -36 dB FS)
+       volumeFull           = 100   (Notice: 100%)
+       volumeReduced        = 30    (Notice: 30% = -60 dB)
        timeSlice            = 10
        timeAwaitOver        = 20
        timeAwaitBelow       = 150
@@ -63,9 +63,9 @@ The recommended configurations are:
        busAdjustInputs      = false (Notice: adjust the bus)
        busAdjustInputsExcl  = ""
        busAdjustUnmutedOnly = false
-       volumeFullDB         = 0
-       volumeReducedDB      = -24   (Notice: pull down volume to about 50%)
-       volumeThresholdDB    = -32
+       volumeThreshold      = -36   (Notice: -36 dB FS)
+       volumeFull           = 100   (Notice: 100%)
+       volumeReduced        = 70    (Notice: 70% = -30 dB)
        timeSlice            = 10
        timeAwaitOver        = 20
        timeAwaitBelow       = 1500  (Notice: allow translators to breathe)
@@ -73,9 +73,9 @@ The recommended configurations are:
        timeFadeUp           = 500   (Notice: fade in program slowly)
 
 The audio volume science is a little bit hard to understand and vMix
-in addition also makes it even more complicated by using difference
+in addition also makes it even more complicated by using different
 scales. Here is some background on the above Decibel (dB) based
-scales, the formulars how the scales can be converted and some
+scales, the formulas how the scales can be converted, and some
 examples:
 
     Scales:
@@ -93,18 +93,30 @@ examples:
         Amplitude    = 10 ^ (Decibels / 20)
 
     Examples:
-        Volume: 100, Amplitude: 1.0000, Decibel:  0
-        Volume:  97, Amplitude: 0.8913, Decibel: -1  (clipping border)
-        Volume:  92, Amplitude: 0.7079, Decibel: -3
-        Volume:  84, Amplitude: 0.5012, Decibel: -6
-        Volume:  77, Amplitude: 0.3548, Decibel: -9
-        Volume:  71, Amplitude: 0.2512, Decibel: -12
-        Volume:  63, Amplitude: 0.1585, Decibel: -16 (broadcast standard)
-        Volume:  50, Amplitude: 0.0631, Decibel: -23 (film standard)
-        Volume:  40, Amplitude: 0.0224, Decibel: -32 (voice gate border)
-        Volume:  27, Amplitude: 0.0056, Decibel: -45
-        Volume:  21, Amplitude: 0.0020, Decibel: -54 (very much dimmed)
-        Volume:  15, Amplitude: 0.0006, Decibel: -65 (silence border)
-        Volume:  10, Amplitude: 0.0001, Decibel: -80
-        Volume:   0, Amplitude: 0.0000, Decibel: -Infinity
+        ==== METER (measured) ===============      ==== CONTROL =============
+        Volume (%) Amplitude  Decibel (dB FS)      Volume (%) Decibel (dB FS) *
+        ---------- ---------- ---------------      ---------- ---------------
+        100        1,0000        0,00              100        - 18,00
+         95        0,8145     -  1,78               95        - 19,78
+         90        0,6561     -  3,66               90        - 21,66
+         85        0,5220     -  5,65               85        - 23,65
+         80        0,4096     -  7,75               80        - 25,75
+         75        0,3164     - 10,00               75        - 28,00
+         70        0,2401     - 12,39               70        - 30,39
+         65        0,1785     - 14,97               65        - 32,97
+         60        0,1296     - 17,75               60        - 35,75
+         55        0,0915     - 20,77               55        - 38,77
+         50        0,0625     - 24,08               50        - 42,08
+         45        0,0410     - 27,74               45        - 45,74
+         40        0,0256     - 31,84               40        - 49,84
+         35        0,0150     - 36,47               35        - 54,47
+         30        0,0081     - 41,83               30        - 59,83
+         25        0,0039     - 48,16               25        - 66,16
+         20        0,0016     - 55,92               20        - 73,92
+         15        0,0005     - 65,91               15        - 83,91
+         10        0,0001     - 80,00               10        - 98,00
+          5        0,0000     -104,08                5        -122,08
+          0        0,0000     -    oo                0        -    oo
+
+      (*) for a usual incoming voice signal of -18 dB FS
 
