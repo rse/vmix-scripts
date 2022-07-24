@@ -17,7 +17,7 @@ dim busAdjustInputsExcl   as string  = ""        'comma-separated list of inputs
 dim busAdjustUnmutedOnly  as boolean = false     'whether only unmuted bus/inputs should be adjusted
 
 '--  volume configuration
-dim volumeThreshold       as integer = -36       'threshold of input  in dB FS   (-oo to   0)
+dim volumeThreshold       as integer = -42       'threshold of input  in dB FS   (-oo to   0)
 dim volumeFull            as integer = 100       'full         output in percent (0   to 100)
 dim volumeReduced         as integer = 20        'reduced      output in percent (0   to 100)
 

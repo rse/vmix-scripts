@@ -47,9 +47,9 @@ The recommended configurations are:
        busAdjustInputs      = true  (Notice: adjust the inputs)
        busAdjustInputsExcl  = ""
        busAdjustUnmutedOnly = false
-       volumeThreshold      = -36   (Notice: -36 dB FS)
+       volumeThreshold      = -42   (Notice: -42 dB FS)
        volumeFull           = 100   (Notice: 100%)
-       volumeReduced        = 30    (Notice: 30% = -60 dB)
+       volumeReduced        = 30    (Notice: 30% = reduce by -42 dB)
        timeSlice            = 10
        timeAwaitOver        = 20
        timeAwaitBelow       = 150
@@ -63,14 +63,14 @@ The recommended configurations are:
        busAdjustInputs      = false (Notice: adjust the bus)
        busAdjustInputsExcl  = ""
        busAdjustUnmutedOnly = false
-       volumeThreshold      = -36   (Notice: -36 dB FS)
+       volumeThreshold      = -42   (Notice: -42 dB FS)
        volumeFull           = 100   (Notice: 100%)
-       volumeReduced        = 70    (Notice: 70% = -30 dB)
+       volumeReduced        = 60    (Notice: 60% = reduce by -18 dB)
        timeSlice            = 10
-       timeAwaitOver        = 20
+       timeAwaitOver        = 10
        timeAwaitBelow       = 1500  (Notice: allow translators to breathe)
-       timeFadeDown         = 50
-       timeFadeUp           = 500   (Notice: fade in program slowly)
+       timeFadeDown         = 10
+       timeFadeUp           = 400   (Notice: fade in program slowly)
 
 The audio volume science is a little bit hard to understand and vMix
 in addition also makes it even more complicated by using different
