@@ -21,11 +21,11 @@ In practice there are two challenges in vMix when it comes to audio:
    even full loops.
 
 2. TRANSLATOR VOICE-OVER:
-   Allow one or more people (usually remote translators, sitting
-   on vMix Call inputs and mixed on the Master audio bus and
-   additionally monitored on Bus-C) to speak over the program
-   (usually received via NDI and mixed on the Master audio bus
-   after being "dimmed" on Bus-B).
+   Allow one or more people (usually remote translators, sitting on
+   vMix Call inputs, receiving the program in Bus-A, and mixed onto the
+   Master audio bus and additionally monitored on Bus-C) to speak over
+   the program (usually received via NDI and mixed on the Master audio
+   bus after being "dimmed" on Bus-B).
 
 Solution
 --------
@@ -59,7 +59,7 @@ The recommended configurations are:
 2. TRANSLATOR VOICE-OVER:
 
        busMonitor           = "C"   (Notice: translators)
-       busAdjust            = "B"   (Notice: program)
+       busAdjust            = "B"   (Notice: original program)
        busAdjustInputs      = false (Notice: adjust the bus)
        busAdjustInputsExcl  = ""
        busAdjustUnmutedOnly = false
@@ -67,16 +67,19 @@ The recommended configurations are:
        volumeFull           = 100   (Notice: 100%)
        volumeReduced        = 60    (Notice: 60% = reduce by -18 dB)
        timeSlice            = 10
-       timeAwaitOver        = 10
+       timeAwaitOver        = 10    (Notice: allow translators to have priority)
        timeAwaitBelow       = 1500  (Notice: allow translators to breathe)
-       timeFadeDown         = 10
+       timeFadeDown         = 10    (Notice: allow translators to have priority)
        timeFadeUp           = 400   (Notice: fade in program slowly)
+
+Background
+----------
 
 The audio volume science is a little bit hard to understand and vMix
 in addition also makes it even more complicated by using different
-scales. Here is some background on the above Decibel (dB) based
-scales, the formulas how the scales can be converted, and some
-examples:
+scales. Here is some background on the Decibel (dB) based scales (like
+"volumeThreshold"), the formulas how the scales can be converted, and
+some examples:
 
     Scales:
         Volume:      0 to 100    (used for UI volume bars, SetVolumeFade)
@@ -120,4 +123,10 @@ examples:
           0        0,0000     -    oo                0        -    oo
 
       (*) for a usual incoming voice signal of -18 dB FS
+
+Attention: Keep in mind that 100% of a Volume Meter corresponds to 0
+dB FS, while 100% of the Volume Bar corresponds to the full incoming
+signal (usually about the target loudness of -18 dB FS for voice). So,
+if you attenuate by targeting a Volume Bar of 50%, you are reducing your
+incoming signal BY(!) -24 dB relative, and NOT TO(!) -24 dB absolute.
 
