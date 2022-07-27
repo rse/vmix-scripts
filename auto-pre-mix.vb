@@ -175,7 +175,7 @@ do while true
                     Console.WriteLine("auto-pre-mix: INFO: target input " & inputName & ": reconfigure: layer-" & (overlay2Number + 1) & "=" & overlayName & " (disabled)")
                 end if
                 API.Function("MultiViewOverlayOff", Input := targetNum, Value := (overlay2Number + 1).toString())
-             end if
+            end if
         loop
     end if
 
