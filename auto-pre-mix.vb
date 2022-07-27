@@ -80,10 +80,10 @@ do while true
         loop
         if debug then
             if mix1Found then
-                Console.WriteLine("auto-pre-mix: INFO: found mix " & mix1InputName & " usage in PROGRAM input tree: input=" & mix1InputName)
+                Console.WriteLine("auto-pre-mix: INFO: found mix 1 usage in PROGRAM input tree: input=" & mix1InputName)
             end if
             if mix2Found then
-                Console.WriteLine("auto-pre-mix: INFO: found mix " & mix2InputName & " usage in PROGRAM input tree: input=" & mix2InputName)
+                Console.WriteLine("auto-pre-mix: INFO: found mix 2 usage in PROGRAM input tree: input=" & mix2InputName)
             end if
         end if
 
