@@ -26,6 +26,12 @@ The individual scripts are:
   inputs with the help of two intermediate Mix-type input(s) in order to
   further embed the result onto a layer of a target input.
 
+- [input-bridge.vb](input-bridge.vb):<br/>
+  [**Bridge Inputs between vMix instances**](input-bridge.md)<br/>
+  Allow one to bridge/tunnel an arbitrary number of inputs between two
+  vMix instances with the help of two intermediate NDI-type input(s) in
+  order to perform load offloading between two vMix instances.
+
 - [smooth-pan-zoom.vb](smooth-pan-zoom.vb):<br/>
   [**Smooth Virtual Pan/Zoom in Virtual Sets**](smooth-pan-zoom.md)<br/>
   Smoothly adjust the pan/zoom of an input, for a rough emulation of the
