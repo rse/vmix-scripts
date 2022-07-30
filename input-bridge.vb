@@ -8,11 +8,11 @@
 '--
 
 '-- CONFIGURATION
-dim remoteAPI              as String  = "http://10.0.0.22:8088/API/"
+dim remoteAPI              as String  = "http://10.0.0.11:8088/API/"
 dim remoteOutputNumber1    as String  = "3"
 dim remoteOutputNumber2    as String  = "4"
-dim remoteNDIStreamName1   as String  = "STUDIO2 (vMix - Output 3)"
-dim remoteNDIStreamName2   as String  = "STUDIO2 (vMix - Output 4)"
+dim remoteNDIStreamName1   as String  = "COMPUTER1 (vMix - Output 3)"
+dim remoteNDIStreamName2   as String  = "COMPUTER1 (vMix - Output 4)"
 dim localNDIInputName1     as String  = "BRIDGE1"
 dim localNDIInputName2     as String  = "BRIDGE2"
 dim localInputNamePrefix   as String  = "VPTZ - "
