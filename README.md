@@ -20,6 +20,12 @@ The individual scripts are:
   reduced, based on audio input volumes (when temporarily above a
   threshold) -- similar to an audio side-chain compression.
 
+- [audio-heartbeat.vb](audio-heartbeat.vb):<br/>
+  [**Detect Unexpected Silence**](audio-heartbeat.md)<br/>
+  Notify operator in case unexpected silence, i.e., audio below a
+  certain threshold on the master bus, is detected during streaming
+  and/or recording.
+
 - [auto-pre-mix.vb](auto-pre-mix.vb):<br/>
   [**Automatically Pre-Mixing Inputs**](auto-pre-mix.md)<br/>
   Allow one to auto-pre-mix (aka pre-render or flattening) source
