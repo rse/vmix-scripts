@@ -142,7 +142,7 @@ do while true
             next
 
             '-- react on special input configuration, if found
-            if bridgeNumber <> 0 and bridgeOverlay <> -1 then
+            if inputName.Substring(0, localInputNamePrefix.Length) = localInputNamePrefix and bridgeNumber <> 0 and bridgeOverlay <> -1 then
                 if debug then
                     dim overlayName as String = cfg.SelectSingleNode("/vmix/inputs/input[@key = '" & targetOverlays.Item(bridgeOverlay).Attributes("key").InnerText & "']/@title").Value
                     Console.WriteLine("input-bridge: INFO: target input '" & inputName & "': found setup: layer-" & (bridgeOverlay + 1).toString() & "=" & overlayName)
