@@ -35,7 +35,7 @@ The individual scripts are:
 - [input-bridge.vb](input-bridge.vb):<br/>
   [**Bridge Inputs between vMix instances**](input-bridge.md)<br/>
   Allow one to bridge/tunnel an arbitrary number of inputs between two
-  vMix instances with the help of two intermediate NDI-type input(s) in
+  vMix instances with the help of two NDI streams in
   order to perform load offloading between two vMix instances.
 
 - [smooth-pan-zoom.vb](smooth-pan-zoom.vb):<br/>
