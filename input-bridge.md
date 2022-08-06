@@ -5,8 +5,10 @@
 **Bridge Inputs between vMix instances**
 
 Allow one to bridge/tunnel an arbitrary number of inputs between two
-vMix instances with the help of two NDI streams in
-order to perform load offloading between two vMix instances.
+vMix instances with the help of two NDI streams in order to perform load
+offloading between two vMix instances.
+
+See the corresponding [demonstration video](https://youtu.be/Y6MHAtpMYG8) for details.
 
 Problem
 -------
