@@ -46,7 +46,7 @@ do while true
     dim nowInProgram as String = cfg.SelectSingleNode("/vmix/active").InnerText
 
     '-- only react if a new input was placed into preview
-	'-- and the preview is not just the program
+    '-- and the preview is not just the program
     if nowInPreview <> lastInPreview and nowInPreview <> nowInProgram then
         lastInPreview = nowInPreview
         dim inputName as String = ""
@@ -64,7 +64,7 @@ do while true
         stack.Push(inputKey)
         do while stack.Count > 0
             inputKey = stack.Pop()
-			if inputKey = localInputKey1 then
+            if inputKey = localInputKey1 then
                 bridge1Found = true
                 exit do
             elseif inputKey = localInputKey2 then
@@ -109,7 +109,7 @@ do while true
                 dim ovKey as String = inputOverlays.Item(i).Attributes("key").InnerText
                 if ovKey = localInputKey1 then
                     bridgeOverlay = i
-                    if not bridge1Found then
+                    if not bridge1Found or (bridge1Found and remoteInputName1 = inputName) then
                         bridgeNumber = 1
                     else
                         bridgeNumber = 2
@@ -117,7 +117,7 @@ do while true
                     end if
                 elseif ovKey = localInputKey2 then
                     bridgeOverlay = i
-                    if not bridge2Found then
+                    if not bridge2Found or (bridge2Found and remoteInputName2 = inputName) then
                         bridgeNumber = 2
                     else
                         bridgeNumber = 1
@@ -135,9 +135,9 @@ do while true
                 end if
 
                 '-- reconfigure the remote vMix instance to send input
-				'-- (but do not re-configure if not necessary to not let program flash)
+                '-- (but do not re-configure if not necessary to not let program flash)
                 if (bridgeNumber = 1 and remoteInputName1 <> inputName) or (bridgeNumber = 2 and remoteInputName2 <> inputName) then
-				    dim url as String = remoteAPI & "?Function=ActiveInput&Mix="
+                    dim url as String = remoteAPI & "?Function=ActiveInput&Mix="
                     if bridgeNumber = 1 then
                         if debug then
                             Console.WriteLine("input-bridge: INFO: target input '" & inputName & "': route: remote-mix=" & remoteMixNum1 & " local-bridge=" & localInputName1)
@@ -158,7 +158,8 @@ do while true
                     while streamReader.Peek >= 0
                         dim data as String = streamReader.ReadToEnd()
                     end while
-				end if
+                    sleep(100)
+                end if
 
                 '-- optionally re-configure local input layer to receive input
                 if bridgeChange then
