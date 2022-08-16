@@ -43,9 +43,9 @@ do while true
         continue do
     end if
 
-     '-- determine input volume (in linear volume scale)
-    dim meter1 as double = cfg.SelectSingleNode("/vmix/audio/master/@meterF1").Value
-    dim meter2 as double = cfg.SelectSingleNode("/vmix/audio/master/@meterF2").Value
+    '-- determine input volume (in linear volume scale)
+    dim meter1 as double = Double.Parse(cfg.SelectSingleNode("/vmix/audio/master/@meterF1").Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CreateSpecificCulture("en-US"))
+    dim meter2 as double = Double.Parse(cfg.SelectSingleNode("/vmix/audio/master/@meterF2").Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CreateSpecificCulture("en-US"))
     if meter1 < meter2 then
         meter1 = meter2
     end if
