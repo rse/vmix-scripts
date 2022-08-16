@@ -91,8 +91,8 @@ do while true
     end if
 
     '-- determine input volume (in linear volume scale)
-    dim meter1 as double = cfg.SelectSingleNode("//audio/bus" & busMonitor & "/@meterF1").Value
-    dim meter2 as double = cfg.SelectSingleNode("//audio/bus" & busMonitor & "/@meterF2").Value
+    dim meter1 as double = Double.Parse(cfg.SelectSingleNode("//audio/bus" & busMonitor & "/@meterF1").Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CreateSpecificCulture("en-US"))
+    dim meter2 as double = Double.Parse(cfg.SelectSingleNode("//audio/bus" & busMonitor & "/@meterF2").Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CreateSpecificCulture("en-US"))
     if meter1 < meter2 then
         meter1 = meter2
     end if
