@@ -48,6 +48,9 @@ dim cfg as new System.Xml.XmlDocument
 '-- prepare list of excluded inputs
 dim busAdjustInputsExclA() as string = busAdjustInputsExcl.Split(",")
 
+'-- use a fixed locale for parsing floating point numbers
+dim cultureInfo as System.Globalization.CultureInfo = System.Globalization.CultureInfo.CreateSpecificCulture("en-US")
+
 '-- enter endless iteration loop
 do while true
     '-- fetch current vMix API status
@@ -55,7 +58,7 @@ do while true
     cfg.LoadXml(xml)
 
     '-- determine whether we should operate at all (indicated by muted/unmuted input bus)
-    dim muted as boolean = cfg.SelectSingleNode("//audio/bus" & busMonitor & "/@muted").Value
+    dim muted as boolean = Convert.ToBoolean(cfg.SelectSingleNode("/vmix/audio/bus" & busMonitor & "/@muted").Value)
     if muted then
         '-- ensure we reset current volume knowledge once we become unmuted again
         if volumeCurrent >= 0 then
@@ -69,20 +72,20 @@ do while true
         volumeCurrent = volumeFull
         if not busAdjustInputs then
             '-- adjust the audio bus directly
-            dim isMuted as boolean = cfg.SelectSingleNode("//audio/bus" & busAdjust & "/@muted").Value
+            dim isMuted as boolean = Convert.ToBoolean(cfg.SelectSingleNode("/vmix/audio/bus" & busAdjust & "/@muted").Value)
             if not isMuted or not busAdjustUnmutedOnly then
                 API.Function("SetBus" & busAdjust & "Volume", Value := cint(volumeCurrent).ToString())
             end if
         else
             '-- adjust the inputs attached to the audio bus
-            dim busInputs as XmlNodeList = cfg.SelectNodes("//inputs/input[@audiobusses]")
+            dim busInputs as XmlNodeList = cfg.SelectNodes("/vmix/inputs/input[@audiobusses]")
             for each busInput as XmlNode in busInputs
-                dim onBusses() as string = busInput.Attributes("audiobusses").InnerText.Split(",")
-                dim title      as string = busInput.Attributes("title").InnerText
+                dim onBusses() as string = busInput.Attributes("audiobusses").Value.Split(",")
+                dim title      as string = busInput.Attributes("title").Value
                 if Array.IndexOf(onBusses, busAdjust) >= 0 and Array.IndexOf(busAdjustInputsExclA, title) < 0 then
-                    dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").InnerText)
+                    dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").Value)
                     if not isMuted or not busAdjustUnmutedOnly then
-                        dim num as integer = Convert.ToInt32(busInput.Attributes("number").InnerText)
+                        dim num as integer = Convert.ToInt32(busInput.Attributes("number").Value)
                         Input.Find(num).Function("SetVolume", Value := cint(volumeCurrent).ToString())
                     end if
                 end if
@@ -91,8 +94,8 @@ do while true
     end if
 
     '-- determine input volume (in linear volume scale)
-    dim meter1 as double = Double.Parse(cfg.SelectSingleNode("//audio/bus" & busMonitor & "/@meterF1").Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CreateSpecificCulture("en-US"))
-    dim meter2 as double = Double.Parse(cfg.SelectSingleNode("//audio/bus" & busMonitor & "/@meterF2").Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CreateSpecificCulture("en-US"))
+    dim meter1 as double = Convert.ToDouble(cfg.SelectSingleNode("/vmix/audio/bus" & busMonitor & "/@meterF1").Value, cultureInfo)
+    dim meter2 as double = Convert.ToDouble(cfg.SelectSingleNode("/vmix/audio/bus" & busMonitor & "/@meterF2").Value, cultureInfo)
     if meter1 < meter2 then
         meter1 = meter2
     end if
@@ -131,20 +134,20 @@ do while true
         end if
         if not busAdjustInputs then
             '-- adjust the audio bus directly
-            dim isMuted as boolean = cfg.SelectSingleNode("//audio/bus" & busAdjust & "/@muted").Value
+            dim isMuted as boolean = Convert.ToBoolean(cfg.SelectSingleNode("/vmix/audio/bus" & busAdjust & "/@muted").Value)
             if not isMuted or not busAdjustUnmutedOnly then
                 API.Function("SetBus" & busAdjust & "Volume", Value := cint(volumeCurrent).ToString())
             end if
         else
             '-- adjust the inputs attached to the audio bus
-            dim busInputs as XmlNodeList = cfg.SelectNodes("//inputs/input[@audiobusses]")
+            dim busInputs as XmlNodeList = cfg.SelectNodes("/vmix/inputs/input[@audiobusses]")
             for each busInput as XmlNode in busInputs
-                dim onBusses() as string = busInput.Attributes("audiobusses").InnerText.Split(",")
-                dim title      as string = busInput.Attributes("title").InnerText
+                dim onBusses() as string = busInput.Attributes("audiobusses").Value.Split(",")
+                dim title      as string = busInput.Attributes("title").Value
                 if Array.IndexOf(onBusses, busAdjust) >= 0 and Array.IndexOf(busAdjustInputsExclA, title) < 0 then
-                    dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").InnerText)
+                    dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").Value)
                     if not isMuted or not busAdjustUnmutedOnly then
-                        dim num as integer = Convert.ToInt32(busInput.Attributes("number").InnerText)
+                        dim num as integer = Convert.ToInt32(busInput.Attributes("number").Value)
                         Input.Find(num).Function("SetVolume", Value := cint(volumeCurrent).ToString())
                     end if
                 end if
