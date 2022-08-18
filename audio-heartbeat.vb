@@ -29,6 +29,9 @@ dim heartbeatThresholdAmp as double  = 10 ^ (heartbeatThresholdVolume / 20)
 '-- prepare XML DOM tree
 dim cfg as new System.Xml.XmlDocument
 
+'-- use a fixed locale for parsing floating point numbers
+dim cultureInfo as System.Globalization.CultureInfo = System.Globalization.CultureInfo.CreateSpecificCulture("en-US")
+
 '-- enter endless iteration loop
 do while true
     '-- fetch current vMix API status
@@ -36,16 +39,16 @@ do while true
     cfg.LoadXml(xml)
 
     '-- determine whether we should operate at all (indicated by streaming/recording enabled)
-    dim isStreaming    as boolean = (cfg.SelectSingleNode("/vmix/streaming").InnerText)
-    dim isRecording    as boolean = (cfg.SelectSingleNode("/vmix/recording").InnerText)
-	dim isMultiCording as boolean = (cfg.SelectSingleNode("/vmix/multiCorder").InnerText)
+    dim isStreaming    as boolean = Convert.ToBoolean(cfg.SelectSingleNode("/vmix/streaming").InnerText)
+    dim isRecording    as boolean = Convert.ToBoolean(cfg.SelectSingleNode("/vmix/recording").InnerText)
+	dim isMultiCording as boolean = Convert.ToBoolean(cfg.SelectSingleNode("/vmix/multiCorder").InnerText)
     if not (isStreaming or isRecording or isMultiCording) then
         continue do
     end if
 
     '-- determine input volume (in linear volume scale)
-    dim meter1 as double = Double.Parse(cfg.SelectSingleNode("/vmix/audio/master/@meterF1").Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CreateSpecificCulture("en-US"))
-    dim meter2 as double = Double.Parse(cfg.SelectSingleNode("/vmix/audio/master/@meterF2").Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.CreateSpecificCulture("en-US"))
+    dim meter1 as double = Convert.ToDouble(cfg.SelectSingleNode("/vmix/audio/master/@meterF1").Value, cultureInfo)
+    dim meter2 as double = Convert.ToDouble(cfg.SelectSingleNode("/vmix/audio/master/@meterF2").Value, cultureInfo)
     if meter1 < meter2 then
         meter1 = meter2
     end if
