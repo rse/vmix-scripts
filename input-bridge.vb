@@ -4,7 +4,7 @@
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
 '-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
-'-- Version:  0.9.3 (2022-08-06)
+'-- Version:  0.9.4 (2022-08-18)
 '--
 
 '-- CONFIGURATION
@@ -32,8 +32,12 @@ dim lastInPreview as String = ""
 dim lastInProgram as String = ""
 
 '-- track remote inputs
-dim remoteInputName1 as String = ""
-dim remoteInputName2 as String = ""
+dim bridge1InputName as String = ""
+dim bridge2InputName as String = ""
+
+'-- track preview/program
+dim remotePreviewInputName as String = ""
+dim remoteProgramInputName as String = ""
 
 '-- endless loop
 do while true
@@ -81,10 +85,28 @@ do while true
         if debug then
             if bridge1Found then
                 Console.WriteLine("input-bridge: INFO: found bridge #1 usage in PROGRAM input tree")
-            end if
-            if bridge2Found then
+            elseif bridge2Found then
                 Console.WriteLine("input-bridge: INFO: found bridge #2 usage in PROGRAM input tree")
             end if
+        end if
+
+        '-- ensure that remote shows input in output/program
+        dim url0 as String = ""
+        if bridge1Found and bridge1InputName <> "" and remoteProgramInputName <> bridge1InputName then
+            remoteProgramInputName = bridge1InputName
+            url0 = remoteAPI & "?Function=ActiveInput&Input=" & bridge1InputName
+        elseif bridge2Found and bridge2InputName <> "" and remoteProgramInputName <> bridge2InputName then
+            remoteProgramInputName = bridge2InputName
+            url0 = remoteAPI & "?Function=ActiveInput&Input=" & bridge2InputName
+        end if
+        if url0 <> "" then
+            dim request0  as HttpWebRequest  = HttpWebRequest.Create(url0)
+            dim response0 as HttpWebResponse = request0.GetResponse()
+            dim stream0 as Stream = response0.GetResponseStream()
+            dim streamReader0 as new StreamReader(stream0)
+            while streamReader0.Peek >= 0
+                dim data as String = streamReader0.ReadToEnd()
+            end while
         end if
 
         '-- transitively iterate through the Preview input tree
@@ -109,7 +131,7 @@ do while true
                 dim ovKey as String = inputOverlays.Item(i).Attributes("key").InnerText
                 if ovKey = localInputKey1 then
                     bridgeOverlay = i
-                    if not bridge1Found or (bridge1Found and remoteInputName1 = inputName) then
+                    if not bridge1Found or (bridge1Found and bridge1InputName = inputName) then
                         bridgeNumber = 1
                     else
                         bridgeNumber = 2
@@ -117,7 +139,7 @@ do while true
                     end if
                 elseif ovKey = localInputKey2 then
                     bridgeOverlay = i
-                    if not bridge2Found or (bridge2Found and remoteInputName2 = inputName) then
+                    if not bridge2Found or (bridge2Found and bridge2InputName = inputName) then
                         bridgeNumber = 2
                     else
                         bridgeNumber = 1
@@ -136,22 +158,25 @@ do while true
 
                 '-- reconfigure the remote vMix instance to send input
                 '-- (but do not re-configure if not necessary to not let program flash)
-                if (bridgeNumber = 1 and remoteInputName1 <> inputName) or (bridgeNumber = 2 and remoteInputName2 <> inputName) then
-                    dim url as String = remoteAPI & "?Function=ActiveInput&Mix="
+                if (bridgeNumber = 1 and bridge1InputName <> inputName) or (bridgeNumber = 2 and bridge2InputName <> inputName) then
+                    dim url1 as String = remoteAPI & "?Function=ActiveInput&Mix="
+                    dim url2 as String = remoteAPI & "?Function=PreviewInput"
                     if bridgeNumber = 1 then
                         if debug then
                             Console.WriteLine("input-bridge: INFO: target input '" & inputName & "': route: remote-mix=" & remoteMixNum1 & " local-bridge=" & localInputName1)
                         end if
-                        url = url & remoteMixNum1 & "&Input=" & inputName
-                        remoteInputName1 = inputName
+                        url1 = url1 & remoteMixNum1 & "&Input=" & inputName
+                        url2 = url2 & "&Input=" & inputName
+                        bridge1InputName = inputName
                     else
                         if debug then
                             Console.WriteLine("input-bridge: INFO: target input '" & inputName & "': route: remote-mix=" & remoteMixNum2 & " local-bridge=" & localInputName2)
                         end if
-                        url = url & remoteMixNum2 & "&Input=" & inputName
-                        remoteInputName2 = inputName
+                        url1 = url1 & remoteMixNum2 & "&Input=" & inputName
+                        url2 = url2 & "&Input=" & inputName
+                        bridge2InputName = inputName
                     end if
-                    dim request  as HttpWebRequest  = HttpWebRequest.Create(url)
+                    dim request  as HttpWebRequest  = HttpWebRequest.Create(url1)
                     dim response as HttpWebResponse = request.GetResponse()
                     dim stream as Stream = response.GetResponseStream()
                     dim streamReader as new StreamReader(stream)
@@ -159,6 +184,16 @@ do while true
                         dim data as String = streamReader.ReadToEnd()
                     end while
                     sleep(100)
+                    if remotePreviewInputName <> inputName then
+                        remotePreviewInputName = inputName
+                        request  as HttpWebRequest  = HttpWebRequest.Create(url2)
+                        response as HttpWebResponse = request.GetResponse()
+                        stream as Stream = response.GetResponseStream()
+                        streamReader as new StreamReader(stream)
+                        while streamReader.Peek >= 0
+                            dim data as String = streamReader.ReadToEnd()
+                        end while
+                    end
                 end if
 
                 '-- optionally re-configure local input layer to receive input
