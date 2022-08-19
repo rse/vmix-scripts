@@ -103,7 +103,7 @@ do while true
             dim request0  as HttpWebRequest  = HttpWebRequest.Create(url0)
             dim response0 as HttpWebResponse = request0.GetResponse()
             dim stream0 as Stream = response0.GetResponseStream()
-            dim streamReader0 as new StreamReader(stream0)
+            dim streamReader0 as StreamReader = new StreamReader(stream0)
             while streamReader0.Peek >= 0
                 dim data as String = streamReader0.ReadToEnd()
             end while
@@ -179,7 +179,7 @@ do while true
                     dim request  as HttpWebRequest  = HttpWebRequest.Create(url1)
                     dim response as HttpWebResponse = request.GetResponse()
                     dim stream as Stream = response.GetResponseStream()
-                    dim streamReader as new StreamReader(stream)
+                    dim streamReader as StreamReader = new StreamReader(stream)
                     while streamReader.Peek >= 0
                         dim data as String = streamReader.ReadToEnd()
                     end while
