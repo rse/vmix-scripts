@@ -193,7 +193,7 @@ do while true
                         while streamReader.Peek >= 0
                             dim data as String = streamReader.ReadToEnd()
                         end while
-                    end
+                    end if
                 end if
 
                 '-- optionally re-configure local input layer to receive input
