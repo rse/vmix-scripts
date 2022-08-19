@@ -186,10 +186,10 @@ do while true
                     sleep(100)
                     if remotePreviewInputName <> inputName then
                         remotePreviewInputName = inputName
-                        request  as HttpWebRequest  = HttpWebRequest.Create(url2)
-                        response as HttpWebResponse = request.GetResponse()
-                        stream as Stream = response.GetResponseStream()
-                        streamReader as new StreamReader(stream)
+                        request  = HttpWebRequest.Create(url2)
+                        response = request.GetResponse()
+                        stream = response.GetResponseStream()
+                        streamReader = new StreamReader(stream)
                         while streamReader.Peek >= 0
                             dim data as String = streamReader.ReadToEnd()
                         end while
