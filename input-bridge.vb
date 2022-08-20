@@ -4,214 +4,224 @@
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
 '-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
-'-- Version:  0.9.4 (2022-08-18)
+'-- Version:  0.9.6 (2022-08-20)
 '--
 
-'-- CONFIGURATION
-dim remoteAPI        as String  = "http://10.0.0.11:8088/API/"
-dim remoteMixNum1    as String  = "1"
-dim remoteMixNum2    as String  = "2"
-dim localInputName1  as String  = "BRIDGE1"
-dim localInputName2  as String  = "BRIDGE2"
-dim timeSlice        as Integer = 50
-dim debug            as Boolean = true
+'-- ==== CONFIGURATION ====
+
+dim peerAPI          as String  = "http://10.0.0.11:8088/API/" '-- peer vMix HTTP API endpoint       (remote only)
+dim bridge1MixNum    as String  = "1"                          '-- mix number of bridge #1           (remote only)
+dim bridge2MixNum    as String  = "2"                          '-- mix number of bridge #2           (remote only)
+dim bridge1InputName as String  = "BRIDGE1"                    '-- input name of bridge #1           (local and remote)
+dim bridge2InputName as String  = "BRIDGE2"                    '-- input name of bridge #2           (local and remote)
+dim timeSlice        as Integer = 50                           '-- time slice of processing interval (local only)
+dim debug            as Boolean = true                         '-- wether to output debug messages   (local only)
+
+'-- ==== STATE ====
 
 '-- prepare XML DOM tree and load the current API state
-dim cfg as new System.Xml.XmlDocument
+dim cfg as System.Xml.XmlDocument = new System.Xml.XmlDocument()
 dim xml as String = API.XML()
 cfg.LoadXml(xml)
 
-'-- determine information of local NDI bridge inputs
-dim localInputNum1 as String = cfg.SelectSingleNode("/vmix/inputs/input[@title = '" & localInputName1 & "']/@number").Value
-dim localInputKey1 as String = cfg.SelectSingleNode("/vmix/inputs/input[@title = '" & localInputName1 & "']/@key").Value
-dim localInputNum2 as String = cfg.SelectSingleNode("/vmix/inputs/input[@title = '" & localInputName2 & "']/@number").Value
-dim localInputKey2 as String = cfg.SelectSingleNode("/vmix/inputs/input[@title = '" & localInputName2 & "']/@key").Value
+'-- pre-determine information of bridge inputs
+dim bridge1InputNum as String = cfg.SelectSingleNode("/vmix/inputs/input[@title = '" & bridge1InputName & "']/@number").Value
+dim bridge1InputKey as String = cfg.SelectSingleNode("/vmix/inputs/input[@title = '" & bridge1InputName & "']/@key").Value
+dim bridge2InputNum as String = cfg.SelectSingleNode("/vmix/inputs/input[@title = '" & bridge2InputName & "']/@number").Value
+dim bridge2InputKey as String = cfg.SelectSingleNode("/vmix/inputs/input[@title = '" & bridge2InputName & "']/@key").Value
 
-'-- keep internal state
-dim lastInPreview as String = ""
-dim lastInProgram as String = ""
+'-- track which source input is in the bridges (on the peer side)
+dim bridge1SourceInputName as String = ""
+dim bridge2SourceInputName as String = ""
 
-'-- track remote inputs
-dim bridge1InputName as String = ""
-dim bridge2InputName as String = ""
+'-- track which bridge is currently used (directly or indirectly) in preview and program
+dim bridgeInPreview as Integer = 0
+dim bridgeInProgram as Integer = 0
 
-'-- track preview/program
-dim remotePreviewInputName as String = ""
-dim remoteProgramInputName as String = ""
+'-- track last preview/program state
+dim inputInPreviewLast as String = ""
+dim inputInProgramLast as String = ""
 
-'-- endless loop
+'-- ==== PROCESSING ====
+
+'-- endless processing loop
 do while true
     '-- re-load the current API state
     xml = API.XML()
     cfg.LoadXml(xml)
 
-    '-- determine what is currently in preview and in program
-    dim nowInPreview as String = cfg.SelectSingleNode("/vmix/preview").InnerText
-    dim nowInProgram as String = cfg.SelectSingleNode("/vmix/active").InnerText
+    '-- determine what input is currently in preview and in program
+    dim inputInPreviewNow as String = cfg.SelectSingleNode("/vmix/preview").InnerText
+    dim inputInProgramNow as String = cfg.SelectSingleNode("/vmix/active").InnerText
 
-    '-- only react if a new input was placed into preview
-    '-- and the preview is not just the program
-    if nowInPreview <> lastInPreview and nowInPreview <> nowInProgram then
-        lastInPreview = nowInPreview
-        dim inputName as String = ""
+    '-- react if a new input was placed into program
+    if inputInProgramNow <> inputInProgramLast then
+        '-- print detected change
         if debug then
-            inputName = cfg.SelectSingleNode("/vmix/inputs/input[@number = '" & nowInPreview & "']/@title").Value
-            Console.WriteLine("input-bridge: INFO: PREVIEW change detected: input=" & inputName)
+            dim inputName as String = cfg.SelectSingleNode("/vmix/inputs/input[@number = '" & inputInProgramNow & "']/@title").Value
+            Console.WriteLine("input-bridge: INFO: PROGRAM change detected: input=" & inputName)
         end if
 
         '-- transitively iterate through the program input tree
-        '-- and find out whether a bridge NDI input is used at all
-        dim bridge1Found as Boolean = false
-        dim bridge2Found as Boolean = false
-        dim inputKey as String = cfg.SelectSingleNode("/vmix/inputs/input[@number = '" & nowInProgram & "']/@key").Value
+        '-- and find out whether a bridge input is used at all
+        bridgeInProgram = 0
+        dim inputKey as String = cfg.SelectSingleNode("/vmix/inputs/input[@number = '" & inputInProgramNow & "']/@key").Value
         dim stack as System.Collections.Stack = new System.Collections.Stack()
         stack.Push(inputKey)
         do while stack.Count > 0
             inputKey = stack.Pop()
-            if inputKey = localInputKey1 then
-                bridge1Found = true
+            if inputKey = bridge1InputKey then
+                bridgeInProgram = 1
                 exit do
-            elseif inputKey = localInputKey2 then
-                bridge2Found = true
+            elseif inputKey = bridge2InputKey then
+                bridgeInProgram = 2
                 exit do
             else
                 dim layers as XmlNodeList = cfg.SelectNodes("/vmix/inputs/input[@key = '" & inputKey & "']/overlay")
                 for each layer as XmlNode in layers
-                    dim layerKey as String = layer.Attributes("key").InnerText
+                    dim layerKey as String = layer.Attributes("key").Value
                     stack.Push(layerKey)
                 next
             end if
         loop
-        if debug then
-            if bridge1Found then
-                Console.WriteLine("input-bridge: INFO: found bridge #1 usage in PROGRAM input tree")
-            elseif bridge2Found then
-                Console.WriteLine("input-bridge: INFO: found bridge #2 usage in PROGRAM input tree")
-            end if
+        if bridgeInProgram > 0 and debug then
+            Console.WriteLine("input-bridge: INFO: found bridge #" & bridgeInProgram & " usage in PROGRAM input tree")
         end if
+    end if
 
-        '-- ensure that remote shows input in output/program
-        dim url0 as String = ""
-        if bridge1Found and bridge1InputName <> "" and remoteProgramInputName <> bridge1InputName then
-            remoteProgramInputName = bridge1InputName
-            url0 = remoteAPI & "?Function=ActiveInput&Input=" & bridge1InputName
-        elseif bridge2Found and bridge2InputName <> "" and remoteProgramInputName <> bridge2InputName then
-            remoteProgramInputName = bridge2InputName
-            url0 = remoteAPI & "?Function=ActiveInput&Input=" & bridge2InputName
-        end if
-        if url0 <> "" then
-            dim request0  as HttpWebRequest  = HttpWebRequest.Create(url0)
-            dim response0 as HttpWebResponse = request0.GetResponse()
-            dim stream0 as Stream = response0.GetResponseStream()
-            dim streamReader0 as StreamReader = new StreamReader(stream0)
-            while streamReader0.Peek >= 0
-                dim data as String = streamReader0.ReadToEnd()
-            end while
+    '-- react if a new input was placed into preview
+    if inputInPreviewNow <> inputInPreviewLast then
+        '-- print detected change
+        if debug then
+            dim inputName as String = cfg.SelectSingleNode("/vmix/inputs/input[@number = '" & inputInPreviewNow & "']/@title").Value
+            Console.WriteLine("input-bridge: INFO: PREVIEW change detected: input=" & inputName)
         end if
 
         '-- transitively iterate through the Preview input tree
-        '-- in order to re-configure the bridge NDI input which should be used
-        '-- (i.e. the one which is not used in Program)
-        inputKey = cfg.SelectSingleNode("/vmix/inputs/input[@number = '" & nowInPreview & "']/@key").Value
-        stack = new System.Collections.Stack()
+        '-- in order to re-configure the bridge input which should be used
+        '-- (i.e. the one which is not already used in the Program input tree)
+        bridgeInPreview = 0
+        dim inputKey as String = cfg.SelectSingleNode("/vmix/inputs/input[@number = '" & inputInPreviewNow & "']/@key").Value
+        dim stack as System.Collections.Stack = new System.Collections.Stack()
         stack.Push(inputKey)
         do while stack.Count > 0
             inputKey = stack.Pop()
 
             '-- determine input details
-            inputName = cfg.SelectSingleNode("/vmix/inputs/input[@key = '" & inputKey & "']/@title").Value
-            dim inputNum as String = cfg.SelectSingleNode("/vmix/inputs/input[@key = '" & inputKey & "']/@number").Value
+            dim inputName as String = cfg.SelectSingleNode("/vmix/inputs/input[@key = '" & inputKey & "']/@title").Value
+            dim inputNum  as String = cfg.SelectSingleNode("/vmix/inputs/input[@key = '" & inputKey & "']/@number").Value
             dim inputOverlays as XmlNodeList = cfg.SelectNodes("/vmix/inputs/input[@key = '" & inputKey & "']/overlay")
 
             '-- check for the special input configuration we act on
-            dim bridgeNumber   as Integer = 0     '-- the bridge to use
-            dim bridgeChange   as Boolean = False '-- whether to change the bridge input on remote side
-            dim bridgeOverlay  as Integer = -1    '-- the overlay of potential bridge input (layer number)
+            dim inputChange  as Boolean = False '-- whether to change the bridge input on remote side
+            dim inputOverlay as Integer = -1    '-- the overlay of bridge input (layer number)
             for i as Integer = 0 to inputOverlays.Count - 1
-                dim ovKey as String = inputOverlays.Item(i).Attributes("key").InnerText
-                if ovKey = localInputKey1 then
-                    bridgeOverlay = i
-                    if not bridge1Found or (bridge1Found and bridge1InputName = inputName) then
-                        bridgeNumber = 1
+                dim ovKey as String = inputOverlays.Item(i).Attributes("key").Value
+                if ovKey = bridge1InputKey then
+                    inputOverlay = i
+                    if bridgeInProgram <> 1 or (bridgeInProgram = 1 and bridge1SourceInputName = inputName) then
+                        bridgeInPreview = 1
                     else
-                        bridgeNumber = 2
-                        bridgeChange = true
+                        bridgeInPreview = 2
+                        inputChange = true
                     end if
-                elseif ovKey = localInputKey2 then
-                    bridgeOverlay = i
-                    if not bridge2Found or (bridge2Found and bridge2InputName = inputName) then
-                        bridgeNumber = 2
+                elseif ovKey = bridge2InputKey then
+                    inputOverlay = i
+                    if bridgeInProgram <> 2 or (bridgeInProgram = 2 and bridge2SourceInputName = inputName) then
+                        bridgeInPreview = 2
                     else
-                        bridgeNumber = 1
-                        bridgeChange = true
+                        bridgeInPreview = 1
+                        inputChange = true
                     end if
                 end if
                 stack.Push(ovKey)
             next
 
             '-- react on special input configuration, if found
-            if bridgeNumber <> 0 and bridgeOverlay <> -1 then
+            if bridgeInPreview <> 0 and inputOverlay <> -1 then
                 if debug then
-                    dim overlayName as String = cfg.SelectSingleNode("/vmix/inputs/input[@key = '" & inputOverlays.Item(bridgeOverlay).Attributes("key").InnerText & "']/@title").Value
-                    Console.WriteLine("input-bridge: INFO: target input '" & inputName & "': found setup: layer-" & (bridgeOverlay + 1).toString() & "=" & overlayName)
+                    dim overlayName as String = cfg.SelectSingleNode("/vmix/inputs/input[@key = '" & inputOverlays.Item(inputOverlay).Attributes("key").Value & "']/@title").Value
+                    Console.WriteLine("input-bridge: INFO: target input '" & inputName & "': found setup: layer-" & (inputOverlay + 1).toString() & "=" & overlayName)
                 end if
 
                 '-- reconfigure the remote vMix instance to send input
                 '-- (but do not re-configure if not necessary to not let program flash)
-                if (bridgeNumber = 1 and bridge1InputName <> inputName) or (bridgeNumber = 2 and bridge2InputName <> inputName) then
-                    dim url1 as String = remoteAPI & "?Function=ActiveInput&Mix="
-                    dim url2 as String = remoteAPI & "?Function=PreviewInput"
-                    if bridgeNumber = 1 then
+                if (bridgeInPreview = 1 and bridge1SourceInputName <> inputName) or (bridgeInPreview = 2 and bridge2SourceInputName <> inputName) then
+                    dim url as String = peerAPI & "?Function=ActiveInput&Mix="
+                    if bridgeInPreview = 1 then
                         if debug then
-                            Console.WriteLine("input-bridge: INFO: target input '" & inputName & "': route: remote-mix=" & remoteMixNum1 & " local-bridge=" & localInputName1)
+                            Console.WriteLine("input-bridge: INFO: target input '" & inputName & "': route: remote-mix=" & bridge1MixNum & " local-bridge=" & bridge1InputName)
                         end if
-                        url1 = url1 & remoteMixNum1 & "&Input=" & inputName
-                        url2 = url2 & "&Input=" & inputName
-                        bridge1InputName = inputName
+                        url = url & bridge1MixNum & "&Input=" & inputName
+                        bridge1SourceInputName = inputName
                     else
                         if debug then
-                            Console.WriteLine("input-bridge: INFO: target input '" & inputName & "': route: remote-mix=" & remoteMixNum2 & " local-bridge=" & localInputName2)
+                            Console.WriteLine("input-bridge: INFO: target input '" & inputName & "': route: remote-mix=" & bridge2MixNum & " local-bridge=" & bridge2InputName)
                         end if
-                        url1 = url1 & remoteMixNum2 & "&Input=" & inputName
-                        url2 = url2 & "&Input=" & inputName
-                        bridge2InputName = inputName
+                        url = url & bridge2MixNum & "&Input=" & inputName
+                        bridge2SourceInputName = inputName
                     end if
-                    dim request  as HttpWebRequest  = HttpWebRequest.Create(url1)
+                    dim request  as HttpWebRequest  = HttpWebRequest.Create(url)
                     dim response as HttpWebResponse = request.GetResponse()
                     dim stream as Stream = response.GetResponseStream()
                     dim streamReader as StreamReader = new StreamReader(stream)
                     while streamReader.Peek >= 0
                         dim data as String = streamReader.ReadToEnd()
                     end while
-                    sleep(100)
-                    if remotePreviewInputName <> inputName then
-                        remotePreviewInputName = inputName
-                        request  = HttpWebRequest.Create(url2)
-                        response = request.GetResponse()
-                        stream = response.GetResponseStream()
-                        streamReader = new StreamReader(stream)
-                        while streamReader.Peek >= 0
-                            dim data as String = streamReader.ReadToEnd()
-                        end while
-                    end if
                 end if
 
                 '-- optionally re-configure local input layer to receive input
-                if bridgeChange then
-                    if bridgeNumber = 1 then
+                if inputChange then
+                    if bridgeInPreview = 1 then
                         if debug then
-                            Console.WriteLine("input-bridge: INFO: target input '" & inputName & "': reconfigure: layer-" & (bridgeOverlay + 1).toString() & "=" & localInputName1)
+                            Console.WriteLine("input-bridge: INFO: target input '" & inputName & "': reconfigure: layer-" & (inputOverlay + 1).toString() & "=" & bridge1InputName)
                         end if
-                        API.Function("SetMultiViewOverlay", Input := inputNum, Value := (bridgeOverlay + 1).toString() & "," & localInputNum1)
+                        API.Function("SetMultiViewOverlay", Input := inputNum, Value := (inputOverlay + 1).toString() & "," & bridge1InputNum)
                     else
                         if debug then
-                            Console.WriteLine("input-bridge: INFO: target input '" & inputName & "': reconfigure: layer-" & (bridgeOverlay + 1).toString() & "=" & localInputName2)
+                            Console.WriteLine("input-bridge: INFO: target input '" & inputName & "': reconfigure: layer-" & (inputOverlay + 1).toString() & "=" & bridge2InputName)
                         end if
-                        API.Function("SetMultiViewOverlay", Input := inputNum, Value := (bridgeOverlay + 1).toString() & "," & localInputNum2)
+                        API.Function("SetMultiViewOverlay", Input := inputNum, Value := (inputOverlay + 1).toString() & "," & bridge2InputNum)
                     end if
                 end if
             end if
         loop
+    end if
+
+    '-- finally update remote preview if a local change was done
+    if inputInPreviewNow <> inputInPreviewLast and bridgeInPreview <> 0 then
+        inputInPreviewLast = inputInPreviewNow
+        dim url as String = peerAPI & "?Function=PreviewInput&Input="
+        if bridgeInPreview = 1 then
+            url = url & bridge1InputName
+        elseif bridgeInPreview = 2 then
+            url = url & bridge2InputName
+        end if
+        dim request  as HttpWebRequest  = HttpWebRequest.Create(url)
+        dim response as HttpWebResponse = request.GetResponse()
+        dim stream as Stream = response.GetResponseStream()
+        dim streamReader as StreamReader = new StreamReader(stream)
+        while streamReader.Peek >= 0
+            dim data as String = streamReader.ReadToEnd()
+        end while
+    end if
+
+    '-- finally update remote program if a local change was done
+    if inputInProgramNow <> inputInProgramLast and bridgeInProgram <> 0 then
+        inputInProgramLast = inputInProgramNow
+        dim url as String = peerAPI & "?Function=ActiveInput&Input="
+        if bridgeInProgram = 1 then
+            url = url & bridge1InputName
+        elseif bridgeInProgram = 2 then
+            url = url & bridge2InputName
+        end if
+        dim request  as HttpWebRequest  = HttpWebRequest.Create(url)
+        dim response as HttpWebResponse = request.GetResponse()
+        dim stream as Stream = response.GetResponseStream()
+        dim streamReader as StreamReader = new StreamReader(stream)
+        while streamReader.Peek >= 0
+            dim data as String = streamReader.ReadToEnd()
+        end while
     end if
 
     '-- wait a little bit before next iteration

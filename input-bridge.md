@@ -53,11 +53,11 @@ Then setup COMPUTER2 as follows:
 - add the `input-bridge` script to COMPUTER2 and adjust its configuration to:
 
 ```
-dim remoteAPI        as String  = "http://10.0.0.11:8088/API/"
-dim remoteMixNum1    as String  = "1"
-dim remoteMixNum2    as String  = "2"
-dim localInputName1  as String  = "BRIDGE1"
-dim localInputName2  as String  = "BRIDGE2"
+dim peerAPI          as String  = "http://10.0.0.11:8088/API/"
+dim bridge1MixNum    as String  = "1"
+dim bridge2MixNum    as String  = "2"
+dim bridge1InputName as String  = "BRIDGE1"
+dim bridge2InputName as String  = "BRIDGE2"
 dim timeSlice        as Integer = 50
 dim debug            as Boolean = true
 ```
