@@ -39,6 +39,11 @@ The individual scripts are:
   order to perform load offloading between two vMix instances.
   (See the corresponding [demonstration video](https://youtu.be/Y6MHAtpMYG8) for details)
 
+- [multiview-overlay.vb](multiview-overlay.vb):<br/>
+  [**Update Custom Multiview Overlays**](multiview-overlay.md)<br/>
+  Allow one to update the preview/program overlays of a custom multiview
+  by selecting corresponding images in a "List" type input.
+
 - [smooth-pan-zoom.vb](smooth-pan-zoom.vb):<br/>
   [**Smooth Virtual Pan/Zoom in Virtual Sets**](smooth-pan-zoom.md)<br/>
   Smoothly adjust the pan/zoom of an input, for a rough emulation of the
