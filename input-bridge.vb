@@ -4,7 +4,7 @@
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
 '-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
-'-- Version:  0.9.6 (2022-08-20)
+'-- Version:  0.9.7 (2022-09-03)
 '--
 
 '-- ==== CONFIGURATION ====
@@ -188,9 +188,8 @@ do while true
         loop
     end if
 
-    '-- finally update remote preview if a local change was done
+    '-- update remote preview if a local change was done
     if inputInPreviewNow <> inputInPreviewLast and bridgeInPreview <> 0 then
-        inputInPreviewLast = inputInPreviewNow
         dim url as String = peerAPI & "?Function=PreviewInput&Input="
         if bridgeInPreview = 1 then
             url = url & bridge1InputName
@@ -206,9 +205,8 @@ do while true
         end while
     end if
 
-    '-- finally update remote program if a local change was done
+    '-- update remote program if a local change was done
     if inputInProgramNow <> inputInProgramLast and bridgeInProgram <> 0 then
-        inputInProgramLast = inputInProgramNow
         dim url as String = peerAPI & "?Function=ActiveInput&Input="
         if bridgeInProgram = 1 then
             url = url & bridge1InputName
@@ -222,6 +220,14 @@ do while true
         while streamReader.Peek >= 0
             dim data as String = streamReader.ReadToEnd()
         end while
+    end if
+
+    '-- finally remember new states
+    if inputInPreviewNow <> inputInPreviewLast then
+        inputInPreviewLast = inputInPreviewNow
+    end if
+    if inputInProgramNow <> inputInProgramLast then
+        inputInProgramLast = inputInProgramNow
     end if
 
     '-- wait a little bit before next iteration
