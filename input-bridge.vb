@@ -4,7 +4,7 @@
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
 '-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
-'-- Version:  0.9.7 (2022-09-03)
+'-- Version:  0.9.8 (2022-09-03)
 '--
 
 '-- ==== CONFIGURATION ====
@@ -15,7 +15,7 @@ dim bridge2MixNum    as String  = "2"                          '-- mix number of
 dim bridge1InputName as String  = "BRIDGE1"                    '-- input name of bridge #1           (local and remote)
 dim bridge2InputName as String  = "BRIDGE2"                    '-- input name of bridge #2           (local and remote)
 dim timeSlice        as Integer = 50                           '-- time slice of processing interval (local only)
-dim debug            as Boolean = true                         '-- wether to output debug messages   (local only)
+dim debug            as Boolean = false                        '-- wether to output debug messages   (local only)
 
 '-- ==== STATE ====
 
@@ -192,9 +192,9 @@ do while true
     if inputInPreviewNow <> inputInPreviewLast and bridgeInPreview <> 0 then
         dim url as String = peerAPI & "?Function=PreviewInput&Input="
         if bridgeInPreview = 1 then
-            url = url & bridge1InputName
+            url = url & bridge1SourceInputName
         elseif bridgeInPreview = 2 then
-            url = url & bridge2InputName
+            url = url & bridge2SourceInputName
         end if
         dim request  as HttpWebRequest  = HttpWebRequest.Create(url)
         dim response as HttpWebResponse = request.GetResponse()
@@ -209,9 +209,9 @@ do while true
     if inputInProgramNow <> inputInProgramLast and bridgeInProgram <> 0 then
         dim url as String = peerAPI & "?Function=ActiveInput&Input="
         if bridgeInProgram = 1 then
-            url = url & bridge1InputName
+            url = url & bridge1SourceInputName
         elseif bridgeInProgram = 2 then
-            url = url & bridge2InputName
+            url = url & bridge2SourceInputName
         end if
         dim request  as HttpWebRequest  = HttpWebRequest.Create(url)
         dim response as HttpWebResponse = request.GetResponse()
