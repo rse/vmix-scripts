@@ -4,7 +4,7 @@
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
 '-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
-'-- Version:  0.9.0 (2022-03-14)
+'-- Version:  0.9.1 (2022-09-11)
 '--
 
 '-- fetch current vMix API status
@@ -25,11 +25,9 @@ dim payloadJSON    as String = "{""version"":1,""NDI_source"":""" & monitorSourc
 dim payloadBytes   as Byte() = utf8WithoutBOM.GetBytes(payloadJSON)
 
 '-- initiate the HTTP POST request to NDI Studio Monitor
-dim request as HttpWebRequest = HttpWebRequest.Create(monitorURL)
-request.Method        = "POST"
-request.ContentType   = "application/x-www-form-urlencoded"
-request.ContentLength = payloadBytes.Length
-dim stream as Stream = request.GetRequestStream()
-stream.Write(payloadBytes, 0, payloadBytes.Length)
-stream.Close()
+dim client as System.Net.WebClient = new System.Net.WebClient()
+client.Encoding = System.Text.Encoding.UTF8
+client.Headers.Add("Content-Type", "application/x-www-form-urlencoded")
+client.Headers.Add("Content-Length", CStr(payloadBytes.Length))
+client.UploadString(monitorURL, payloadBytes)
 
