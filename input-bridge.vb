@@ -4,7 +4,7 @@
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
 '-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
-'-- Version:  0.9.8 (2022-09-03)
+'-- Version:  0.9.9 (2022-09-11)
 '--
 
 '-- ==== CONFIGURATION ====
@@ -161,13 +161,8 @@ do while true
                         url = url & bridge2MixNum & "&Input=" & inputName
                         bridge2SourceInputName = inputName
                     end if
-                    dim request  as HttpWebRequest  = HttpWebRequest.Create(url)
-                    dim response as HttpWebResponse = request.GetResponse()
-                    dim stream as Stream = response.GetResponseStream()
-                    dim streamReader as StreamReader = new StreamReader(stream)
-                    while streamReader.Peek >= 0
-                        dim data as String = streamReader.ReadToEnd()
-                    end while
+                    dim webClient as System.Net.WebClient = new System.Net.WebClient()
+                    webClient.DownloadString(url)
                 end if
 
                 '-- optionally re-configure local input layer to receive input
@@ -196,13 +191,8 @@ do while true
         elseif bridgeInPreview = 2 then
             url = url & bridge2SourceInputName
         end if
-        dim request  as HttpWebRequest  = HttpWebRequest.Create(url)
-        dim response as HttpWebResponse = request.GetResponse()
-        dim stream as Stream = response.GetResponseStream()
-        dim streamReader as StreamReader = new StreamReader(stream)
-        while streamReader.Peek >= 0
-            dim data as String = streamReader.ReadToEnd()
-        end while
+        dim webClient as System.Net.WebClient = new System.Net.WebClient()
+        webClient.DownloadString(url)
     end if
 
     '-- update remote program if a local change was done
@@ -213,13 +203,8 @@ do while true
         elseif bridgeInProgram = 2 then
             url = url & bridge2SourceInputName
         end if
-        dim request  as HttpWebRequest  = HttpWebRequest.Create(url)
-        dim response as HttpWebResponse = request.GetResponse()
-        dim stream as Stream = response.GetResponseStream()
-        dim streamReader as StreamReader = new StreamReader(stream)
-        while streamReader.Peek >= 0
-            dim data as String = streamReader.ReadToEnd()
-        end while
+        dim webClient as System.Net.WebClient = new System.Net.WebClient()
+        webClient.DownloadString(url)
     end if
 
     '-- finally remember new states
