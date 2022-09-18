@@ -4,16 +4,18 @@
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
 '-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
-'-- Version:  0.9.1 (2022-08-29)
+'-- Version:  0.9.2 (2022-09-18)
 '--
 
 '-- CONFIGURATION
 dim numberOfCams           as Integer  = 4
 dim angleInputPrefix       as String   = "VPTZ - CAM"
+dim angleInputPrefixPHYS   as String   = "PTZ - CAM"
 dim angleInputPostfixes    as String() = { "C-L", "C-C", "C-R", "F-L", "F-C", "F-R", "W-C" }
 dim listPreviewInputPrefix as String   = "MULTIVIEW-OV-PREVIEW - CAM"
 dim listProgramInputPrefix as String   = "MULTIVIEW-OV-PROGRAM - CAM"
 dim multiviewInputPrefix   as String   = "MULTIVIEW - CAM"
+dim multiviewInputPHYS     as String   = "MULTIVIEW - CAMx"
 dim multiviewOutputId      as String   = "3"
 dim timeSlice              as Integer  = 50
 dim debug                  as Boolean  = true
@@ -38,6 +40,9 @@ next
 '-- keep internal state of current preview camera
 dim lastPreviewCam as Integer = 0
 
+'-- keep internal state of current mode
+dim lastMode as String = ""
+
 '-- endless loop
 do while true
     '-- re-load the current API state
@@ -56,8 +61,19 @@ do while true
             Console.WriteLine("multiview-update: INFO: PREVIEW change detected: input=" & inputName)
         end if
         dim changed as Boolean = false
+        if inputName.length > angleInputPrefixPHYS.length then
+            if inputName.substring(0, angleInputPrefixPHYS.length) = angleInputPrefixPHYS then
+                if lastMode <> "PHYS" then
+                    API.Function("PreviewInput", Input := multiviewInputPHYS, Mix := multiviewOutputId)
+                    API.Function("ActiveInput",  Input := multiviewInputPHYS, Mix := multiviewOutputId)
+                    lastPreviewCam = 0
+                    lastMode = "PHYS"
+                end if
+            end if
+        end if
         if inputName.length > angleInputPrefix.length then
             if inputName.substring(0, angleInputPrefix.length) = angleInputPrefix then
+                lastMode = "VIRT"
                 dim cam   as Integer = Convert.ToInt32(inputName.substring(angleInputPrefix.length, 1))
                 dim angle as String  = inputName.substring(angleInputPrefix.length + 2)
                 dim idx   as Integer = Array.IndexOf(angleInputPostfixes, angle)
