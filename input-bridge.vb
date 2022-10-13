@@ -111,9 +111,7 @@ do while true
             '-- (notice: vMix sometimes has inconsistent states)
             dim inputs as XmlNodeList = cfg.SelectNodes("/vmix/inputs/input[@key = '" & inputKey & "']")
             if inputs.Count <> 1 then
-                if debug then
-                    Console.WriteLine("input-bridge: INFO: found inconsistent state: input '" & inputKey & "' not existing")
-                end if
+                Console.WriteLine("input-bridge: WARNING: found inconsistent vMix API state: input key '" & inputKey & "' not existing (skipping)")
                 continue do
             end if
 
