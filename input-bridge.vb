@@ -4,7 +4,7 @@
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
 '-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
-'-- Version:  0.9.9 (2022-09-11)
+'-- Version:  1.0.0 (2022-10-13)
 '--
 
 '-- ==== CONFIGURATION ====
@@ -106,6 +106,16 @@ do while true
         stack.Push(inputKey)
         do while stack.Count > 0
             inputKey = stack.Pop()
+
+            '-- consistency check to ensure input (still or at all) exists
+            '-- (notice: vMix sometimes has inconsistent states)
+            dim inputs as XmlNodeList = cfg.SelectNodes("/vmix/inputs/input[@key = '" & inputKey & "']")
+            if inputs.Count <> 1 then
+                if debug then
+                    Console.WriteLine("input-bridge: INFO: found inconsistent state: input '" & inputKey & "' not existing")
+                end if
+                continue do
+            end if
 
             '-- determine input details
             dim inputName as String = cfg.SelectSingleNode("/vmix/inputs/input[@key = '" & inputKey & "']/@title").Value
