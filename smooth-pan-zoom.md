@@ -36,7 +36,7 @@ Configure vMix Shortcuts with:
     <keyX> SetDynamicValue4 {pan:{up-left|up|up-right|left|reset|right|down-left|down|down-right}|zoom:{increase|reset|decrease}}
     <keyX> ScriptStart      smooth-pan-zoom
 
-Alternatively, for splitting between input selection and operation, configure vMix Shortcuts with:
+Alternatively, for splitting between input selection (`keyA`) and operation (`keyX`), configure vMix Shortcuts with:
 
     <keyA> SetDynamicInput4 <input-name>
     <keyX> SetDynamicValue4 {pan:{up-left|up|up-right|left|reset|right|down-left|down|down-right}|zoom:{increase|reset|decrease}}
