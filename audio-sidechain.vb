@@ -4,43 +4,48 @@
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
 '-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
-'-- Version:  1.3.0 (2022-07-24)
+'-- Version:  1.4.0 (2023-05-27)
 '--
 
 '-- ==== CONFIGURATION (please adjust) ====
 
-'--  bus configuration
-dim busMonitor            as string  = "B"       'id of audio bus to input/monitor volume
-dim busAdjust             as string  = "A"       'id of audio bus to output/adjust volume
-dim busAdjustInputs       as boolean = true      'whether inputs attached to bus are adjusted instead of just bus itself
-dim busAdjustInputsExcl   as string  = ""        'comma-separated list of inputs to exclude from adjustment
-dim busAdjustUnmutedOnly  as boolean = false     'whether only unmuted bus/inputs should be adjusted
+'--  input-based configuration (alternative 1)
+dim inputMonitor           as string  = ""        'id of input     to input/monitor volume
+dim inputAdjust            as string  = ""        'id of input     to output/adjust volume
+dim inputAdjustUnmutedOnly as boolean = false     'whether only unmuted input should be adjusted
+
+'--  bus-based configuration (alternative 2)
+dim busMonitor             as string  = "B"       'id of audio bus to input/monitor volume
+dim busAdjust              as string  = "A"       'id of audio bus to output/adjust volume
+dim busAdjustInputs        as boolean = true      'whether inputs attached to bus are adjusted instead of just bus itself
+dim busAdjustInputsExcl    as string  = ""        'comma-separated list of inputs to exclude from adjustment
+dim busAdjustUnmutedOnly   as boolean = false     'whether only unmuted bus/inputs should be adjusted
 
 '--  volume configuration
-dim volumeThreshold       as integer = -42       'threshold of input  in dB FS   (-oo to   0)
-dim volumeFull            as integer = 100       'full         output in percent (0   to 100)
-dim volumeReduced         as integer = 20        'reduced      output in percent (0   to 100)
+dim volumeThreshold        as integer = -42       'threshold of input  in dB FS   (-oo to   0)
+dim volumeFull             as integer = 100       'full         output in percent (0   to 100)
+dim volumeReduced          as integer = 20        'reduced      output in percent (0   to 100)
 
 '--  time configuration
-dim timeSlice             as integer = 10        'time interval between the script iterations          (ms)
-dim timeAwaitOver         as integer = 20        'time over  the threshold before triggering fade down (ms)
-dim timeAwaitBelow        as integer = 150       'time below the threshold before triggering fade up   (ms)
-dim timeFadeDown          as integer = 50        'time for fading down (ms)
-dim timeFadeUp            as integer = 50        'time for fading up   (ms)
+dim timeSlice              as integer = 10        'time interval between the script iterations          (ms)
+dim timeAwaitOver          as integer = 20        'time over  the threshold before triggering fade down (ms)
+dim timeAwaitBelow         as integer = 150       'time below the threshold before triggering fade up   (ms)
+dim timeFadeDown           as integer = 50        'time for fading down (ms)
+dim timeFadeUp             as integer = 50        'time for fading up   (ms)
 
 '--  debug configuration
-dim debug                 as boolean = false     'whether to output debug information to the console
+dim debug                  as boolean = false     'whether to output debug information to the console
 
 '-- ==== INTERNAL STATE ====
 
 '-- internal state
-dim mode                  as string  = "wait"    'current iteration mode
-dim volumeCurrent         as double  = -1        'current volume of output in percent (from 0 to 100)
-dim timeAwaitBelowCount   as integer = 0         'counter for time over  the threshold
-dim timeAwaitOverCount    as integer = 0         'counter for time below the threshold
+dim mode                   as string  = "wait"    'current iteration mode
+dim volumeCurrent          as double  = -1        'current volume of output in percent (from 0 to 100)
+dim timeAwaitBelowCount    as integer = 0         'counter for time over  the threshold
+dim timeAwaitOverCount     as integer = 0         'counter for time below the threshold
 
 '-- pre-convert values
-dim volumeThresholdAmp    as double  = 10 ^ (volumeThreshold / 20)
+dim volumeThresholdAmp     as double  = 10 ^ (volumeThreshold / 20)
 
 '-- prepare XML DOM tree
 dim cfg as new System.Xml.XmlDocument
@@ -58,7 +63,12 @@ do while true
     cfg.LoadXml(xml)
 
     '-- determine whether we should operate at all (indicated by muted/unmuted input bus)
-    dim muted as boolean = Convert.ToBoolean(cfg.SelectSingleNode("/vmix/audio/bus" & busMonitor & "/@muted").Value)
+    dim muted as boolean = true
+    if busMonitor <> "" and inputMonitor = "" then
+        muted = Convert.ToBoolean(cfg.SelectSingleNode("/vmix/audio/bus" & busMonitor & "/@muted").Value)
+    elseif busMonitor = "" and inputMonitor <> "" then
+        muted = Convert.ToBoolean(cfg.SelectSingleNode("/vmix/inputs/input[@title = '" & inputMonitor & "']/@muted").Value)
+    end if
     if muted then
         '-- ensure we reset current volume knowledge once we become unmuted again
         if volumeCurrent >= 0 then
@@ -70,32 +80,47 @@ do while true
     '-- initialize output volume
     if volumeCurrent < 0 then
         volumeCurrent = volumeFull
-        if not busAdjustInputs then
-            '-- adjust the audio bus directly
-            dim isMuted as boolean = Convert.ToBoolean(cfg.SelectSingleNode("/vmix/audio/bus" & busAdjust & "/@muted").Value)
-            if not isMuted or not busAdjustUnmutedOnly then
-                API.Function("SetBus" & busAdjust & "Volume", Value := cint(volumeCurrent).ToString())
-            end if
-        else
-            '-- adjust the inputs attached to the audio bus
-            dim busInputs as XmlNodeList = cfg.SelectNodes("/vmix/inputs/input[@audiobusses]")
-            for each busInput as XmlNode in busInputs
-                dim onBusses() as string = busInput.Attributes("audiobusses").Value.Split(",")
-                dim title      as string = busInput.Attributes("title").Value
-                if Array.IndexOf(onBusses, busAdjust) >= 0 and Array.IndexOf(busAdjustInputsExclA, title) < 0 then
-                    dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").Value)
-                    if not isMuted or not busAdjustUnmutedOnly then
-                        dim num as integer = Convert.ToInt32(busInput.Attributes("number").Value)
-                        Input.Find(num).Function("SetVolume", Value := cint(volumeCurrent).ToString())
-                    end if
+        if busAdjust <> "" and inputAdjust = "" then
+            if not busAdjustInputs then
+                '-- adjust the audio bus directly
+                dim isMuted as boolean = Convert.ToBoolean(cfg.SelectSingleNode("/vmix/audio/bus" & busAdjust & "/@muted").Value)
+                if not isMuted or not busAdjustUnmutedOnly then
+                    API.Function("SetBus" & busAdjust & "Volume", Value := cint(volumeCurrent).ToString())
                 end if
-            next
+            else
+                '-- adjust the inputs attached to the audio bus
+                dim busInputs as XmlNodeList = cfg.SelectNodes("/vmix/inputs/input[@audiobusses]")
+                for each busInput as XmlNode in busInputs
+                    dim onBusses() as string = busInput.Attributes("audiobusses").Value.Split(",")
+                    dim title      as string = busInput.Attributes("title").Value
+                    if Array.IndexOf(onBusses, busAdjust) >= 0 and Array.IndexOf(busAdjustInputsExclA, title) < 0 then
+                        dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").Value)
+                        if not isMuted or not busAdjustUnmutedOnly then
+                            dim num as integer = Convert.ToInt32(busInput.Attributes("number").Value)
+                            Input.Find(num).Function("SetVolume", Value := cint(volumeCurrent).ToString())
+                        end if
+                    end if
+                next
+            end if
+        elseif busAdjust = "" and inputAdjust <> "" then
+            '-- adjust the input directly
+            dim isMuted as boolean = Convert.ToBoolean(cfg.SelectSingleNode("/vmix/inputs/input[@title = '" & inputAdjust & "']/@muted").Value)
+            if not isMuted or not inputAdjustUnmutedOnly then
+                API.Function("SetVolume", Input := inputAdjust, Value := cint(volumeCurrent).ToString())
+            end if
         end if
     end if
 
     '-- determine input volume (in linear volume scale)
-    dim meter1 as double = Convert.ToDouble(cfg.SelectSingleNode("/vmix/audio/bus" & busMonitor & "/@meterF1").Value, cultureInfo)
-    dim meter2 as double = Convert.ToDouble(cfg.SelectSingleNode("/vmix/audio/bus" & busMonitor & "/@meterF2").Value, cultureInfo)
+    dim meter1 as double = 0.0
+    dim meter2 as double = 0.0
+    if busMonitor <> "" and inputMonitor = "" then
+        meter1 = Convert.ToDouble(cfg.SelectSingleNode("/vmix/audio/bus" & busMonitor & "/@meterF1").Value, cultureInfo)
+        meter2 = Convert.ToDouble(cfg.SelectSingleNode("/vmix/audio/bus" & busMonitor & "/@meterF2").Value, cultureInfo)
+    elseif busMonitor = "" and inputMonitor <> "" then
+        meter1 = Convert.ToDouble(cfg.SelectSingleNode("/vmix/inputs/input[@title = '" & inputMonitor & "']/@meterF1").Value, cultureInfo)
+        meter2 = Convert.ToDouble(cfg.SelectSingleNode("/vmix/inputs/input[@title = '" & inputMonitor & "']/@meterF2").Value, cultureInfo)
+    end if
     if meter1 < meter2 then
         meter1 = meter2
     end if
@@ -132,26 +157,34 @@ do while true
         elseif mode = "fade-up" then
             volumeCurrent += ((volumeFull - volumeReduced) / timeFadeUp  ) * timeSlice
         end if
-        if not busAdjustInputs then
-            '-- adjust the audio bus directly
-            dim isMuted as boolean = Convert.ToBoolean(cfg.SelectSingleNode("/vmix/audio/bus" & busAdjust & "/@muted").Value)
-            if not isMuted or not busAdjustUnmutedOnly then
-                API.Function("SetBus" & busAdjust & "Volume", Value := cint(volumeCurrent).ToString())
-            end if
-        else
-            '-- adjust the inputs attached to the audio bus
-            dim busInputs as XmlNodeList = cfg.SelectNodes("/vmix/inputs/input[@audiobusses]")
-            for each busInput as XmlNode in busInputs
-                dim onBusses() as string = busInput.Attributes("audiobusses").Value.Split(",")
-                dim title      as string = busInput.Attributes("title").Value
-                if Array.IndexOf(onBusses, busAdjust) >= 0 and Array.IndexOf(busAdjustInputsExclA, title) < 0 then
-                    dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").Value)
-                    if not isMuted or not busAdjustUnmutedOnly then
-                        dim num as integer = Convert.ToInt32(busInput.Attributes("number").Value)
-                        Input.Find(num).Function("SetVolume", Value := cint(volumeCurrent).ToString())
-                    end if
+        if busAdjust <> "" and inputAdjust = "" then
+            if not busAdjustInputs then
+                '-- adjust the audio bus directly
+                dim isMuted as boolean = Convert.ToBoolean(cfg.SelectSingleNode("/vmix/audio/bus" & busAdjust & "/@muted").Value)
+                if not isMuted or not busAdjustUnmutedOnly then
+                    API.Function("SetBus" & busAdjust & "Volume", Value := cint(volumeCurrent).ToString())
                 end if
-            next
+            else
+                '-- adjust the inputs attached to the audio bus
+                dim busInputs as XmlNodeList = cfg.SelectNodes("/vmix/inputs/input[@audiobusses]")
+                for each busInput as XmlNode in busInputs
+                    dim onBusses() as string = busInput.Attributes("audiobusses").Value.Split(",")
+                    dim title      as string = busInput.Attributes("title").Value
+                    if Array.IndexOf(onBusses, busAdjust) >= 0 and Array.IndexOf(busAdjustInputsExclA, title) < 0 then
+                        dim isMuted as boolean = Convert.ToBoolean(busInput.Attributes("muted").Value)
+                        if not isMuted or not busAdjustUnmutedOnly then
+                            dim num as integer = Convert.ToInt32(busInput.Attributes("number").Value)
+                            Input.Find(num).Function("SetVolume", Value := cint(volumeCurrent).ToString())
+                        end if
+                    end if
+                next
+            end if
+        elseif busAdjust = "" and inputAdjust <> "" then
+            '-- adjust the input directly
+            dim isMuted as boolean = Convert.ToBoolean(cfg.SelectSingleNode("/vmix/inputs/input[@title = '" & inputAdjust & "']/@muted").Value)
+            if not isMuted or not inputAdjustUnmutedOnly then
+                API.Function("SetVolume", Input := inputAdjust, Value := cint(volumeCurrent).ToString())
+            end if
         end if
     end if
 
