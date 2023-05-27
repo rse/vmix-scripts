@@ -4,8 +4,8 @@
 
 **Update Custom Multiview Overlays**
 
-Allow one to update the preview/program overlays of a custom multiview
-by selecting corresponding images in a "List" type input.
+Allow one to select the corresponding page of a multi-camera multiview
+and update its preview/program overlays.
 
 Problem
 -------
@@ -21,12 +21,11 @@ Solution
 
 As as long the number of views/angles M is lower than 8, create N
 multiview-like inputs, each with M views/angles on layers the layers
-1-M and on two additional layers place two `List` type inputs. Each
-Nx2 `List` type inputs then should have 1+M images: one entirely empty image
-(corresponding to no preview/program selected on the camera at all) and
-M images corresponding to the view/angle input to be on preview/program.
-Then use this script to track changes on preview/program and select the
-corresponding image on the `List` inputs.
+1-M and on two additional layers place two `Title` type inputs. Each
+Nx2 `Title` type inputs then should have M transitions "PageX",
+corresponding to the view/angle input to be on preview/program. Then
+use this script to track changes on preview/program and select the
+corresponding transition "Pagex" on the `Title` inputs.
 
 Usage
 -----
@@ -38,9 +37,9 @@ Suppose we have the following setup:
   `C-C` (closeup-center), `C-R` (closeup-right), `F-L` (figure-left),
   `F-C` (figure-center), `F-R` (figure-right), and `W-C` (wide-center).
 
-- `List` inputs named `MULTIVIEW-OV-PREVIEW - CAMX`
+- `Title` inputs named `MULTIVIEW-OV-PREVIEW - CAMX`
   and `MULTIVIEW-OV-PROGRAM - CAMX` per camera, each holding
-  1+M overlays for preview/program.
+  M overlays for preview/program.
 
 - 4 custom multiview inputs named `MULTIVIEW - CAMX` corresponding
   to the 4 cameras and each showing the 7 views/angles.
@@ -52,15 +51,15 @@ Suppose we have the following setup:
 
 Then configure the `multiview-overlay` script with:
 
-```
-dim numberOfCams           as Integer  = 4
-dim angleInputPrefix       as String   = "VPTZ - CAM"
-dim angleInputPostfixes    as String() = { "C-L", "C-C", "C-R", "F-L", "F-C", "F-R", "W-C" }
-dim listPreviewInputPrefix as String   = "MULTIVIEW-OV-PREVIEW - CAM"
-dim listProgramInputPrefix as String   = "MULTIVIEW-OV-PROGRAM - CAM"
-dim multiviewInputPrefix   as String   = "MULTIVIEW - CAM"
-dim multiviewOutputId      as String   = "3"
-dim timeSlice              as Integer  = 50
-dim debug                  as Boolean  = true
+`` `
+dim numberOfCams            as Integer  = 4
+dim angleInputPrefix        as String   = "VPTZ - CAM"
+dim angleInputPostfixes     as String() = { "C-L", "C-C", "C-R", "F-L", "F-C", "F-R", "W-C" }
+dim titlePreviewInputPrefix as String   = "MULTIVIEW-OV-PREVIEW - CAM"
+dim titleProgramInputPrefix as String   = "MULTIVIEW-OV-PROGRAM - CAM"
+dim multiviewInputPrefix    as String   = "MULTIVIEW - CAM"
+dim multiviewOutputId       as String   = "3"
+dim timeSlice               as Integer  = 50
+dim debug                   as Boolean  = true
 ```
 

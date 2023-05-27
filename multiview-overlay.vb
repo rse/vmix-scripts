@@ -8,17 +8,17 @@
 '--
 
 '-- CONFIGURATION
-dim numberOfCams           as Integer  = 4
-dim angleInputPrefix       as String   = "VPTZ - CAM"
-dim angleInputPrefixPHYS   as String   = "PTZ - CAM"
-dim angleInputPostfixes    as String() = { "C-L", "C-C", "C-R", "F-L", "F-C", "F-R", "W-C" }
-dim listPreviewInputPrefix as String   = "MULTIVIEW-OV-PREVIEW - CAM"
-dim listProgramInputPrefix as String   = "MULTIVIEW-OV-PROGRAM - CAM"
-dim multiviewInputPrefix   as String   = "MULTIVIEW - CAM"
-dim multiviewInputPHYS     as String   = "MULTIVIEW - CAMx"
-dim multiviewOutputId      as String   = "3"
-dim timeSlice              as Integer  = 50
-dim debug                  as Boolean  = true
+dim numberOfCams            as Integer  = 4
+dim angleInputPrefix        as String   = "VPTZ - CAM"
+dim angleInputPrefixPHYS    as String   = "PTZ - CAM"
+dim angleInputPostfixes     as String() = { "C-L", "C-C", "C-R", "F-L", "F-C", "F-R", "W-C" }
+dim titlePreviewInputPrefix as String   = "MULTIVIEW-OV-PREVIEW - CAM"
+dim titleProgramInputPrefix as String   = "MULTIVIEW-OV-PROGRAM - CAM"
+dim multiviewInputPrefix    as String   = "MULTIVIEW - CAM"
+dim multiviewInputPHYS      as String   = "MULTIVIEW - CAMx"
+dim multiviewOutputId       as String   = "3"
+dim timeSlice               as Integer  = 50
+dim debug                   as Boolean  = true
 
 '-- prepare XML DOM tree and load the current API state
 dim cfg as new System.Xml.XmlDocument
@@ -81,7 +81,7 @@ do while true
                     if debug then
                         Console.WriteLine("multiview-update: INFO: updating multiview PREVIEW overlay of CAM" & cam)
                     end if
-                    API.Function("SelectIndex", Input := listPreviewInputPrefix & cam, Value := (idx + 2).toString())
+                    API.Function("TitleBeginAnimation", Input := titlePreviewInputPrefix & cam, Value := "Page" & (idx + 1).toString())
                     clearedPreview(cam - 1) = false
                     for i as Integer = 1 to numberOfCams
                         if i <> cam then
@@ -89,7 +89,7 @@ do while true
                                 if debug then
                                     Console.WriteLine("multiview-update: INFO: clearing multiview PREVIEW overlay of CAM" & i.toString())
                                 end if
-                                API.Function("SelectIndex", Input := listPreviewInputPrefix & i.toString(), Value := "1")
+                                API.Function("TitleBeginAnimation", Input := titlePreviewInputPrefix & i.toString(), Value := "TransitionOut")
                                 clearedPreview(i - 1) = true
                             end if
                         end if
@@ -112,7 +112,7 @@ do while true
                     if debug then
                         Console.WriteLine("multiview-update: INFO: clearing multiview PREVIEW overlay of CAM" & i.toString())
                     end if
-                    API.Function("SelectIndex", Input := listPreviewInputPrefix & i.toString(), Value := "1")
+                    API.Function("TitleBeginAnimation", Input := titlePreviewInputPrefix & i.toString(), Value := "TransitionOut")
                     clearedPreview(i - 1) = true
                 end if
             next
@@ -136,7 +136,7 @@ do while true
                     if debug then
                         Console.WriteLine("multiview-update: INFO: updating multiview PROGRAM overlay of CAM" & cam)
                     end if
-                    API.Function("SelectIndex", Input := listProgramInputPrefix & cam, Value := (idx + 2).toString())
+                    API.Function("TitleBeginAnimation", Input := titleProgramInputPrefix & cam, Value := "Page" & (idx + 1).toString())
                     clearedProgram(cam - 1) = false
                     for i as Integer = 1 to numberOfCams
                         if i <> cam then
@@ -144,7 +144,7 @@ do while true
                                 if debug then
                                     Console.WriteLine("multiview-update: INFO: clearing multiview PROGRAM overlay of CAM" & i.toString())
                                 end if
-                                API.Function("SelectIndex", Input := listProgramInputPrefix & i.toString(), Value := "1")
+                                API.Function("TitleBeginAnimation", Input := titleProgramInputPrefix & i.toString(), Value := "TransitionOut")
                                 clearedProgram(i - 1) = true
                             end if
                         end if
@@ -159,7 +159,7 @@ do while true
                     if debug then
                         Console.WriteLine("multiview-update: INFO: clearing multiview PREVIEW overlay of CAM" & i.toString())
                     end if
-                    API.Function("SelectIndex", Input := listProgramInputPrefix & i.toString(), Value := "1")
+                    API.Function("TitleBeginAnimation", Input := titleProgramInputPrefix & i.toString(), Value := "TransitionOut")
                     clearedProgram(i - 1) = true
                 end if
             next
