@@ -4,7 +4,7 @@
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
 '-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
-'-- Version:  0.9.2 (2022-09-18)
+'-- Version:  0.9.3 (2023-05-27)
 '--
 
 '-- CONFIGURATION
@@ -18,7 +18,7 @@ dim multiviewInputPrefix    as String   = "MULTIVIEW - CAM"
 dim multiviewInputPHYS      as String   = "MULTIVIEW - CAMx"
 dim multiviewOutputId       as String   = "3"
 dim timeSlice               as Integer  = 50
-dim debug                   as Boolean  = true
+dim debug                   as Boolean  = false
 
 '-- prepare XML DOM tree and load the current API state
 dim cfg as new System.Xml.XmlDocument
