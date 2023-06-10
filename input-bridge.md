@@ -19,10 +19,10 @@ inputs and their chroma-key filtering and virtual PTZ positioning, to
 a second vMix instance. For instance, when you have 4 cameras and 7
 virtual PTZ, you would want to offload the corresponding 28 inputs.
 Unfortunately, on a 1 Gbps network link you can transmit just a maximum
-of eight 1080p30, or six 1080p60, or four 2160p30, or two 2160p60 NDI
+of eight 1080p30, or six 1080p60, or four 2160p30, or two 2160p60, NDI
 streams between the two vMix instances. You would need at least a 10
 Gbps network link and use not more than 2160p30 if all the 28 inputs
-should be available on both vMix instances again.
+should be used on both vMix instances in parallel.
 
 Solution
 --------
@@ -32,7 +32,7 @@ instance uses just a single one in its output/program and potentially
 another single one in its preview. So, in practice it is usually
 sufficient to bridge the arbitrary number of inputs over just two NDI
 streams, as long as all bridged inputs are singletons and do not occur
-as a pair in any scene and and any time.
+as a pair in any scene and at any time.
 
 Usage
 -----
@@ -41,14 +41,14 @@ Suppose you you want to offload inputs named `VPTZ - XXX` from the vMix
 instance on COMPUTER2 (10.0.0.12) to a pre-processing vMix instance on
 COMPUTER1 (10.0.0.11). Then setup COMPUTER1 as following:
 
-- add the `VPTZ - XXX` inputs as usual (perhaps the leaves of
+- add the `VPTZ - XXX` inputs as usual (perhaps as the leaves of
   a complex input hierarchy like Camera / Virtual Input / VirtualSet).
 
-- add two inputs of type Mix named `BRIDGE1` and `BRIDGE2` and
-  under Settings / Outputs enable NDI for the outputs #3 and #4 and
+- add two inputs of type *Mix* named `BRIDGE1` and `BRIDGE2` and
+  under their *Settings / Outputs* enable NDI for the outputs #3 and #4 and
   set these two inputs.
 
-Then setup COMPUTER2 as follows:
+Then setup COMPUTER2 as following:
 
 - add the `input-bridge` script to COMPUTER2 and adjust its configuration to:
 
@@ -62,14 +62,14 @@ dim timeSlice        as Integer = 50
 dim debug            as Boolean = true
 ```
 
-- add two inputs of type NDI named `BRIDGE1` and `BRIDGE2`. Their NDI
+- add two inputs of type *NDI* named `BRIDGE1` and `BRIDGE2`. Their NDI
   streams should be set to `COMPUTER1 (vMix - Output 3)` and `COMPUTER1
   (vMix - Output 4)`.
 
-- for all the be bridged inputs `VPTZ - XXX` (from COMPUTER1) add inputs of type Blank
-  and set their layer 1 initially to `BRIDGE1`. The actually used bridge
-  input is automatically selected afterwards and hence can be any bridge
-  input initially.
+- for all the to be bridged inputs `VPTZ - XXX` (from COMPUTER1) add inputs of type Blank
+  and set their layer 1 initially to just `BRIDGE1`. The actually used
+  bridge input (`BRIDGE1` or `BRIDGE2`) is automatically selected
+  afterwards and hence you can use any bridge input initially.
 
 Finally, on COMPUTER2, start the script `input-bridge` and bring any of
 the `VPTZ - XXX` inputs into preview (and then potentially cut it to
