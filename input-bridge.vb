@@ -4,7 +4,7 @@
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
 '-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
-'-- Version:  1.0.0 (2022-10-13)
+'-- Version:  1.0.1 (2023-06-10)
 '--
 
 '-- ==== CONFIGURATION ====
@@ -24,21 +24,21 @@ dim cfg as System.Xml.XmlDocument = new System.Xml.XmlDocument()
 dim xml as String = API.XML()
 cfg.LoadXml(xml)
 
-'-- pre-determine information of bridge inputs
+'-- pre-determine information of bridge inputs (locally)
 dim bridge1InputNum as String = cfg.SelectSingleNode("/vmix/inputs/input[@title = '" & bridge1InputName & "']/@number").Value
 dim bridge1InputKey as String = cfg.SelectSingleNode("/vmix/inputs/input[@title = '" & bridge1InputName & "']/@key").Value
 dim bridge2InputNum as String = cfg.SelectSingleNode("/vmix/inputs/input[@title = '" & bridge2InputName & "']/@number").Value
 dim bridge2InputKey as String = cfg.SelectSingleNode("/vmix/inputs/input[@title = '" & bridge2InputName & "']/@key").Value
 
-'-- track which source input is in the bridges (on the peer side)
+'-- track which source input is in the bridges (remotely)
 dim bridge1SourceInputName as String = ""
 dim bridge2SourceInputName as String = ""
 
-'-- track which bridge is currently used (directly or indirectly) in preview and program
+'-- track which bridge is currently used (directly or indirectly) in preview and program (locally)
 dim bridgeInPreview as Integer = 0
 dim bridgeInProgram as Integer = 0
 
-'-- track last preview/program state
+'-- track last preview/program state (locally)
 dim inputInPreviewLast as String = ""
 dim inputInProgramLast as String = ""
 
