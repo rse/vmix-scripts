@@ -63,7 +63,7 @@ do while true
         end if
 
         '-- transitively iterate through the program input tree
-        '-- and find out whether a bridge input is used at all
+        '-- and find out whether and what bridge input is used
         bridgeInProgram = 0
         dim inputKey as String = cfg.SelectSingleNode("/vmix/inputs/input[@number = '" & inputInProgramNow & "']/@key").Value
         dim stack as System.Collections.Stack = new System.Collections.Stack()
