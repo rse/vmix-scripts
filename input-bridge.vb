@@ -4,7 +4,7 @@
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
 '-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
-'-- Version:  1.0.1 (2023-06-10)
+'-- Version:  1.1.0 (2023-06-11)
 '--
 
 '-- ==== CONFIGURATION ====
@@ -14,6 +14,7 @@ dim bridge1MixNum    as String  = "1"                          '-- mix number of
 dim bridge2MixNum    as String  = "2"                          '-- mix number of bridge #2           (remote only)
 dim bridge1InputName as String  = "BRIDGE1"                    '-- input name of bridge #1           (local and remote)
 dim bridge2InputName as String  = "BRIDGE2"                    '-- input name of bridge #2           (local and remote)
+dim blankInputName   as String  = "BLANK"                      '-- input name of bkank content       (remote only)
 dim timeSlice        as Integer = 50                           '-- time slice of processing interval (local only)
 dim debug            as Boolean = false                        '-- wether to output debug messages   (local only)
 
@@ -41,6 +42,10 @@ dim bridgeInProgram as Integer = 0
 '-- track last preview/program state (locally)
 dim inputInPreviewLast as String = ""
 dim inputInProgramLast as String = ""
+
+'-- track last preview/program state (remotely)
+dim inputInPreviewRemoteLast as String = ""
+dim inputInProgramRemoteLast as String = ""
 
 '-- ==== PROCESSING ====
 
@@ -191,36 +196,83 @@ do while true
         loop
     end if
 
-    '-- update remote preview if a local change was done
-    if inputInPreviewNow <> inputInPreviewLast and bridgeInPreview <> 0 then
-        dim url as String = peerAPI & "?Function=PreviewInput&Input="
-        if bridgeInPreview = 1 then
-            url = url & bridge1SourceInputName
-        elseif bridgeInPreview = 2 then
-            url = url & bridge2SourceInputName
+    '-- determine whether to update remote program
+    dim changeProgramToInput as String = ""
+    if inputInProgramNow <> inputInProgramLast then
+        if bridgeInProgram <> 0 then
+            '-- input locally in program with a bridge, so reflect it remotely
+            if bridgeInProgram = 1 and inputInProgramRemoteLast <> bridge1SourceInputName then
+                changeProgramToInput = bridge1SourceInputName
+            elseif bridgeInProgram = 2 and inputInProgramRemoteLast <> bridge2SourceInputName then
+                changeProgramToInput = bridge2SourceInputName
+            end if
+        else
+            '-- input locally in program without a bridge, so use empty input remotely
+            if inputInProgramRemoteLast <> blankInputName then
+                changeProgramToInput = blankInputName
+            end if
         end if
-        dim webClient as System.Net.WebClient = new System.Net.WebClient()
-        webClient.DownloadString(url)
     end if
 
-    '-- update remote program if a local change was done
-    if inputInProgramNow <> inputInProgramLast and bridgeInProgram <> 0 then
-        dim url as String = peerAPI & "?Function=ActiveInput&Input="
-        if bridgeInProgram = 1 then
-            url = url & bridge1SourceInputName
-        elseif bridgeInProgram = 2 then
-            url = url & bridge2SourceInputName
+    '-- determine whether to update remote preview
+    dim changePreviewToInput as String = ""
+    if inputInPreviewNow <> inputInPreviewLast then
+        if bridgeInPreview <> 0 then
+            '-- input locally in preview with a bridge, so reflect it remotely
+            if bridgeInPreview = 1 and inputInPreviewRemoteLast <> bridge1SourceInputName then
+                changePreviewToInput = bridge1SourceInputName
+            elseif bridgeInPreview = 2 and inputInPreviewRemoteLast <> bridge2SourceInputName then
+                changePreviewToInput = bridge2SourceInputName
+            end if
+        else
+            '-- input locally in preview without a bridge, so use empty input remotely
+            if inputInPreviewRemoteLast <> blankInputName then
+                changePreviewToInput = blankInputName
+            end if
         end if
+    end if
+
+    '-- update remote preview and program if a local change was done
+    '-- (especially to keep tally lights in sync)
+    if inputInPreviewRemoteLast = changeProgramToInput and inputInProgramRemoteLast = changePreviewToInput then
+        '-- optimized all-in-one special case operation
+        if debug then
+            Console.WriteLine("input-bridge: INFO: remote: swapping preview '" & inputInPreviewRemoteLast & "' with program '" & inputInProgramRemoteLast & "'")
+        end if
+        dim url as String = peerAPI & "?Function=Cut"
         dim webClient as System.Net.WebClient = new System.Net.WebClient()
         webClient.DownloadString(url)
+        inputInPreviewRemoteLast = changePreviewToInput
+        inputInProgramRemoteLast = changeProgramToInput
+    else
+        if changeProgramToInput <> "" then
+            '-- individual update operation
+            if debug then
+                Console.WriteLine("input-bridge: INFO: remote: switching program to '" & changeProgramToInput & "'")
+            end if
+            dim url as String = peerAPI & "?Function=CutDirect&Input=" & changeProgramToInput
+            dim webClient as System.Net.WebClient = new System.Net.WebClient()
+            webClient.DownloadString(url)
+            inputInProgramRemoteLast = changeProgramToInput
+        end if
+        if changePreviewToInput <> "" then
+            '-- individual update operation
+            if debug then
+                Console.WriteLine("input-bridge: INFO: remote: switching preview to '" & changePreviewToInput & "'")
+            end if
+            dim url as String = peerAPI & "?Function=PreviewInput&Input=" & changePreviewToInput
+            dim webClient as System.Net.WebClient = new System.Net.WebClient()
+            webClient.DownloadString(url)
+            inputInPreviewRemoteLast = changePreviewToInput
+        end if
     end if
 
     '-- finally remember new states
-    if inputInPreviewNow <> inputInPreviewLast then
-        inputInPreviewLast = inputInPreviewNow
-    end if
     if inputInProgramNow <> inputInProgramLast then
         inputInProgramLast = inputInProgramNow
+    end if
+    if inputInPreviewNow <> inputInPreviewLast then
+        inputInPreviewLast = inputInPreviewNow
     end if
 
     '-- wait a little bit before next iteration
