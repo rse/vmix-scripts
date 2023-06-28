@@ -4,16 +4,18 @@
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
 '-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
-'-- Version:  0.9.0 (2022-07-30)
+'-- Version:  0.9.1 (2023-06-29)
 '--
 
 '-- ==== CONFIGURATION (please adjust) ====
 
-dim heartbeatThresholdVolume    as integer = -32     'threshold below which volume to react (dB FS)
-dim heartbeatThresholdTime      as integer = 5000    'threshold after which time   to react (ms)
-dim heartbeatWarningEvery       as integer = 2000    'time between warning indicators (ms)
-dim heartbeatTimeSlice          as integer = 10      'time interval between the script iterations (ms)
-dim debug                       as boolean = true    'whether to output debug information to the console
+dim heartbeatThresholdVolume as integer = -32              'threshold below which volume to react (dB FS)
+dim heartbeatThresholdTime   as integer = 5000             'threshold after which time   to react (ms)
+dim heartbeatWarningEvery    as integer = 2000             'time between warning indicators (ms)
+dim heartbeatTimeSlice       as integer = 10               'time interval between the script iterations (ms)
+dim debug                    as boolean = true             'whether to output debug information to the console
+dim inputOK                  as string  = "STREAM1"        'optional input to switch to for OK situation
+dim inputWARNING             as string  = "SCREEN-FAILURE" 'optional input to switch to for warning situaton
 
 '-- ==== INTERNAL STATE ====
 
@@ -74,6 +76,18 @@ do while true
     if mode <> modeNew then
         if debug then
             Console.WriteLine("audio-heartbeat: INFO: switching to mode: " & modeNew)
+        end if
+        if mode = "OK" and modeNew = "WARNING" then
+            '-- enter WARNING mode: optionally switch to WARNING input
+            if inputOK <> "" and inputWARNING <> "" then
+                API.Function("CutDirect", Input := inputOK)
+            end if
+        end if
+        elseif mode = "WARNING" and modeNew = "OK" then
+            '-- leave WARNING mode: optionally switch to regular input
+            if inputOK <> "" and inputWARNING <> "" then
+                API.Function("CutDirect", Input := inputWARNING)
+            end if
         end if
         mode = modeNew
     end if
