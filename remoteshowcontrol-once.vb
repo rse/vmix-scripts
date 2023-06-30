@@ -1,6 +1,6 @@
 '--
 '-- remoteshowcontrol-once.vb -- vMix script for RemoteShowControl one-time commands
-'-- Copyright (c) 2022 Dr. Ralf S. Engelschall <rse@engelschall.com>
+'-- Copyright (c) 2022-2023 Dr. Ralf S. Engelschall <rse@engelschall.com>
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
 '-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)

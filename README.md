@@ -109,7 +109,7 @@ Installation
 License
 -------
 
-Copyright &copy; 2022 Dr. Ralf S. Engelschall (http://engelschall.com/)
+Copyright &copy; 2022-2023 Dr. Ralf S. Engelschall (http://engelschall.com/)
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
