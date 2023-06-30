@@ -4,18 +4,20 @@
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
 '-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
-'-- Version:  0.9.1 (2023-06-29)
+'-- Version:  0.9.2 (2023-06-30)
 '--
 
 '-- ==== CONFIGURATION (please adjust) ====
 
+dim heartbeatMonitorBus      as string  = "master"         'id of audio bus to monitor volume
+dim heartbeatMonitorInput    as string  = ""               'id of input     to monitor volume
 dim heartbeatThresholdVolume as integer = -32              'threshold below which volume to react (dB FS)
 dim heartbeatThresholdTime   as integer = 5000             'threshold after which time   to react (ms)
 dim heartbeatWarningEvery    as integer = 2000             'time between warning indicators (ms)
 dim heartbeatTimeSlice       as integer = 10               'time interval between the script iterations (ms)
-dim debug                    as boolean = true             'whether to output debug information to the console
 dim inputOK                  as string  = "STREAM1"        'optional input to switch to for OK situation
 dim inputWARNING             as string  = "SCREEN-FAILURE" 'optional input to switch to for warning situaton
+dim debug                    as boolean = false            'whether to output debug information to the console
 
 '-- ==== INTERNAL STATE ====
 
@@ -49,8 +51,15 @@ do while true
     end if
 
     '-- determine input volume (in linear volume scale)
-    dim meter1 as double = Convert.ToDouble(cfg.SelectSingleNode("/vmix/audio/master/@meterF1").Value, cultureInfo)
-    dim meter2 as double = Convert.ToDouble(cfg.SelectSingleNode("/vmix/audio/master/@meterF2").Value, cultureInfo)
+    dim meter1 as double = 0.0
+    dim meter2 as double = 0.0
+    if heartbeatMonitorBus <> "" and heartbeatMonitorInput = "" then
+        meter1 = Convert.ToDouble(cfg.SelectSingleNode("/vmix/audio/bus" & heartbeatMonitorBus & "/@meterF1").Value, cultureInfo)
+        meter2 = Convert.ToDouble(cfg.SelectSingleNode("/vmix/audio/bus" & heartbeatMonitorBus & "/@meterF2").Value, cultureInfo)
+    elseif heartbeatMonitorBus = "" and heartbeatMonitorInput <> "" then
+        meter1 = Convert.ToDouble(cfg.SelectSingleNode("/vmix/inputs/input[@title = '" & heartbeatMonitorInput & "']/@meterF1").Value, cultureInfo)
+        meter2 = Convert.ToDouble(cfg.SelectSingleNode("/vmix/inputs/input[@title = '" & heartbeatMonitorInput & "']/@meterF2").Value, cultureInfo)
+    end if
     if meter1 < meter2 then
         meter1 = meter2
     end if
