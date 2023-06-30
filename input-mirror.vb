@@ -4,7 +4,7 @@
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
 '-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
-'-- Version:  0.9.0 (2023-06-30)
+'-- Version:  0.9.1 (2023-06-30)
 '--
 
 '-- ==== CONFIGURATION ====
@@ -37,16 +37,17 @@ do while true
     cfg.LoadXml(xml)
 
     '-- determine what input is currently in preview and in program
-    dim inputInPreviewNow as String = cfg.SelectSingleNode("/vmix/preview").InnerText
-    dim inputInProgramNow as String = cfg.SelectSingleNode("/vmix/active").InnerText
+    dim inputInPreviewNowNum as String = cfg.SelectSingleNode("/vmix/preview").InnerText
+    dim inputInProgramNowNum as String = cfg.SelectSingleNode("/vmix/active").InnerText
+    dim inputInPreviewNow as String = cfg.SelectSingleNode("/vmix/inputs/input[@number = '" & inputInPreviewNowNum & "']/@title").Value
+    dim inputInProgramNow as String = cfg.SelectSingleNode("/vmix/inputs/input[@number = '" & inputInProgramNowNum & "']/@title").Value
 
     '-- detect if a new input was placed into program
     dim changeProgramToInput as String = ""
     if inputInProgramNow <> inputInProgramLast then
         '-- print detected change
         if debug then
-            dim inputName as String = cfg.SelectSingleNode("/vmix/inputs/input[@number = '" & inputInProgramNow & "']/@title").Value
-            Console.WriteLine("input-mirror: INFO: PROGRAM change detected: input=" & inputName)
+            Console.WriteLine("input-mirror: INFO: PROGRAM change detected: input=" & inputInProgramNow)
         end if
         changeProgramToInput = inputInProgramNow
     end if
@@ -56,8 +57,7 @@ do while true
     if inputInPreviewNow <> inputInPreviewLast then
         '-- print detected change
         if debug then
-            dim inputName as String = cfg.SelectSingleNode("/vmix/inputs/input[@number = '" & inputInPreviewNow & "']/@title").Value
-            Console.WriteLine("input-mirror: INFO: PREVIEW change detected: input=" & inputName)
+            Console.WriteLine("input-mirror: INFO: PREVIEW change detected: input=" & inputInPreviewNow)
         end if
         changePreviewToInput = inputInPreviewNow
     end if
