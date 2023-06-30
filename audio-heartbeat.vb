@@ -86,14 +86,16 @@ do while true
         if debug then
             Console.WriteLine("audio-heartbeat: INFO: switching to mode: " & modeNew)
         end if
+        dim inputInProgramNum as String = cfg.SelectSingleNode("/vmix/active").InnerText
+        dim inputInProgram    as String = cfg.SelectSingleNode("/vmix/inputs/input[@number = '" & inputInProgramNum & "']/@title").Value
         if mode = "OK" and modeNew = "WARNING" then
             '-- enter WARNING mode: optionally switch to WARNING input
-            if inputOK <> "" and inputWARNING <> "" then
+            if inputOK <> "" and inputWARNING <> "" and inputInProgram = inputOK then
                 API.Function("CutDirect", Input := inputWARNING)
             end if
         elseif mode = "WARNING" and modeNew = "OK" then
             '-- leave WARNING mode: optionally switch to regular input
-            if inputOK <> "" and inputWARNING <> "" then
+            if inputOK <> "" and inputWARNING <> "" and inputInProgram <> inputOK then
                 API.Function("CutDirect", Input := inputOK)
             end if
         end if
