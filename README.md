@@ -39,6 +39,11 @@ The individual scripts are:
   order to perform load offloading between two vMix instances.
   (See the corresponding [demonstration video](https://youtu.be/Y6MHAtpMYG8) for details)
 
+- [input-mirror.vb](input-mirror.vb):<br/>
+  [**Mirror Input Selection on vMix Slave Instance**](input-mirror.md)<br/>
+  Allow one to mirror the current input preview/program selection
+  on vMix slave instances in order to closely follow the vMix master instance.
+
 - [multiview-overlay.vb](multiview-overlay.vb):<br/>
   [**Update Custom Multiview Overlays**](multiview-overlay.md)<br/>
   Allow one to update the preview/program overlays of a custom multiview
