@@ -89,13 +89,12 @@ do while true
         if mode = "OK" and modeNew = "WARNING" then
             '-- enter WARNING mode: optionally switch to WARNING input
             if inputOK <> "" and inputWARNING <> "" then
-                API.Function("CutDirect", Input := inputOK)
+                API.Function("CutDirect", Input := inputWARNING)
             end if
-        end if
         elseif mode = "WARNING" and modeNew = "OK" then
             '-- leave WARNING mode: optionally switch to regular input
             if inputOK <> "" and inputWARNING <> "" then
-                API.Function("CutDirect", Input := inputWARNING)
+                API.Function("CutDirect", Input := inputOK)
             end if
         end if
         mode = modeNew
