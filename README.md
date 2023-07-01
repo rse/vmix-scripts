@@ -20,17 +20,23 @@ The individual scripts are:
   reduced, based on audio input volumes (when temporarily above a
   threshold) -- similar to an audio side-chain compression.
 
+  Use Cases: Microphone Ducking, Translator Voice-Over
+
 - [audio-heartbeat.vb](audio-heartbeat.vb):<br/>
   [**Detect Unexpected Silence**](audio-heartbeat.md)<br/>
   Notify operator in case unexpected silence, i.e., audio below a
   certain threshold on the master bus, is detected during streaming
   and/or recording.
 
+  Use Cases: Playout Operator Hints, Playout Scene Switching
+
 - [auto-pre-mix.vb](auto-pre-mix.vb):<br/>
   [**Automatically Pre-Mixing Inputs**](auto-pre-mix.md)<br/>
   Allow one to auto-pre-mix (aka pre-render or flattening) source
   inputs with the help of two intermediate Mix-type input(s) in order to
   further embed the result onto a layer of a target input.
+
+  Use Cases: Layer Re-Position/Re-Cropping
 
 - [input-bridge.vb](input-bridge.vb):<br/>
   [**Bridge Inputs between vMix instances**](input-bridge.md)<br/>
@@ -39,21 +45,29 @@ The individual scripts are:
   order to perform load offloading between two vMix instances.
   (See the corresponding [demonstration video](https://youtu.be/Y6MHAtpMYG8) for details)
 
+  Use Cases: Separated Ingest/Mixing
+
 - [input-mirror.vb](input-mirror.vb):<br/>
   [**Mirror Input Selection on vMix Slave Instance**](input-mirror.md)<br/>
   Allow one to mirror the current input preview/program selection
   on vMix slave instances in order to closely follow the vMix master instance.
+
+  Use Cases: Separated Playouts
 
 - [multiview-overlay.vb](multiview-overlay.vb):<br/>
   [**Update Custom Multiview Overlays**](multiview-overlay.md)<br/>
   Allow one to update the preview/program overlays of a custom multiview
   by selecting corresponding images in a "List" type input.
 
+  Use Cases: Virtual PTZ Overview
+
 - [smooth-pan-zoom.vb](smooth-pan-zoom.vb):<br/>
   [**Smooth Virtual Pan/Zoom in Virtual Sets**](smooth-pan-zoom.md)<br/>
   Smoothly adjust the pan/zoom of an input, for a rough emulation of the
   vMix Virtual PTZ feature, which cannot be used on layered inputs like
   Virtual Sets.
+
+  Use Cases: Virtual PTZ Adjustment
 
 - [event-reconfiguration.vb](event-reconfiguration.vb):<br/>
   [**Reconfiguration of Event NDI Inputs (and Lower-Third Titles)**](event-reconfiguration.md)<br/>
@@ -62,22 +76,30 @@ The individual scripts are:
   reusable NDI input sources (for shared content, one moderator and
   two presenters).
 
+  Use Cases: Conference Guest Ingest
+
 - [event-title-control.vb](event-title-control.vb):<br/>
   [**Control Layer-Embedded Titles**](event-title-control.md)<br/>
   Control the in/out transitioning of lower-third titles which are
   embedded layers of scene inputs (where vMix only performs `TransitionIn`
   and never a `TransitionOut`).
 
+  Use Cases: Conference Guest Title Mangement
+
 - [clone-input.vb](clone-input.vb):<br/>
   [**Really Cloning an Arbitrary Input**](clone-input.md)<br/>
   Allow an arbitrary input (which has to be in the preview) to be
   really cloned/duplicated.
+
+  Use Cases: Event Configuration
 
 - [recording-log.vb](recording-log.vb):<br/>
   [**Logging Recording States**](recording-log.md)<br/>
   Logs the start and stop states of Recording and MultiCorder and can
   add a special marking log entry for bookkeeping special points of
   interest during a recording.
+
+  Use Cases: Point of Interest Tracking
 
 - [remoteshowcontrol-loop.vb](remoteshowcontrol-loop.vb):<br/>
   [**Continuously Control Irisdown RemoteShowControl**](remoteshowcontrol-loop.md)<br/>
@@ -86,16 +108,22 @@ The individual scripts are:
   [Irisdown RemoteShowControl](https://www.irisdown.co.uk/rsc.html) plugin,
   based on vMix input name information.
 
+  Use Cases: Automatic PowerPoint Slide Control
+
 - [remoteshowcontrol-once.vb](remoteshowcontrol-once.vb):<br/>
   [**Once Control Irisdown RemoteShowControl**](remoteshowcontrol-once.md)<br/>
   Once control a remote PowerPoint slide-deck with the help of its
   [Irisdown RemoteShowControl](https://www.irisdown.co.uk/rsc.html)
   plugin, based on vMix triggers or shortcuts.
 
+  Use Cases: Manual PowerPoint Slide Control
+
 - [ndi-studio-monitor.vb](ndi-studio-monitor.vb):<br/>
   [**Reconfigure NewTek NDI Studio Monitor**](ndi-studio-monitor.md)<br/>
   Allow vMix to reconfigure the NDI source displayed in a (remote) NewTek
   NDI Studio Monitor instance.
+
+  Use Cases: Manual NDI Tools Studio Monitor Source Control
 
 Installation
 ------------
