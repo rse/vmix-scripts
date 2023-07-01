@@ -147,31 +147,44 @@ job (partially driven by the scripts) are:
   5x7 virtual PTZ emit (to Mixing 1).
   <br/>
   Rationale: 4K cameras have to be still chroma-keyed in 4K, flexible virtual PTZ management.
+  <br/>
+  Scripts: multiview-overlay, smooth-pan-zoom
 
 - Content Ingest: 1080p30 mode, content 1+2 ingest (from Mixing 1),
   content 1+2 emit (via virtual camera).
   <br/>
   Rationale: content from Mixing has to be ingested back into game-engine instances.
+  <br/>
+  Scripts: none
 
 - Mixing 1: 1080p30 mode, 5x7 virtual PTZ ingest (from Camera Ingest), 8x remote guests ingest, 1x slide ingest,
   12x microphone ingest, 4x4 title overlays, content 1+2 emit (to Camera Ingest), primary programm emit (to Playout 1).
   <br/>
   Rationale: primary scene mixing (usually with german audio)
+  <br/>
+  Scripts: input-bridge, audio-sidechain, event-reconfiguration, event-title-control, recording-log,
+  remoteshowcontrol-once, remoteshowcontrol-loop, ndi-studio-monitor, clone-input, auto-pre-mix
 
 - Mixing 2: 1080p30 mode, primary program ingest, 2x real-time translator ingest,
   translator audio export/re-import, secondary programm emit (to Playout 2), studio multiview emit.
   <br/>
   Rationale: real-time translation (usually german to englisch audio), studio multiview production.
+  <br/>
+  Scripts: audio-sidechain
 
 - Playout 1: 1080p30 mode, primary program ingest (from Mixing 1), event program management,
   primary program broadcasting.
   <br/>
   Rationale: event program mangement of first stream (usually german audio)
+  <br/>
+  Scripts: input-mirror, audio-heartbeat
 
 - Playout 2: 1080p30 mode, secondary program ingest (from Mixing 2), event program management,
   secondary program broadcasting.
   <br/>
   Rationale: event program mangement of second stream (usually english audio)
+  <br/>
+  Scripts: none
 
 License
 -------
