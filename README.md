@@ -19,7 +19,7 @@ The individual scripts are:
   Allow audio output volumes to be automatically and temporarily
   reduced, based on audio input volumes (when temporarily above a
   threshold) -- similar to an audio side-chain compression.
-
+  <br/>
   Use Cases: Microphone Ducking, Translator Voice-Over
 
 - [audio-heartbeat.vb](audio-heartbeat.vb):<br/>
@@ -27,7 +27,7 @@ The individual scripts are:
   Notify operator in case unexpected silence, i.e., audio below a
   certain threshold on the master bus, is detected during streaming
   and/or recording.
-
+  <br/>
   Use Cases: Playout Operator Hints, Playout Scene Switching
 
 - [auto-pre-mix.vb](auto-pre-mix.vb):<br/>
