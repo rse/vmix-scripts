@@ -153,7 +153,7 @@ Bitfocus Companion control informations) are:
   Scripts: multiview-overlay, smooth-pan-zoom
 
 - **Ingest 2**: 1080p30 mode, content 1+2 ingest (from **Mixing 1**),
-  content 1+2 emit (via virtual camera into **Ingest 1**).
+  content 1+2 emit (via virtual camera into the game engines inside **Ingest 1**).
   <br/>
   Rationale: content from Mixing has to be ingested back into game-engine instances.
   <br/>
