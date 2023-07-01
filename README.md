@@ -11,8 +11,8 @@ This is a collection of
 [VB.NET](https://en.wikipedia.org/wiki/Visual_Basic_.NET) 2.0 scripts
 for automating certain tasks and extending the functionality in the
 video/audio stream mixing software [vMix](https://www.vmix.com/) (4K and Pro editions only).
-
-The individual scripts are:
+All scripts were created in the professional context of a company
+filmstudio and their live event productions. The individual scripts are:
 
 - [audio-sidechain.vb](audio-sidechain.vb):<br/>
   [**Audio Sidechain Compression**](audio-sidechain.md)<br/>
