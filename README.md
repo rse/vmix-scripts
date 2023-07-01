@@ -135,6 +135,8 @@ Installation
 2. Add the individual scripts to vMix with<br/>
    **Settings** &rarr; **Scripting** &rarr; **Add** &rarr; **Import**
 
+3. For some of the scripts, do not forget to adjust their configuration section!
+
 Background
 ----------
 
