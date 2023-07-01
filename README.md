@@ -140,7 +140,7 @@ Background
 All these vMix scripts where created in the professional context of a
 company filmstudio, where multiple vMix instances are used to drive the
 live event productions. The particularly used vMix instances and their
-job (partually driven by the scripts) are:
+job (partially driven by the scripts) are:
 
 - Camera Ingest: 2160p30 mode, 5x physical camera ingest, 5x chroma-keying, 5x game-engine based
   background overlaying, 5x8 physical PTZ management, 5x8x7 virtual PTZ management,
