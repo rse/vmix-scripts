@@ -128,8 +128,9 @@ filmstudio and its live event productions. The individual scripts are:
 Installation
 ------------
 
-1. Clone this [repository](https://github.com/rse/vmix-scripts):<br/>
-   `git clone https://github.com/rse/vmix-scripts`
+1. Clone this [repository](https://github.com/rse/vmix-scripts)
+   or [download a ZIP archive](https://github.com/rse/vmix-scripts/archive/refs/heads/master.zip):<br/>
+   `git clone https://github.com/rse/vmix-scripts`<br/>
 
 2. Add the individual scripts to vMix with<br/>
    **Settings** &rarr; **Scripting** &rarr; **Add** &rarr; **Import**
