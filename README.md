@@ -140,7 +140,8 @@ Background
 All these vMix scripts where created in the professional context of a
 company filmstudio, where multiple vMix instances (connected through
 NDI) are used to drive the live event productions. The particularly used
-vMix instances and their job (partially driven by the scripts) are:
+vMix instances and their job (partially driven by the scripts and manual
+Bitfocus Companion control informations) are:
 
 - **Ingest 1**: 2160p30 mode, 5x physical camera ingest, 5x chroma-keying, 5x game-engine based
   background overlaying (indirectly using content 1+2 from **Ingest
