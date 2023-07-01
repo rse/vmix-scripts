@@ -134,6 +134,45 @@ Installation
 2. Add the individual scripts to vMix with<br/>
    **Settings** &rarr; **Scripting** &rarr; **Add** &rarr; **Import**
 
+Background
+----------
+
+All these vMix scripts where created in the professional context of a
+company filmstudio, where multiple vMix instances are used to drive the
+live event productions. The particularly used vMix instances and their
+job (partually driven by the scripts) are:
+
+- Camera Ingest: 2160p30 mode, 5x physical camera ingest, 5x chroma-keying, 5x game-engine based
+  background overlaying, 5x8 physical PTZ management, 5x8x7 virtual PTZ management,
+  5x7 virtual PTZ emit (to Mixing 1).
+  <br/>
+  Rationale: 4K cameras have to be still chroma-keyed in 4K, flexible virtual PTZ management.
+
+- Content Ingest: 1080p30 mode, content 1+2 ingest (from Mixing 1),
+  content 1+2 emit (via virtual camera).
+  <br/>
+  Rationale: content from Mixing has to be ingested back into game-engine instances.
+
+- Mixing 1: 1080p30 mode, 5x7 virtual PTZ ingest (from Camera Ingest), 8x remote guests ingest, 1x slide ingest,
+  12x microphone ingest, 4x4 title overlays, content 1+2 emit (to Camera Ingest), primary programm emit (to Playout 1).
+  <br/>
+  Rationale: primary scene mixing (usually with german audio)
+
+- Mixing 2: 1080p30 mode, primary program ingest, 2x real-time translator ingest,
+  translator audio export/re-import, secondary programm emit (to Playout 2), studio multiview emit.
+  <br/>
+  Rationale: real-time translation (usually german to englisch audio), studio multiview production.
+
+- Playout 1: 1080p30 mode, primary program ingest (from Mixing 1), event program management,
+  primary program broadcasting.
+  <br/>
+  Rationale: event program mangement of first stream (usually german audio)
+
+- Playout 2: 1080p30 mode, secondary program ingest (from Mixing 2), event program management,
+  secondary program broadcasting.
+  <br/>
+  Rationale: event program mangement of second stream (usually english audio)
+
 License
 -------
 
