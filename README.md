@@ -7,7 +7,7 @@ vMix Scripts
 About
 -----
 
-This is a small collection of
+This is a collection of
 [VB.NET](https://en.wikipedia.org/wiki/Visual_Basic_.NET) 2.0 scripts
 for automating certain tasks and extending the functionality in the
 video/audio stream mixing software [vMix](https://www.vmix.com/) (4K and Pro editions only).
