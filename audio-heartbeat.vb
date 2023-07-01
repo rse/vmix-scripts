@@ -11,7 +11,7 @@
 
 dim heartbeatMonitorBus      as string  = "master"         'id of audio bus to monitor volume
 dim heartbeatMonitorInput    as string  = ""               'id of input     to monitor volume
-dim heartbeatThresholdVolume as integer = -32              'threshold below which volume to react (dB FS)
+dim heartbeatThresholdVolume as integer = -60              'threshold below which volume to react (dB FS)
 dim heartbeatThresholdTime   as integer = 5000             'threshold after which time   to react (ms)
 dim heartbeatWarningEvery    as integer = 2000             'time between warning indicators (ms)
 dim heartbeatTimeSlice       as integer = 10               'time interval between the script iterations (ms)
