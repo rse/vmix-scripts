@@ -4,7 +4,7 @@
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
 '-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
-'-- Version:  1.4.0 (2023-05-27)
+'-- Version:  1.5.0 (2024-04-24)
 '--
 
 '-- ==== CONFIGURATION (please adjust) ====
