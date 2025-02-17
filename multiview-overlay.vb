@@ -4,7 +4,7 @@
 '-- Distributed under MIT license <https://spdx.org/licenses/MIT.html>
 '--
 '-- Language: VB.NET 2.0 (vMix 4K/Pro flavor)
-'-- Version:  0.9.3 (2023-05-27)
+'-- Version:  0.9.4 (2025-02-17)
 '--
 
 '-- CONFIGURATION
@@ -16,6 +16,7 @@ dim titlePreviewInputPrefix as String   = "MULTIVIEW-OV-PREVIEW - CAM"
 dim titleProgramInputPrefix as String   = "MULTIVIEW-OV-PROGRAM - CAM"
 dim multiviewInputPrefix    as String   = "MULTIVIEW - CAM"
 dim multiviewInputPHYS      as String   = "MULTIVIEW - CAMx"
+dim multiviewInputNOCAM     as String   = "MULTIVIEW - NOCAM"
 dim multiviewOutputId       as String   = "3"
 dim timeSlice               as Integer  = 50
 dim debug                   as Boolean  = false
@@ -116,6 +117,9 @@ do while true
                     clearedPreview(i - 1) = true
                 end if
             next
+            API.Function("PreviewInput", Input := multiviewInputNOCAM, Mix := multiviewOutputId)
+            API.Function("ActiveInput",  Input := multiviewInputNOCAM, Mix := multiviewOutputId)
+            lastPreviewCam = 0
         end if
     end if
 
